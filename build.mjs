@@ -23,7 +23,7 @@ const SRC = join(ROOT, "src");
 const SITE = {
   title: "Algorithm Patterns",
   short: "Algorithm Patterns",
-  tagline: "A visual, diagram-first guide to the LeetCode patterns.",
+  tagline: "A visual, diagram-first guide to the algorithm patterns.",
   repo: "https://github.com/bergsonvalencia/algo",
 };
 
@@ -221,7 +221,7 @@ function topbar() {
   const gh = SITE.repo ? `<a class="icon-btn gh-link" href="${SITE.repo}" target="_blank" rel="noopener" aria-label="GitHub">&#9733;</a>` : "";
   return `<header class="topbar">
   <button class="icon-btn menu-btn" id="menu-toggle" aria-label="Menu">&#9776;</button>
-  <a class="brand" href="index.html"><span class="logo">A</span><span>${escHtml(SITE.title)}</span></a>
+  <a class="brand" href="index.html"><span>${escHtml(SITE.title)}</span></a>
   <span class="spacer"></span>
   <div class="search"><span class="icon">&#9906;</span><input id="search" type="search" placeholder="Search topics…  (press /)" autocomplete="off" aria-label="Search"><div class="search-results" id="search-results"></div></div>
   <button class="icon-btn" id="theme-toggle" aria-label="Toggle theme">&#9790;</button>
@@ -286,7 +286,7 @@ function renderHome(meta) {
     <h1>Master the <span class="grad">algorithm patterns</span><br>that crack coding interviews</h1>
     <p>Every LeetCode pattern, explained the way you actually remember it — one clear diagram, one worked trace, one clean implementation at a time.</p>
     <div class="cta">
-      <a class="btn btn-primary" href="${idx}">Start</a>
+      <a class="btn btn-primary" href="${idx}">Start Here</a>
     </div>
   </section>
   ${sections}

@@ -122,12 +122,6 @@ a:hover { text-decoration: underline; }
 }
 .brand { display: flex; align-items: center; gap: 10px; font-weight: 700; color: var(--text); font-size: 1.02rem; letter-spacing: -.01em; }
 .brand:hover { text-decoration: none; }
-.brand .logo {
-  width: 28px; height: 28px; border-radius: 8px; flex: none;
-  background: linear-gradient(135deg, var(--accent), var(--accent-2));
-  display: grid; place-items: center; color: #fff; font-weight: 800; font-size: 15px;
-  box-shadow: var(--shadow-sm);
-}
 .brand .sub { color: var(--text-faint); font-weight: 500; font-size: .8rem; }
 
 .topbar .spacer { flex: 1; }
@@ -328,7 +322,7 @@ html[data-theme="dark"] .prose :not(pre) > code { color: var(--accent-2); }
 }
 .hero h1 { font-size: clamp(2.2rem, 5vw, 3.4rem); font-weight: 800; letter-spacing: -.03em; line-height: 1.08; margin: 0 0 14px; }
 .hero h1 .grad { background: linear-gradient(120deg, var(--accent), var(--accent-2) 70%); -webkit-background-clip: text; background-clip: text; color: transparent; }
-.hero p { font-size: 1.15rem; color: var(--text-muted); max-width: 620px; margin: 0 auto 26px; }
+.hero p { font-size: 1.15rem; color: var(--text-muted); max-width: 620px; margin: 0 auto 26px; text-wrap: balance; }
 .hero .cta { display: inline-flex; gap: 12px; flex-wrap: wrap; justify-content: center; }
 .btn {
   display: inline-flex; align-items: center; gap: 8px; padding: 11px 22px; border-radius: 999px;
@@ -411,7 +405,6 @@ html[data-theme="dark"] .prose :not(pre) > code { color: var(--accent-2); }
 /* Phones (iPhone 16 Pro 393, etc.): tighten the top bar so search fits. */
 @media (max-width: 560px) {
   .topbar { gap: 10px; padding: 0 14px; }
-  .brand span:not(.logo) { display: none; }   /* logo only */
   .gh-link { display: none; }                  /* hide GitHub star to save room */
   .content { padding: 22px 18px 72px; }
   .prose { font-size: .98rem; }
