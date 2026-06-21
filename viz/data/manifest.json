@@ -198,6 +198,54 @@
     "steps": 8
   },
   {
+    "file": "add-two-numbers.json",
+    "title": "Add Two Numbers",
+    "topic": "linked-lists",
+    "steps": 8
+  },
+  {
+    "file": "copy-random-pointer.json",
+    "title": "Copy List with Random Pointer",
+    "topic": "linked-lists",
+    "steps": 13
+  },
+  {
+    "file": "lru-cache.json",
+    "title": "LRU Cache",
+    "topic": "linked-lists",
+    "steps": 14
+  },
+  {
+    "file": "merge-k-sorted-lists.json",
+    "title": "Merge K Sorted Lists (min-heap)",
+    "topic": "linked-lists",
+    "steps": 26
+  },
+  {
+    "file": "merge-two-sorted-lists.json",
+    "title": "Merge Two Sorted Lists",
+    "topic": "linked-lists",
+    "steps": 13
+  },
+  {
+    "file": "find-middle.json",
+    "title": "Middle of the Linked List",
+    "topic": "linked-lists",
+    "steps": 9
+  },
+  {
+    "file": "remove-nth-from-end.json",
+    "title": "Remove Nth Node From End",
+    "topic": "linked-lists",
+    "steps": 10
+  },
+  {
+    "file": "reorder-list.json",
+    "title": "Reorder List",
+    "topic": "linked-lists",
+    "steps": 14
+  },
+  {
     "file": "linked-lists.json",
     "title": "Reverse Linked List",
     "topic": "linked-lists",
