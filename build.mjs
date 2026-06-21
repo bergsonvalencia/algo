@@ -218,7 +218,7 @@ function renderRelated(base, meta) {
 }
 
 function topbar() {
-  const gh = SITE.repo ? `<a class="icon-btn" href="${SITE.repo}" target="_blank" rel="noopener" aria-label="GitHub">&#9733;</a>` : "";
+  const gh = SITE.repo ? `<a class="icon-btn gh-link" href="${SITE.repo}" target="_blank" rel="noopener" aria-label="GitHub">&#9733;</a>` : "";
   return `<header class="topbar">
   <button class="icon-btn menu-btn" id="menu-toggle" aria-label="Menu">&#9776;</button>
   <a class="brand" href="index.html"><span class="logo">A</span><span>${escHtml(SITE.title)}</span></a>
