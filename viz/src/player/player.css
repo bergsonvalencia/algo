@@ -143,13 +143,16 @@
 .hentry.hl-match .hk, .hentry.hl-active .hk { color: inherit; }
 .harrow { color: var(--muted); }
 
-/* graph (SVG) */
+/* graph / tree / linked-list (SVG) */
 .s-graph { width: 100%; }
-.graph-svg { width: 100%; max-width: 420px; aspect-ratio: 1 / 1; display: block; margin: 0 auto; overflow: visible; }
+.net-svg { width: 100%; max-width: 460px; aspect-ratio: 1 / 1; display: block; margin: 0 auto; overflow: visible; }
+.s-tree .net-svg { max-width: 520px; aspect-ratio: 7 / 5; }
 .edge { stroke: var(--border); stroke-width: .8; transition: stroke .25s, stroke-width .25s; }
 .edge.hl-path { stroke: var(--hl-path); stroke-width: 1.6; }
 .edge.hl-active, .edge.hl-current { stroke: var(--hl-active); stroke-width: 1.4; }
 .edge-w { fill: var(--muted); font-family: var(--mono); font-size: 3.4px; text-anchor: middle; }
+.arrowhead { fill: var(--border); }
+.gnode-ptr { fill: var(--accent); font-family: var(--mono); font-size: 4px; font-weight: 700; }
 .gnode-c { fill: var(--surface-2); stroke: var(--border); stroke-width: 1; transition: fill .25s, stroke .25s; }
 .gnode-t { fill: var(--text); font-family: var(--mono); font-size: 5px; font-weight: 600; }
 .gnode.hl-current .gnode-c { fill: var(--hl-current); stroke: var(--hl-current); }

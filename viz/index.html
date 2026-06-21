@@ -55,13 +55,29 @@
     // Topic slugs + labels match the algo reviewer basenames/titles, so a visualization
     // here lines up 1:1 with its topic page on the main site.
     const TOPIC_LABELS = {
+      'complexity-and-big-o': 'Algorithmic Complexity & Big-O',
       'arrays-and-hashing': 'Arrays & Hashing',
-      'binary-search': 'Binary Search',
+      'recursion-and-divide-and-conquer': 'Recursion & Divide and Conquer',
       'sorting-algorithms': 'Sorting Algorithms',
-      'dynamic-programming': 'Dynamic Programming',
-      'graphs': 'Graphs',
+      'bit-manipulation': 'Bit Manipulation',
+      'math-and-number-theory': 'Math & Number Theory',
       'two-pointers': 'Two Pointers',
+      'sliding-window': 'Sliding Window',
+      'binary-search': 'Binary Search',
+      'stacks-and-monotonic-stacks': 'Stacks & Monotonic Stacks',
+      'prefix-sums-and-difference-arrays': 'Prefix Sums & Difference Arrays',
+      'intervals': 'Intervals',
+      'greedy': 'Greedy Algorithms',
+      'backtracking': 'Backtracking',
+      'dynamic-programming': 'Dynamic Programming',
+      'linked-lists': 'Linked Lists',
+      'trees-and-binary-search-trees': 'Trees & Binary Search Trees',
+      'heaps-and-priority-queues': 'Heaps & Priority Queues',
+      'tries': 'Tries (Prefix Trees)',
+      'graphs': 'Graphs',
     };
+    // Pedagogical order matching the algo site's groups (Foundations → Core → Data structures).
+    const TOPIC_ORDER = Object.keys(TOPIC_LABELS);
 
     const nav = document.getElementById('nav');
     const host = document.getElementById('host');
@@ -74,12 +90,14 @@
     const manifest = await fetch('data/manifest.json').then((r) => r.json());
     if (!manifest.length) { titleEl.textContent = 'No visualizations built yet — run `npm run build`.'; }
 
-    // group by topic
+    // group by topic, ordered by the learning path (unknown topics fall to the end)
     const byTopic = {};
     for (const m of manifest) (byTopic[m.topic] ??= []).push(m);
+    const orderedTopics = [...new Set([...TOPIC_ORDER, ...Object.keys(byTopic)])].filter((t) => byTopic[t]);
 
-    const buttons = [];
-    for (const [topic, items] of Object.entries(byTopic)) {
+    const buttons = [], ordered = [];
+    for (const topic of orderedTopics) {
+      const items = byTopic[topic];
       const h = document.createElement('div'); h.className = 'group-h';
       h.textContent = TOPIC_LABELS[topic] ?? topic; nav.appendChild(h);
       for (const m of items) {
@@ -87,7 +105,7 @@
         b.className = 'nav-item';
         b.innerHTML = `${m.title}<span class="meta">${m.steps} steps</span>`;
         b.addEventListener('click', () => select(m, b));
-        nav.appendChild(b); buttons.push(b);
+        nav.appendChild(b); buttons.push(b); ordered.push(m);
       }
     }
 
@@ -100,7 +118,7 @@
       await mountFromUrl(host, `data/${m.file}`);
     }
 
-    if (manifest.length) select(manifest[0], buttons[0]);
+    if (ordered.length) select(ordered[0], buttons[0]);
   </script>
 </body>
 </html>

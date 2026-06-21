@@ -124,40 +124,92 @@ function renderHashmap(container, structId, state) {
   container.dataset.empty = state.entries.length === 0 ? '1' : '';
 }
 
-// ---- graph (SVG) ----------------------------------------------------------
-// Nodes hold fixed x/y (author-provided, 0..100 space). We redraw declaratively each
-// frame and let CSS transition the highlight classes; positions never move, so no FLIP.
-function renderGraph(container, structId, state) {
-  container.className = 's s-graph';
+// ---- graph / tree (SVG) ---------------------------------------------------
+// Shared SVG network painter used by graph, linked-list (directed graph), and binary
+// tree. Positions never move per frame, so highlights transition via CSS (no FLIP).
+const NODE_R = 6.5;
+
+function ensureNetworkSvg(container, structId) {
   let root = container.querySelector('svg');
   if (!root) {
-    root = svg('svg', { class: 'graph-svg', viewBox: '0 0 100 100', preserveAspectRatio: 'xMidYMid meet' });
+    root = svg('svg', { class: 'net-svg', viewBox: '0 0 100 100', preserveAspectRatio: 'xMidYMid meet' });
+    const defs = svg('defs');
+    const marker = svg('marker', { id: `arr-${structId}`, viewBox: '0 0 10 10', refX: 8.5, refY: 5, markerWidth: 4.5, markerHeight: 4.5, orient: 'auto-start-reverse' });
+    marker.appendChild(svg('path', { d: 'M0,0 L10,5 L0,10 z', class: 'arrowhead' }));
+    defs.appendChild(marker);
+    root.appendChild(defs);
     root.appendChild(svg('g', { class: 'edges' }));
     root.appendChild(svg('g', { class: 'nodes' }));
     container.appendChild(root);
   }
-  const pos = Object.fromEntries(state.nodes.map((n) => [n.key, n]));
-  const edgeG = root.querySelector('.edges');
-  const nodeG = root.querySelector('.nodes');
+  return root;
+}
+
+function paintNetwork(root, structId, nodes, edges, pos, directed) {
+  const edgeG = root.querySelector('.edges'), nodeG = root.querySelector('.nodes');
   edgeG.replaceChildren();
   nodeG.replaceChildren();
-
-  for (const e of state.edges) {
+  for (const e of edges) {
     const a = pos[e.from], b = pos[e.to];
     if (!a || !b) continue;
-    edgeG.appendChild(svg('line', { x1: a.x, y1: a.y, x2: b.x, y2: b.y, class: 'edge' + (e.highlight ? ` hl-${e.highlight}` : '') }));
+    let x1 = a.x, y1 = a.y, x2 = b.x, y2 = b.y;
+    if (directed) { // pull endpoints in by the node radius so the arrowhead sits at the rim
+      const dx = x2 - x1, dy = y2 - y1, len = Math.hypot(dx, dy) || 1, ux = dx / len, uy = dy / len;
+      x1 += ux * NODE_R; y1 += uy * NODE_R; x2 -= ux * NODE_R; y2 -= uy * NODE_R;
+    }
+    const attrs = { x1, y1, x2, y2, class: 'edge' + (e.highlight ? ` hl-${e.highlight}` : '') };
+    if (directed) attrs['marker-end'] = `url(#arr-${structId})`;
+    edgeG.appendChild(svg('line', attrs));
     if (e.weight != null) {
       const t = svg('text', { x: (a.x + b.x) / 2, y: (a.y + b.y) / 2 - 1.5, class: 'edge-w' });
       t.textContent = e.weight; edgeG.appendChild(t);
     }
   }
-  for (const n of state.nodes) {
+  for (const n of nodes) {
+    const p = pos[n.key]; if (!p) continue;
     const g = svg('g', { class: 'gnode' + (n.highlight ? ` hl-${n.highlight}` : '') });
-    g.appendChild(svg('circle', { cx: n.x, cy: n.y, r: 6.5, class: 'gnode-c' }));
-    const t = svg('text', { x: n.x, y: n.y, class: 'gnode-t', 'text-anchor': 'middle', 'dominant-baseline': 'central' });
+    g.appendChild(svg('circle', { cx: p.x, cy: p.y, r: NODE_R, class: 'gnode-c' }));
+    const t = svg('text', { x: p.x, y: p.y, class: 'gnode-t', 'text-anchor': 'middle', 'dominant-baseline': 'central' });
     t.textContent = fmt(n.value); g.appendChild(t);
+    if (n.pointers && n.pointers.length) {
+      const pl = svg('text', { x: p.x, y: p.y - NODE_R - 2.5, class: 'gnode-ptr', 'text-anchor': 'middle' });
+      pl.textContent = n.pointers.join(' '); g.appendChild(pl);
+    }
     nodeG.appendChild(g);
   }
+}
+
+// graph: author-provided x/y in 0..100 space; `directed` adds arrowheads (linked lists too).
+function renderGraph(container, structId, state) {
+  container.className = 's s-graph';
+  const root = ensureNetworkSvg(container, structId);
+  const pos = Object.fromEntries(state.nodes.map((n) => [n.key, n]));
+  paintNetwork(root, structId, state.nodes, state.edges, pos, !!state.directed);
+}
+
+// binary tree / BST: positions auto-computed (in-order x, depth y) so authors give structure only.
+function renderBinaryTree(container, structId, state) {
+  container.className = 's s-graph s-tree';
+  const root = ensureNetworkSvg(container, structId);
+  const byKey = Object.fromEntries(state.nodes.map((n) => [n.key, n]));
+  const depth = {}; const order = []; const seen = new Set();
+  (function inorder(k, d) {
+    if (k == null || seen.has(k) || d > 64) return;   // guard: never recurse a malformed/cyclic tree
+    const n = byKey[k]; if (!n) return;
+    seen.add(k); depth[k] = d; inorder(n.left, d + 1); order.push(k); inorder(n.right, d + 1);
+  })(state.root, 0);
+  const maxD = Math.max(0, ...Object.values(depth));
+  const count = order.length;
+  const pos = {};
+  order.forEach((k, i) => {
+    pos[k] = {
+      x: count > 1 ? 8 + (i / (count - 1)) * 84 : 50,
+      y: maxD > 0 ? 13 + (depth[k] / maxD) * 72 : 16,
+    };
+  });
+  const edges = [];
+  for (const n of state.nodes) for (const c of [n.left, n.right]) if (c != null) edges.push({ from: n.key, to: c });
+  paintNetwork(root, structId, state.nodes, edges, pos, false);
 }
 
 const RENDERERS = {
@@ -167,6 +219,7 @@ const RENDERERS = {
   stack: renderSequence('stack'),
   hashmap: renderHashmap,
   graph: renderGraph,
+  binaryTree: renderBinaryTree,
 };
 
 // Render every structure in the frame into `host`, creating one panel per structure and

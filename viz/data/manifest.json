@@ -6,10 +6,28 @@
     "steps": 6
   },
   {
+    "file": "subsets.json",
+    "title": "Subsets",
+    "topic": "backtracking",
+    "steps": 24
+  },
+  {
     "file": "binary-search.json",
     "title": "Binary Search",
     "topic": "binary-search",
     "steps": 5
+  },
+  {
+    "file": "count-bits.json",
+    "title": "Number of 1 Bits",
+    "topic": "bit-manipulation",
+    "steps": 8
+  },
+  {
+    "file": "linear-search.json",
+    "title": "Linear Search (O(n))",
+    "topic": "complexity-and-big-o",
+    "steps": 6
   },
   {
     "file": "lcs.json",
@@ -24,9 +42,81 @@
     "steps": 16
   },
   {
+    "file": "jump-game.json",
+    "title": "Jump Game",
+    "topic": "greedy",
+    "steps": 12
+  },
+  {
+    "file": "heap-insert.json",
+    "title": "Min-Heap Insert (sift-up)",
+    "topic": "heaps-and-priority-queues",
+    "steps": 20
+  },
+  {
+    "file": "merge-intervals.json",
+    "title": "Merge Intervals",
+    "topic": "intervals",
+    "steps": 8
+  },
+  {
+    "file": "linked-lists.json",
+    "title": "Reverse Linked List",
+    "topic": "linked-lists",
+    "steps": 6
+  },
+  {
+    "file": "sieve.json",
+    "title": "Sieve of Eratosthenes",
+    "topic": "math-and-number-theory",
+    "steps": 31
+  },
+  {
+    "file": "prefix-sums.json",
+    "title": "Prefix Sums (Range Sum Query)",
+    "topic": "prefix-sums-and-difference-arrays",
+    "steps": 11
+  },
+  {
+    "file": "merge-sort.json",
+    "title": "Merge Sort",
+    "topic": "recursion-and-divide-and-conquer",
+    "steps": 23
+  },
+  {
+    "file": "longest-substring.json",
+    "title": "Longest Substring Without Repeating",
+    "topic": "sliding-window",
+    "steps": 23
+  },
+  {
     "file": "insertion-sort.json",
     "title": "Insertion Sort",
     "topic": "sorting-algorithms",
     "steps": 21
+  },
+  {
+    "file": "valid-parentheses.json",
+    "title": "Valid Parentheses",
+    "topic": "stacks-and-monotonic-stacks",
+    "steps": 11
+  },
+  {
+    "file": "trees-bst.json",
+    "title": "BST Inorder Traversal",
+    "topic": "trees-and-binary-search-trees",
+    "steps": 8
+  },
+  {
+    "file": "trie.json",
+    "title": "Trie Insert & Search",
+    "topic": "tries",
+    "steps": 18
+  },
+  {
+    "file": "container-water.json",
+    "title": "Container With Most Water",
+    "topic": "two-pointers",
+    "steps": 26
   }
 ]
