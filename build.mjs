@@ -21,9 +21,9 @@ const OUT = join(ROOT, "dist");
 const SRC = join(ROOT, "src");
 
 const SITE = {
-  title: "Algorithms, Visualized",
-  short: "AlgoViz",
-  tagline: "A visual, ByteByteGo-style guide to the LeetCode patterns — diagrams first.",
+  title: "Algorithm Patterns",
+  short: "Algorithm Patterns",
+  tagline: "A visual, diagram-first guide to the LeetCode patterns.",
   repo: "https://github.com/bergsonvalencia/algo",
 };
 
@@ -265,6 +265,7 @@ function renderHome(meta) {
   const built = new Set(Object.keys(meta));
   let sections = "";
   for (const g of GROUPS) {
+    if (g.title === "Start here") continue;   // the hero "Start" button covers the index hub
     const items = g.items.filter((b) => built.has(b));
     if (!items.length) continue;
     const cards = items.map((b) => `
@@ -277,7 +278,6 @@ function renderHome(meta) {
       </a>`).join("");
     sections += `<section class="home-section"><h2>${escHtml(g.title)}</h2><div class="card-grid">${cards}</div></section>`;
   }
-  const topicCount = Object.keys(meta).length;
   const first = built.has("two-pointers-reviewer") ? "two-pointers-reviewer.html" : Object.keys(meta)[0] + ".html";
   const idx = built.has("algorithm-patterns-index-reviewer") ? "algorithm-patterns-index-reviewer.html" : first;
   const main = `<div class="home">
@@ -286,13 +286,7 @@ function renderHome(meta) {
     <h1>Master the <span class="grad">algorithm patterns</span><br>that crack coding interviews</h1>
     <p>Every LeetCode pattern, explained the way you actually remember it — one clear diagram, one worked trace, one clean implementation at a time.</p>
     <div class="cta">
-      <a class="btn btn-primary" href="${idx}">Start with the pattern map</a>
-      <a class="btn btn-ghost" href="${first}">Jump to two pointers</a>
-    </div>
-    <div class="stats">
-      <div><b>${topicCount}</b><span>topics</span></div>
-      <div><b>120+</b><span>diagrams</span></div>
-      <div><b>C# / .NET</b><span>worked code</span></div>
+      <a class="btn btn-primary" href="${idx}">Start</a>
     </div>
   </section>
   ${sections}

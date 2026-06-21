@@ -1,6 +1,6 @@
-# Algorithms, Visualized
+# Algorithm Patterns
 
-A ByteByteGo-style visual website built from the algorithms reviewer. **Vanilla HTML/CSS/JS**
+A visual study website built from the algorithms reviewer. **Vanilla HTML/CSS/JS**
 output (no front-end framework) — a tiny Node build step renders the Markdown to static pages.
 
 The reviewer Markdown is the single source of truth and is **never modified** by this project; a
@@ -32,7 +32,7 @@ REVIEWER_SRC=/path/to/reviewer/algorithms npm run sync
   - ` ```text ` blocks render as alignment-preserving ASCII trace cards.
   - relative `.md` links are rewritten to `.html`; links to not-yet-built sections become inert.
   - a per-page table of contents and a `search-index.json` are generated.
-- `src/theme.css`, `src/app.js` — the hand-written ByteByteGo-style theme and behavior
+- `src/theme.css`, `src/app.js` — the hand-written theme and behavior
   (dark mode, Mermaid theming, scrollspy TOC, glossary tooltips, search, mobile nav).
 
 ## Deploy (GitHub Pages)

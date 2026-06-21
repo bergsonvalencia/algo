@@ -1,5 +1,5 @@
 /* ============================================================
-   Algorithms, Visualized — ByteByteGo-inspired theme
+   Algorithm Patterns — visual study-site theme
    Vanilla CSS. Light + dark via [data-theme].
    ============================================================ */
 
@@ -16,7 +16,7 @@
   --border: #e6e6e6;
   --border-strong: #dddddd;
 
-  /* Brand: ByteByteGo teal-emerald (verified #149F76) + mint accent (#35DDAC) */
+  /* Brand: teal-emerald #149F76 + mint accent #35DDAC */
   --accent: #149f76;
   --accent-2: #35ddac;
   --accent-soft: #e3f5ee;
@@ -24,7 +24,7 @@
   --accent-contrast: #ffffff;
   --diagram-stroke: #333740;
 
-  /* Categorical palette sampled from real ByteByteGo diagrams */
+  /* Categorical diagram palette */
   --c-blue: #1854c0;     --c-blue-soft: #e6eefb;
   --c-teal: #149f76;     --c-teal-soft: #def3ea;
   --c-amber: #e47848;    --c-amber-soft: #fce9d9;
@@ -310,7 +310,7 @@ html[data-theme="dark"] .prose :not(pre) > code { color: var(--accent-2); }
 }
 .mermaid-wrap pre.mermaid { margin: 0; background: none; }
 .mermaid svg { max-width: 100%; height: auto; }
-/* ByteByteGo polish Mermaid doesn't emit: soft node shadows + italic edge labels */
+/* Polish Mermaid doesn't emit: soft node shadows + italic edge labels */
 .mermaid svg .node rect, .mermaid svg .node polygon, .mermaid svg .node circle { filter: drop-shadow(0 1px 2px rgba(16, 24, 40, .18)); }
 .mermaid svg .cluster rect { filter: drop-shadow(0 3px 10px rgba(16, 24, 40, .10)); }
 .mermaid svg .edgeLabel, .mermaid svg .edgeLabel span, .mermaid svg .edgeLabel p { font-style: italic; }
@@ -369,7 +369,7 @@ html[data-theme="dark"] .prose :not(pre) > code { color: var(--accent-2); }
 
 .card-meta { font-size: .76rem; color: var(--text-faint); font-weight: 500; margin-bottom: 12px; }
 
-/* Breadcrumb (added for the study site; ByteByteGo's own pages omit it) */
+/* Breadcrumb */
 .crumbs { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; font-size: .82rem; color: var(--text-faint); margin: 0 0 20px; }
 .crumbs a { color: var(--text-muted); }
 .crumbs a:hover { color: var(--accent); }

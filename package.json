@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "type": "module",
-  "description": "A ByteByteGo-style visual website generated from the algorithms reviewer (vanilla HTML/CSS/JS, no framework).",
+  "description": "A visual study website generated from the algorithms reviewer (vanilla HTML/CSS/JS, no framework).",
   "scripts": {
     "sync": "node scripts/sync-content.mjs",
     "build": "node build.mjs",
