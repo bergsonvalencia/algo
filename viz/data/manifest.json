@@ -1,9 +1,51 @@
 [
   {
+    "file": "contains-duplicate.json",
+    "title": "Contains Duplicate (seen-set)",
+    "topic": "arrays-and-hashing",
+    "steps": 9
+  },
+  {
+    "file": "encode-decode.json",
+    "title": "Encode & Decode Strings",
+    "topic": "arrays-and-hashing",
+    "steps": 16
+  },
+  {
+    "file": "group-anagrams.json",
+    "title": "Group Anagrams (canonical key)",
+    "topic": "arrays-and-hashing",
+    "steps": 14
+  },
+  {
+    "file": "longest-consecutive.json",
+    "title": "Longest Consecutive Sequence (hash set)",
+    "topic": "arrays-and-hashing",
+    "steps": 17
+  },
+  {
+    "file": "product-except-self.json",
+    "title": "Product of Array Except Self",
+    "topic": "arrays-and-hashing",
+    "steps": 21
+  },
+  {
+    "file": "top-k-frequent.json",
+    "title": "Top K Frequent (bucket sort)",
+    "topic": "arrays-and-hashing",
+    "steps": 18
+  },
+  {
     "file": "two-sum.json",
     "title": "Two Sum (hash map)",
     "topic": "arrays-and-hashing",
     "steps": 6
+  },
+  {
+    "file": "valid-anagram.json",
+    "title": "Valid Anagram",
+    "topic": "arrays-and-hashing",
+    "steps": 9
   },
   {
     "file": "subsets.json",
