@@ -198,10 +198,70 @@
     "steps": 11
   },
   {
+    "file": "balanced-tree.json",
+    "title": "Balanced Binary Tree",
+    "topic": "trees-and-binary-search-trees",
+    "steps": 14
+  },
+  {
     "file": "trees-bst.json",
     "title": "BST Inorder Traversal",
     "topic": "trees-and-binary-search-trees",
     "steps": 8
+  },
+  {
+    "file": "tree-diameter.json",
+    "title": "Diameter of Binary Tree",
+    "topic": "trees-and-binary-search-trees",
+    "steps": 8
+  },
+  {
+    "file": "invert-binary-tree.json",
+    "title": "Invert Binary Tree",
+    "topic": "trees-and-binary-search-trees",
+    "steps": 20
+  },
+  {
+    "file": "iterative-dfs.json",
+    "title": "Iterative DFS (explicit stack)",
+    "topic": "trees-and-binary-search-trees",
+    "steps": 19
+  },
+  {
+    "file": "kth-smallest-bst.json",
+    "title": "Kth Smallest in a BST",
+    "topic": "trees-and-binary-search-trees",
+    "steps": 13
+  },
+  {
+    "file": "tree-level-order.json",
+    "title": "Level Order Traversal (BFS)",
+    "topic": "trees-and-binary-search-trees",
+    "steps": 22
+  },
+  {
+    "file": "lca-bst.json",
+    "title": "Lowest Common Ancestor (BST)",
+    "topic": "trees-and-binary-search-trees",
+    "steps": 6
+  },
+  {
+    "file": "tree-max-depth.json",
+    "title": "Maximum Depth of Binary Tree",
+    "topic": "trees-and-binary-search-trees",
+    "steps": 27
+  },
+  {
+    "file": "same-tree.json",
+    "title": "Same Tree",
+    "topic": "trees-and-binary-search-trees",
+    "steps": 21
+  },
+  {
+    "file": "validate-bst.json",
+    "title": "Validate Binary Search Tree",
+    "topic": "trees-and-binary-search-trees",
+    "steps": 20
   },
   {
     "file": "trie.json",
