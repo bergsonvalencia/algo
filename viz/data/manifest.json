@@ -72,10 +72,64 @@
     "steps": 6
   },
   {
+    "file": "climbing-stairs.json",
+    "title": "Climbing Stairs",
+    "topic": "dynamic-programming",
+    "steps": 6
+  },
+  {
+    "file": "coin-change.json",
+    "title": "Coin Change",
+    "topic": "dynamic-programming",
+    "steps": 8
+  },
+  {
+    "file": "decode-ways.json",
+    "title": "Decode Ways",
+    "topic": "dynamic-programming",
+    "steps": 8
+  },
+  {
+    "file": "edit-distance.json",
+    "title": "Edit Distance",
+    "topic": "dynamic-programming",
+    "steps": 25
+  },
+  {
+    "file": "house-robber.json",
+    "title": "House Robber",
+    "topic": "dynamic-programming",
+    "steps": 12
+  },
+  {
     "file": "lcs.json",
     "title": "Longest Common Subsequence",
     "topic": "dynamic-programming",
     "steps": 17
+  },
+  {
+    "file": "lis.json",
+    "title": "Longest Increasing Subsequence",
+    "topic": "dynamic-programming",
+    "steps": 10
+  },
+  {
+    "file": "partition-subset-sum.json",
+    "title": "Partition Equal Subset Sum",
+    "topic": "dynamic-programming",
+    "steps": 16
+  },
+  {
+    "file": "unique-paths.json",
+    "title": "Unique Paths",
+    "topic": "dynamic-programming",
+    "steps": 8
+  },
+  {
+    "file": "word-break.json",
+    "title": "Word Break",
+    "topic": "dynamic-programming",
+    "steps": 28
   },
   {
     "file": "bfs.json",
