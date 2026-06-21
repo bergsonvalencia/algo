@@ -1,0 +1,19 @@
+{
+  "name": "algo",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "A ByteByteGo-style visual website generated from the algorithms reviewer (vanilla HTML/CSS/JS, no framework).",
+  "scripts": {
+    "sync": "node scripts/sync-content.mjs",
+    "build": "node build.mjs",
+    "serve": "node scripts/serve.mjs",
+    "dev": "npm run sync && npm run build && npm run serve"
+  },
+  "dependencies": {
+    "github-slugger": "^2.0.0",
+    "highlight.js": "^11.10.0",
+    "markdown-it": "^14.1.0",
+    "markdown-it-anchor": "^9.2.0"
+  }
+}
