@@ -14,6 +14,13 @@
     .side { border-right: 1px solid #20242e; padding: 18px 14px; overflow-y: auto; }
     .brand { font-weight: 700; font-size: 15px; padding: 4px 8px 14px; letter-spacing: .2px; }
     .brand small { display: block; font-weight: 400; color: #8b93a4; font-size: 11.5px; margin-top: 3px; }
+    .search-box { width: 100%; margin: 0 0 4px; padding: 8px 11px; background: #11141b; border: 1px solid #20242e;
+      border-radius: 8px; color: #e6e9ef; font-size: 13px; font-family: inherit; }
+    .search-box:focus { outline: none; border-color: #5b8cff; }
+    .search-box::placeholder { color: #6b7384; }
+    .search-box::-webkit-search-cancel-button { filter: invert(.5); cursor: pointer; }
+    .no-results { color: #6b7384; font-size: 13px; padding: 10px; }
+    .nav-item mark { background: rgba(91,140,255,.28); color: inherit; border-radius: 2px; }
     .group-h { font-size: 10.5px; letter-spacing: .8px; text-transform: uppercase; color: #6b7384; margin: 14px 8px 6px; }
     .nav-item { display: block; width: 100%; text-align: left; background: none; border: none; color: #c4cad6;
       padding: 8px 10px; border-radius: 8px; cursor: pointer; font-size: 13.5px; }
@@ -37,7 +44,9 @@
     <aside class="side">
       <a id="home-link" class="home-link" href="../index.html" hidden>← Algorithm Patterns</a>
       <div class="brand">Algorithm Visualizer<small>Animated playback for the algorithms reviewer</small></div>
+      <input id="search" class="search-box" type="search" placeholder="Search visualizations…  (press /)" aria-label="Search visualizations" autocomplete="off">
       <nav id="nav"></nav>
+      <p id="no-results" class="no-results" hidden>No visualizations match your search.</p>
     </aside>
     <main class="main">
       <div class="main-head">
@@ -95,19 +104,52 @@
     for (const m of manifest) (byTopic[m.topic] ??= []).push(m);
     const orderedTopics = [...new Set([...TOPIC_ORDER, ...Object.keys(byTopic)])].filter((t) => byTopic[t]);
 
-    const buttons = [], ordered = [];
+    const buttons = [], ordered = [], groups = [];
     for (const topic of orderedTopics) {
       const items = byTopic[topic];
+      const label = TOPIC_LABELS[topic] ?? topic;
       const h = document.createElement('div'); h.className = 'group-h';
-      h.textContent = TOPIC_LABELS[topic] ?? topic; nav.appendChild(h);
+      h.textContent = label; nav.appendChild(h);
+      const groupButtons = [];
       for (const m of items) {
         const b = document.createElement('button');
         b.className = 'nav-item';
-        b.innerHTML = `${m.title}<span class="meta">${m.steps} steps</span>`;
+        b.dataset.title = m.title;
+        b.innerHTML = `<span class="nav-title">${m.title}</span><span class="meta">${m.steps} steps</span>`;
+        b.dataset.q = `${m.title} ${label} ${m.topic}`.toLowerCase();
         b.addEventListener('click', () => select(m, b));
-        nav.appendChild(b); buttons.push(b); ordered.push(m);
+        nav.appendChild(b); buttons.push(b); ordered.push(m); groupButtons.push(b);
       }
+      groups.push({ header: h, buttons: groupButtons });
     }
+
+    // --- search/filter ---
+    const searchBox = document.getElementById('search');
+    const noResults = document.getElementById('no-results');
+    const escapeRe = (s) => s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    function applyFilter() {
+      const q = searchBox.value.trim().toLowerCase();
+      const rx = q ? new RegExp(`(${escapeRe(q)})`, 'ig') : null;
+      let anyVisible = false;
+      for (const g of groups) {
+        let groupVisible = false;
+        for (const b of g.buttons) {
+          const show = !q || b.dataset.q.includes(q);
+          b.style.display = show ? '' : 'none';
+          const t = b.querySelector('.nav-title');
+          t.innerHTML = rx ? b.dataset.title.replace(rx, '<mark>$1</mark>') : b.dataset.title;
+          if (show) groupVisible = true;
+        }
+        g.header.style.display = groupVisible ? '' : 'none';
+        if (groupVisible) anyVisible = true;
+      }
+      noResults.hidden = anyVisible;
+    }
+    searchBox.addEventListener('input', applyFilter);
+    searchBox.addEventListener('keydown', (e) => { if (e.key === 'Escape') { searchBox.value = ''; applyFilter(); searchBox.blur(); } });
+    document.addEventListener('keydown', (e) => {
+      if (e.key === '/' && !/^(INPUT|TEXTAREA)$/.test(document.activeElement?.tagName || '')) { e.preventDefault(); searchBox.focus(); }
+    });
 
     async function select(m, btn) {
       buttons.forEach((b) => b.classList.toggle('active', b === btn));

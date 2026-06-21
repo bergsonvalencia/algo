@@ -114,9 +114,51 @@
     "steps": 18
   },
   {
+    "file": "three-sum.json",
+    "title": "3Sum",
+    "topic": "two-pointers",
+    "steps": 16
+  },
+  {
     "file": "container-water.json",
     "title": "Container With Most Water",
     "topic": "two-pointers",
     "steps": 26
+  },
+  {
+    "file": "linked-list-cycle.json",
+    "title": "Linked List Cycle (Floyd)",
+    "topic": "two-pointers",
+    "steps": 4
+  },
+  {
+    "file": "remove-duplicates.json",
+    "title": "Remove Duplicates (in-place)",
+    "topic": "two-pointers",
+    "steps": 6
+  },
+  {
+    "file": "reverse-string.json",
+    "title": "Reverse String",
+    "topic": "two-pointers",
+    "steps": 5
+  },
+  {
+    "file": "trapping-rain-water.json",
+    "title": "Trapping Rain Water",
+    "topic": "two-pointers",
+    "steps": 13
+  },
+  {
+    "file": "two-sum-ii-sorted.json",
+    "title": "Two Sum II (sorted)",
+    "topic": "two-pointers",
+    "steps": 7
+  },
+  {
+    "file": "valid-palindrome.json",
+    "title": "Valid Palindrome",
+    "topic": "two-pointers",
+    "steps": 18
   }
 ]
