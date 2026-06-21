@@ -138,6 +138,48 @@
     "steps": 16
   },
   {
+    "file": "clone-graph.json",
+    "title": "Clone Graph",
+    "topic": "graphs",
+    "steps": 23
+  },
+  {
+    "file": "course-schedule.json",
+    "title": "Course Schedule (Topological Sort)",
+    "topic": "graphs",
+    "steps": 13
+  },
+  {
+    "file": "graph-dfs.json",
+    "title": "Depth-First Search",
+    "topic": "graphs",
+    "steps": 19
+  },
+  {
+    "file": "dijkstra.json",
+    "title": "Dijkstra (Shortest Paths)",
+    "topic": "graphs",
+    "steps": 17
+  },
+  {
+    "file": "number-of-islands.json",
+    "title": "Number of Islands",
+    "topic": "graphs",
+    "steps": 20
+  },
+  {
+    "file": "rotting-oranges.json",
+    "title": "Rotting Oranges",
+    "topic": "graphs",
+    "steps": 12
+  },
+  {
+    "file": "union-find.json",
+    "title": "Union-Find (Disjoint Set Union)",
+    "topic": "graphs",
+    "steps": 13
+  },
+  {
     "file": "jump-game.json",
     "title": "Jump Game",
     "topic": "greedy",
