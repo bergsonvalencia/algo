@@ -6,9 +6,10 @@
   "description": "A visual study website generated from the algorithms reviewer (vanilla HTML/CSS/JS, no framework).",
   "scripts": {
     "sync": "node scripts/sync-content.mjs",
+    "sync:viz": "node scripts/sync-viz.mjs",
     "build": "node build.mjs",
     "serve": "node scripts/serve.mjs",
-    "dev": "npm run sync && npm run build && npm run serve"
+    "dev": "npm run sync && npm run sync:viz && npm run build && npm run serve"
   },
   "dependencies": {
     "github-slugger": "^2.0.0",

@@ -1,0 +1,32 @@
+[
+  {
+    "file": "two-sum.json",
+    "title": "Two Sum (hash map)",
+    "topic": "arrays-and-hashing",
+    "steps": 6
+  },
+  {
+    "file": "binary-search.json",
+    "title": "Binary Search",
+    "topic": "binary-search",
+    "steps": 5
+  },
+  {
+    "file": "lcs.json",
+    "title": "Longest Common Subsequence",
+    "topic": "dynamic-programming",
+    "steps": 17
+  },
+  {
+    "file": "bfs.json",
+    "title": "Breadth-First Search",
+    "topic": "graphs",
+    "steps": 16
+  },
+  {
+    "file": "insertion-sort.json",
+    "title": "Insertion Sort",
+    "topic": "sorting-algorithms",
+    "steps": 21
+  }
+]

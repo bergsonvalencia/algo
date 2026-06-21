@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Algorithm Visualizer — Reviewer add-on</title>
+  <link rel="stylesheet" href="src/player/player.css">
+  <style>
+    :root { color-scheme: dark; }
+    * { box-sizing: border-box; }
+    body { margin: 0; background: #0b0d12; color: #e6e9ef;
+      font-family: "Inter", system-ui, -apple-system, Segoe UI, Roboto, sans-serif; }
+    .app { display: grid; grid-template-columns: 280px 1fr; min-height: 100vh; }
+    .side { border-right: 1px solid #20242e; padding: 18px 14px; overflow-y: auto; }
+    .brand { font-weight: 700; font-size: 15px; padding: 4px 8px 14px; letter-spacing: .2px; }
+    .brand small { display: block; font-weight: 400; color: #8b93a4; font-size: 11.5px; margin-top: 3px; }
+    .group-h { font-size: 10.5px; letter-spacing: .8px; text-transform: uppercase; color: #6b7384; margin: 14px 8px 6px; }
+    .nav-item { display: block; width: 100%; text-align: left; background: none; border: none; color: #c4cad6;
+      padding: 8px 10px; border-radius: 8px; cursor: pointer; font-size: 13.5px; }
+    .nav-item:hover { background: #161a22; }
+    .nav-item.active { background: #1d2330; color: #fff; }
+    .nav-item .meta { display: block; color: #6b7384; font-size: 11px; font-family: "JetBrains Mono", ui-monospace, monospace; margin-top: 2px; }
+    .main { padding: 26px clamp(16px, 4vw, 48px); display: flex; flex-direction: column; gap: 14px; }
+    .main-head { display: flex; align-items: baseline; gap: 14px; flex-wrap: wrap; }
+    .main h1 { font-size: 19px; margin: 0; }
+    .home-link { display: block; color: #8b93a4; font-size: 12px; text-decoration: none; padding: 0 8px 12px; }
+    .home-link:hover { color: #c4cad6; }
+    .reviewer-link { color: #5b8cff; font-size: 13px; text-decoration: none; white-space: nowrap; }
+    .reviewer-link:hover { text-decoration: underline; }
+    .hint { color: #8b93a4; font-size: 13px; margin: 0 0 6px; }
+    .player-host { max-width: 1280px; }
+    @media (max-width: 760px) { .app { grid-template-columns: 1fr; } .side { border-right: none; border-bottom: 1px solid #20242e; } }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <aside class="side">
+      <a id="home-link" class="home-link" href="../index.html" hidden>← Algorithm Patterns</a>
+      <div class="brand">Algorithm Visualizer<small>Animated playback for the algorithms reviewer</small></div>
+      <nav id="nav"></nav>
+    </aside>
+    <main class="main">
+      <div class="main-head">
+        <h1 id="title">Loading…</h1>
+        <a id="reviewer-link" class="reviewer-link" target="_blank" rel="noopener" hidden>Read the full reviewer ↗</a>
+      </div>
+      <p class="hint">▶ play · ←/→ step · space play/pause · −/+ speed · drag the scrubber. This is an add-on; it never modifies the reviewer markdown.</p>
+      <div class="player-host" id="host"></div>
+    </main>
+  </div>
+
+  <script type="module">
+    import { mountFromUrl } from './src/player/player.mjs';
+
+    // Topic slugs + labels match the algo reviewer basenames/titles, so a visualization
+    // here lines up 1:1 with its topic page on the main site.
+    const TOPIC_LABELS = {
+      'arrays-and-hashing': 'Arrays & Hashing',
+      'binary-search': 'Binary Search',
+      'sorting-algorithms': 'Sorting Algorithms',
+      'dynamic-programming': 'Dynamic Programming',
+      'graphs': 'Graphs',
+      'two-pointers': 'Two Pointers',
+    };
+
+    const nav = document.getElementById('nav');
+    const host = document.getElementById('host');
+    const titleEl = document.getElementById('title');
+    const reviewerLink = document.getElementById('reviewer-link');
+    // When served as a sub-site of the main algo site (under /viz/), show links back to it.
+    const onSite = location.pathname.includes('/viz');
+    if (onSite) document.getElementById('home-link').hidden = false;
+
+    const manifest = await fetch('data/manifest.json').then((r) => r.json());
+    if (!manifest.length) { titleEl.textContent = 'No visualizations built yet — run `npm run build`.'; }
+
+    // group by topic
+    const byTopic = {};
+    for (const m of manifest) (byTopic[m.topic] ??= []).push(m);
+
+    const buttons = [];
+    for (const [topic, items] of Object.entries(byTopic)) {
+      const h = document.createElement('div'); h.className = 'group-h';
+      h.textContent = TOPIC_LABELS[topic] ?? topic; nav.appendChild(h);
+      for (const m of items) {
+        const b = document.createElement('button');
+        b.className = 'nav-item';
+        b.innerHTML = `${m.title}<span class="meta">${m.steps} steps</span>`;
+        b.addEventListener('click', () => select(m, b));
+        nav.appendChild(b); buttons.push(b);
+      }
+    }
+
+    async function select(m, btn) {
+      buttons.forEach((b) => b.classList.toggle('active', b === btn));
+      titleEl.textContent = m.title;
+      // The viz topic slug matches the reviewer basename, so the same example links 1:1.
+      if (onSite) { reviewerLink.hidden = false; reviewerLink.href = `../${m.topic}-reviewer.html`; }
+      else reviewerLink.hidden = true;
+      await mountFromUrl(host, `data/${m.file}`);
+    }
+
+    if (manifest.length) select(manifest[0], buttons[0]);
+  </script>
+</body>
+</html>

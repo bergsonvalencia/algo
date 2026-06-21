@@ -224,6 +224,7 @@ function topbar() {
   <a class="brand" href="index.html"><span>${escHtml(SITE.title)}</span></a>
   <span class="spacer"></span>
   <div class="search"><span class="icon">&#9906;</span><input id="search" type="search" placeholder="Search topics…  (press /)" autocomplete="off" aria-label="Search"><div class="search-results" id="search-results"></div></div>
+  <a class="icon-btn viz-link" href="viz/index.html" title="Step-by-step visualizations" aria-label="Visualizations" style="width:auto;padding:0 12px;gap:6px;font-size:13px;font-weight:600;text-decoration:none">&#9654;&nbsp;Visualize</a>
   <button class="icon-btn" id="theme-toggle" aria-label="Toggle theme">&#9790;</button>
   ${gh}
 </header>`;
@@ -337,5 +338,12 @@ for (const f of files) {
 
 writeFileSync(join(OUT, "assets", "search-index.json"), JSON.stringify(searchIndex));
 writeFileSync(join(OUT, "index.html"), renderHome(meta));
+
+// Publish the standalone visualizer sub-site (player + built frames) at dist/viz/, if synced.
+const VIZ = join(ROOT, "viz");
+if (existsSync(VIZ)) {
+  cpSync(VIZ, join(OUT, "viz"), { recursive: true });
+  console.log("Copied viz/ -> dist/viz/ (visualizations sub-site)");
+}
 
 console.log(`Built ${files.length} topic pages + homepage -> dist/`);
