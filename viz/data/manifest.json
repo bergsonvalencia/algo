@@ -48,10 +48,64 @@
     "steps": 9
   },
   {
+    "file": "combination-sum.json",
+    "title": "Combination Sum",
+    "topic": "backtracking",
+    "steps": 29
+  },
+  {
+    "file": "combinations.json",
+    "title": "Combinations",
+    "topic": "backtracking",
+    "steps": 36
+  },
+  {
+    "file": "generate-parentheses.json",
+    "title": "Generate Parentheses",
+    "topic": "backtracking",
+    "steps": 41
+  },
+  {
+    "file": "letter-combinations.json",
+    "title": "Letter Combinations of a Phone Number",
+    "topic": "backtracking",
+    "steps": 35
+  },
+  {
+    "file": "n-queens.json",
+    "title": "N-Queens",
+    "topic": "backtracking",
+    "steps": 22
+  },
+  {
+    "file": "palindrome-partitioning.json",
+    "title": "Palindrome Partitioning",
+    "topic": "backtracking",
+    "steps": 23
+  },
+  {
+    "file": "permutations.json",
+    "title": "Permutations",
+    "topic": "backtracking",
+    "steps": 26
+  },
+  {
     "file": "subsets.json",
     "title": "Subsets",
     "topic": "backtracking",
     "steps": 24
+  },
+  {
+    "file": "subsets-ii.json",
+    "title": "Subsets II",
+    "topic": "backtracking",
+    "steps": 20
+  },
+  {
+    "file": "word-search.json",
+    "title": "Word Search",
+    "topic": "backtracking",
+    "steps": 23
   },
   {
     "file": "binary-search.json",
@@ -186,10 +240,52 @@
     "steps": 12
   },
   {
+    "file": "build-heap.json",
+    "title": "Build-Heap (heapify, O(n))",
+    "topic": "heaps-and-priority-queues",
+    "steps": 16
+  },
+  {
+    "file": "find-median.json",
+    "title": "Find Median from Data Stream",
+    "topic": "heaps-and-priority-queues",
+    "steps": 18
+  },
+  {
+    "file": "k-closest-points.json",
+    "title": "K Closest Points to Origin (size-k max-heap)",
+    "topic": "heaps-and-priority-queues",
+    "steps": 12
+  },
+  {
+    "file": "kth-largest.json",
+    "title": "Kth Largest Element",
+    "topic": "heaps-and-priority-queues",
+    "steps": 14
+  },
+  {
+    "file": "last-stone-weight.json",
+    "title": "Last Stone Weight (max-heap)",
+    "topic": "heaps-and-priority-queues",
+    "steps": 27
+  },
+  {
+    "file": "heap-pop.json",
+    "title": "Min-Heap Extract-Min (sift-down)",
+    "topic": "heaps-and-priority-queues",
+    "steps": 9
+  },
+  {
     "file": "heap-insert.json",
     "title": "Min-Heap Insert (sift-up)",
     "topic": "heaps-and-priority-queues",
     "steps": 20
+  },
+  {
+    "file": "task-scheduler.json",
+    "title": "Task Scheduler (max-heap greedy)",
+    "topic": "heaps-and-priority-queues",
+    "steps": 17
   },
   {
     "file": "merge-intervals.json",
