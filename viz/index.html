@@ -12,6 +12,9 @@
       --acc-blue:#5b8cff; --acc-teal:#2bd0a8; --acc-purple:#b07bf0; --acc-amber:#f0a93b; --acc-rose:#fc5b7a;
       --acc-green:#36c692; --acc-cyan:#45b6e0; --acc-pink:#e478c8; }
     * { box-sizing: border-box; }
+    /* CRITICAL: the `hidden` attribute must always win over class display rules
+       (a class like .kbd-overlay{display:grid} otherwise leaves it visible & blocking). */
+    [hidden] { display: none !important; }
     body { margin: 0; background: var(--bg); color: var(--text);
       font-family: "Inter", system-ui, -apple-system, Segoe UI, Roboto, sans-serif; }
     .app { display: grid; grid-template-columns: 286px 1fr; min-height: 100vh; }
