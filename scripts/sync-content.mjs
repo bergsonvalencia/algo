@@ -21,9 +21,12 @@ mkdirSync(DEST, { recursive: true });
 
 let n = 0;
 for (const f of readdirSync(SRC)) {
-  if (f.endsWith('.md')) {
+  // Only the reviewer notes themselves — every reviewer file ends in "-reviewer.md".
+  // This skips stray/generated Markdown that may sit in the source (e.g.
+  // pdf-coverage-report.md) so it never becomes an orphan page on the site.
+  if (f.endsWith('-reviewer.md')) {
     copyFileSync(join(SRC, f), join(DEST, f));
     n++;
   }
 }
-console.log(`Synced ${n} Markdown files -> content/algorithms (source left untouched)`);
+console.log(`Synced ${n} reviewer Markdown files -> content/algorithms (source left untouched)`);
