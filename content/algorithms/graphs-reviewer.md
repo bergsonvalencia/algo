@@ -10,8 +10,9 @@ traversal.
 
 This reviewer is the practical core: how to represent a graph, how BFS and DFS differ and when each
 wins, how to find [connected components](algorithms-glossary-reviewer.md#connected-component "A maximal group of vertices all reachable from one another.") and [flood-fill](algorithms-glossary-reviewer.md#flood-fill "Spreading from a start cell to all connected cells sharing a property.") a grid, how to order a [DAG](algorithms-glossary-reviewer.md#dag "A directed graph with no cycles; the only kind that can be topologically sorted.") and detect [cycles](algorithms-glossary-reviewer.md#cycle "A path that starts and ends at the same vertex without reusing an edge.")
-(topological sort), how union-find tracks merging groups in near-constant time, and how Dijkstra
-extends BFS to weighted edges. Every complexity here is stated for the general graph with `V`
+(topological sort), how union-find tracks merging groups in near-constant time, how Dijkstra
+extends BFS to weighted edges, and how Kruskal and Prim build a minimum spanning tree. Every
+complexity here is stated for the general graph with `V`
 vertices and `E` edges, and every code sample is real, compilable .NET 9.
 
 Related: [Algorithm Patterns Index](algorithm-patterns-index-reviewer.md) · [Trees & BSTs](trees-and-binary-search-trees-reviewer.md) · [Heaps & Priority Queues](heaps-and-priority-queues-reviewer.md) · [Backtracking](backtracking-reviewer.md) · [Complexity & Big-O](complexity-and-big-o-reviewer.md) · [Glossary](algorithms-glossary-reviewer.md)
@@ -26,6 +27,7 @@ Related: [Algorithm Patterns Index](algorithm-patterns-index-reviewer.md) · [Tr
 - [Topological sort](#topological-sort)
 - [Union-Find (Disjoint Set Union)](#union-find-disjoint-set-union)
 - [Dijkstra: shortest paths with weights](#dijkstra-shortest-paths-with-weights)
+- [Minimum spanning tree (Kruskal and Prim)](#minimum-spanning-tree-kruskal-and-prim)
 - [Clone graph](#clone-graph)
 - [Complexity summary](#complexity-summary)
 - [Pattern picker](#pattern-picker)
@@ -666,6 +668,138 @@ static int NetworkDelayTime(int[][] times, int n, int k)
 }
 ```
 
+## Minimum spanning tree (Kruskal and Prim)
+
+A **[spanning tree](algorithms-glossary-reviewer.md#minimum-spanning-tree "A min-weight set of V-1 edges connecting all vertices of a weighted graph with no cycle.")** of a connected, undirected, weighted graph is a subset of edges that connects all `V`
+vertices using exactly `V - 1` edges and no cycle. The **minimum spanning tree (MST)** is the
+spanning tree whose total edge weight is smallest — the cheapest way to wire every vertex into one
+connected network (laying cable, roads, clustering points). Two [greedy](algorithms-glossary-reviewer.md#greedy "Builds a solution by always taking the locally best choice, correct when that choice is provably globally optimal.") algorithms build it, and
+both reuse machinery already in this reviewer: **Kruskal** sorts edges and adds them with union-find;
+**Prim** grows one tree outward with a min-heap, exactly like Dijkstra.
+
+Key points:
+
+- **Both are greedy and both are provably correct**, justified by the **[cut property](algorithms-glossary-reviewer.md#minimum-spanning-tree "A min-weight set of V-1 edges connecting all vertices of a weighted graph with no cycle.")**: for any way
+  of splitting the vertices into two non-empty sides, the single cheapest edge crossing the split is
+  safe to put in some MST. Kruskal and Prim are just two orders of applying that one fact.
+- **Kruskal — sort then union.** Sort all `E` edges by weight ascending; walk them cheapest-first and
+  add an edge **iff its two endpoints are in different components** (a `Union` that returns true). An
+  edge whose endpoints already share a root would close a cycle, so skip it. Stop once you have
+  `V - 1` edges. Cost **O(E log E)** for the sort (the union-finds are near-O(1) in total); since
+  `log E = O(log V)` this is equivalently written **O(E log V)**.
+- **Prim — grow one tree.** Start from any vertex; keep a min-[priority queue](algorithms-glossary-reviewer.md#priority-queue "Serves elements by priority rather than arrival; usually a heap.") of edges that cross from
+  the in-tree set to the outside, keyed by weight. Repeatedly pop the lightest crossing edge to a
+  vertex **not yet in the tree**, add that vertex, and push its outgoing edges. Skip stale pops (a
+  vertex already in the tree) — the same duplicate-and-skip idiom as Dijkstra. Cost **O(E log V)**
+  with a binary heap.
+- **Kruskal vs Prim.** Kruskal is simplest when edges arrive as a flat list and the graph may be
+  sparse or even disconnected (it naturally yields a *minimum spanning forest*). Prim is a touch
+  faster on dense graphs and reuses your Dijkstra scaffold almost verbatim. Both return the **same
+  total weight** — the MST weight is unique even when more than one tree achieves it.
+- **MST is an undirected-graph tool.** A directed graph has no MST in this sense; the analogous
+  "minimum arborescence" problem needs a different algorithm (Chu–Liu/Edmonds). Reach for MST only on
+  connected, undirected, weighted graphs.
+
+```mermaid
+graph TD
+    0((0)) ---|1| 1((1))
+    1 ---|2| 2((2))
+    0 ---|3| 2
+    1 ---|4| 3((3))
+    2 ---|5| 4((4))
+    3 ---|6| 4
+```
+
+*The weighted graph below; Kruskal and Prim both select MST edges 0–1, 1–2, 1–3, 2–4 for a total weight of 12, rejecting the heavier 0–2 (weight 3) and 3–4 (weight 6) that would only close cycles.*
+
+```csharp
+// Kruskal's MST: sort edges by weight, add each with union-find unless it closes a cycle.
+// edges[i] = [u, v, w]. Returns the total weight of the minimum spanning tree.
+// Reuses the DSU class defined in the Union-Find section above.
+static int KruskalMst(int n, int[][] edges)
+{
+    Array.Sort(edges, (a, b) => a[2] - b[2]);   // lightest edge first
+    var dsu = new DSU(n);
+    int total = 0, used = 0;
+    foreach (int[] e in edges)
+    {
+        if (dsu.Union(e[0], e[1]))               // endpoints in different trees -> safe edge
+        {
+            total += e[2];
+            if (++used == n - 1) break;          // a tree on n vertices needs exactly n-1 edges
+        }
+        // else: Union returned false -> endpoints already connected -> this edge would make a cycle
+    }
+    return total;                                // used < n-1 would mean the graph is disconnected
+}
+```
+
+```text
+Kruskal on 5 vertices (0..4). Edges sorted by weight ascending:
+  (0,1):1   (1,2):2   (0,2):3   (1,3):4   (2,4):5   (3,4):6
+
+  edge    w   find(u)  find(v)  decision        MST weight   components after
+  -----   -   -------  -------  -------------   ----------   ----------------------
+  (0,1)   1      0        1     add  (differ)        1       {0,1} {2} {3} {4}
+  (1,2)   2      0        2     add  (differ)        3       {0,1,2} {3} {4}
+  (0,2)   3      0        0     skip (cycle)         3       {0,1,2} {3} {4}
+  (1,3)   4      0        3     add  (differ)        7       {0,1,2,3} {4}
+  (2,4)   5      0        4     add  (differ)       12       {0,1,2,3,4}   <- V-1=4 edges, stop
+
+  MST edges: (0,1) (1,2) (1,3) (2,4)    total = 1 + 2 + 4 + 5 = 12
+```
+
+*Kruskal walks edges cheapest-first; an edge is kept only when its endpoints have different union-find roots, so `(0,2)` is rejected because `0` and `2` are already merged through `0–1–2`. Four kept edges (V−1) completes the tree.*
+
+```csharp
+// Prim's MST from vertex 0 with a min-PriorityQueue keyed by edge weight.
+// adj[u] = list of (neighbor, weight). Returns total weight of the minimum spanning tree.
+static int PrimMst(int n, List<(int to, int w)>[] adj)
+{
+    var inMst = new bool[n];
+    var pq = new PriorityQueue<int, int>();      // element = vertex, priority = cheapest crossing edge
+    pq.Enqueue(0, 0);
+    int total = 0, count = 0;
+    while (pq.TryDequeue(out int u, out int w))
+    {
+        if (inMst[u]) continue;                  // stale: u was already pulled in by a lighter edge
+        inMst[u] = true;
+        total += w;                              // w is the weight of the edge that attached u
+        count++;
+        foreach (var (v, nw) in adj[u])
+            if (!inMst[v]) pq.Enqueue(v, nw);    // offer each crossing edge; the heap keeps the lightest
+    }
+    return count == n ? total : -1;              // -1 if the graph was disconnected
+}
+```
+
+```text
+Prim from vertex 0.  key = weight of the cheapest edge that would attach a vertex.
+adj: 0:[(1,1),(2,3)]  1:[(0,1),(2,2),(3,4)]  2:[(0,3),(1,2),(4,5)]  3:[(1,4),(4,6)]  4:[(2,5),(3,6)]
+
+  pop (v,w)   action            edge added   push crossing edges        total
+  ---------   ---------------   ----------   ------------------------   -----
+  (0,0)       add 0 to tree     -            (1,1) (2,3)                  0
+  (1,1)       add 1 to tree     0-1  (w 1)   (2,2) (3,4)                  1
+  (2,2)       add 2 to tree     1-2  (w 2)   (4,5)                        3
+  (2,3)       stale: 2 in tree  -            -                            3
+  (3,4)       add 3 to tree     1-3  (w 4)   (4,6)                        7
+  (4,5)       add 4 to tree     2-4  (w 5)   -                           12
+  (4,6)       stale: 4 in tree  -            -                           12
+
+  MST edges: (0,1) (1,2) (1,3) (2,4)    total = 12
+```
+
+*Prim keeps a single growing tree and always pops the lightest edge leaving it; the duplicate `(2,3)` and `(4,6)` entries are skipped on pop because their target is already in the tree — the exact stale-pop trick used in Dijkstra. Same MST, same weight 12.*
+
+```mermaid
+flowchart LR
+    CUT["Cut property: the lightest edge<br/>crossing any split is in some MST"] --> K["Kruskal: sort all edges,<br/>add if endpoints differ (union-find)"]
+    CUT --> P["Prim: grow one tree,<br/>add lightest edge leaving it (min-heap)"]
+```
+
+*Both algorithms are the cut property applied in two orders: Kruskal considers edges globally cheapest-first across the whole graph; Prim always takes the cheapest edge leaving the single growing tree.*
+
 ## Clone graph
 
 Cloning a graph (LC 133 — Clone Graph) deep-copies every [node](algorithms-glossary-reviewer.md#node "A container in a linked structure holding a value plus references to neighbors.") and edge. The trick is a **[hash map](algorithms-glossary-reviewer.md#hash-map "Stores key-value pairs and retrieves a value by key in O(1) average time.")
@@ -719,6 +853,8 @@ static Node? CloneGraph(Node? node)
 | Union-Find (per op, amortized) | O(α(V)) | O(V) | `α` ≤ 4 in practice; near O(1), not O(log V) |
 | Dijkstra (binary heap) | O(E log V) | O(V + E) | Non-negative weights only |
 | Bellman-Ford | O(V·E) | O(V) | Handles negative edges; detects negative cycles |
+| Kruskal MST | O(E log E) | O(V) | Sort edges + union-find; undirected; same as O(E log V) |
+| Prim MST (binary heap) | O(E log V) | O(V + E) | Grow one tree with a min-heap; mirrors Dijkstra |
 | Adjacency matrix traversal | O(V²) | O(V²) | Neighbor scan is O(V) per vertex |
 
 ## Pattern picker
@@ -728,6 +864,7 @@ flowchart TD
     Start{What is the question?} -->|Shortest path, all edges weight 1| BFS["BFS (queue, dist + 1)"]
     Start -->|Shortest path, non-negative weights| DIJ["Dijkstra (min-heap)"]
     Start -->|Shortest path, negative weights| BF["Bellman-Ford"]
+    Start -->|"Cheapest edges to connect all vertices"| MST["Minimum spanning tree<br/>(Kruskal / Prim)"]
     Start -->|Reachability / fill a region| DFS["DFS or BFS flood fill"]
     Start -->|Count groups / are these connected?| GRP{Edges arrive over time?}
     GRP -->|Yes, incremental| DSU["Union-Find"]
@@ -791,6 +928,17 @@ A: Push a new `(vertex, newDistance)` entry whenever you relax an edge, and when
 Q: BFS vs Dijkstra — when is BFS enough?
 A: When every edge has the same weight (unweighted graph). BFS is O(V + E) with a plain queue; Dijkstra adds a log factor and a heap you do not need.
 
+### Minimum spanning tree
+
+Q: Kruskal vs Prim — when do you reach for each?
+A: Both build the same minimum-weight tree. Kruskal sorts all edges and adds each with union-find unless it closes a cycle — simplest when edges come as a flat list, and it handles disconnected graphs (yielding a minimum spanning *forest*). Prim grows a single tree from a start vertex with a min-heap of crossing edges — a touch faster on dense graphs and structurally identical to Dijkstra. Kruskal is O(E log E), Prim is O(E log V); for `E ≤ V²` those bounds coincide.
+
+Q: Why is a greedy edge choice correct for the MST?
+A: The cut property: for any partition of the vertices into two non-empty sides, the lightest edge crossing the cut belongs to some MST. Kruskal applies it globally (cheapest edge overall whose endpoints differ); Prim applies it locally (cheapest edge leaving the growing tree). Greedily taking a safe edge never blocks an optimal completion, so the result is optimal.
+
+Q: How does Dijkstra differ from Prim, given both pop the cheapest thing from a min-heap?
+A: The key they minimize differs. Dijkstra keys a vertex by its total distance *from the source* (`dist[u] + w`), building a shortest-path tree. Prim keys a vertex by the weight of the *single edge* attaching it to the tree (`w` alone), building a minimum-weight tree. Same scaffold, different priority — and Prim's "just `w`" is why it tolerates the cut-property argument while Dijkstra needs non-negativity.
+
 ## Rapid-fire round
 
 - Default graph representation → **adjacency list, O(V + E) space.**
@@ -813,6 +961,10 @@ A: When every edge has the same weight (unweighted graph). BFS is O(V + E) with 
 - Multi-source BFS use → **rotting oranges, nearest-exit.**
 - Pacific-Atlantic trick → **search inward from each ocean border.**
 - Clone graph trick → **hash map original → clone (also the visited set).**
+- Minimum spanning tree, edge list → **Kruskal (sort + union-find), O(E log E).**
+- Minimum spanning tree, dense graph → **Prim (min-heap), O(E log V).**
+- Why greedy MST is correct → **cut property: lightest edge crossing any cut is safe.**
+- Kruskal skips an edge when → **its endpoints already share a union-find root (cycle).**
 
 ## Exam-style questions
 
@@ -870,6 +1022,18 @@ directed weighted edges:
 5), `D` to `1+6=7`. Pop `C` (dist 3): relax `D` to `3+1=4` (beats 7). Pop `D` (dist 4). Final:
 `A=0, B=1, C=3, D=4`. The path to `D` is `A→B→C→D` (cost 4), not the direct-looking `A→B→D` (cost 7).
 
+6. Run Kruskal's algorithm. What edges form the MST and what is its total weight?
+
+```text
+n = 4 nodes (0..3), undirected weighted edges:
+  (0,1):1, (1,2):2, (2,3):3, (0,2):4, (1,3):5
+```
+
+**Answer:** Sort by weight: `(0,1)1, (1,2)2, (2,3)3, (0,2)4, (1,3)5`. Add `(0,1)` → {0,1}; add `(1,2)`
+→ {0,1,2}; add `(2,3)` → {0,1,2,3}. That is `V−1 = 3` edges, so stop — `(0,2)` and `(1,3)` are never
+needed (both would close a cycle: their endpoints already share a root). **MST = {(0,1), (1,2),
+(2,3)}, total weight `1 + 2 + 3 = 6`.** Prim from any start gives the same tree and weight.
+
 ## 30-second takeaway
 
 > Model the problem as vertices and edges, then pick the traversal by the question. **BFS** (queue,
@@ -879,7 +1043,9 @@ directed weighted edges:
 > post-order) orders a DAG and flags a cycle when it can't include all `V` vertices. **Union-Find**
 > tracks merging groups in near-O(α) time — ideal for incremental connectivity and undirected cycle
 > detection. **Dijkstra** (min-heap, skip stale pops) extends BFS to non-negative weights at
-> O(E log V); negatives need Bellman-Ford. Almost every plain traversal is **O(V + E)**.
+> O(E log V); negatives need Bellman-Ford. **Kruskal/Prim** build a minimum spanning tree greedily —
+> sort edges + union-find, or grow one tree with a min-heap — both at O(E log V), justified by the cut
+> property. Almost every plain traversal is **O(V + E)**.
 
 ## Quick recall checklist
 
@@ -897,6 +1063,8 @@ directed weighted edges:
 - **Dijkstra:** min-heap, **non-negative weights only**, O(E log V); push duplicates and skip stale
   pops (no decrease-key in .NET `PriorityQueue`). LC 743.
 - **Negatives ⇒ Bellman-Ford** (O(V·E), detects negative cycles). **Unweighted ⇒ BFS**, not Dijkstra.
+- **MST (undirected, weighted):** **Kruskal** (sort edges + union-find, skip cycle-closing edges) or
+  **Prim** (grow one tree with a min-heap); both **O(E log V)** by the **cut property**, stop at V−1 edges.
 - **Clone graph (LC 133):** hash map original → clone doubles as the visited set; record the clone
   before recursing into neighbors.
 - Practice: `depth-first-search/graph-exploration/number-of-islands` and
@@ -910,7 +1078,12 @@ directed weighted edges:
 - Wikipedia — [Disjoint-set data structure](https://en.wikipedia.org/wiki/Disjoint-set_data_structure).
 - Wikipedia — [Dijkstra's algorithm](https://en.wikipedia.org/wiki/Dijkstra%27s_algorithm).
 - Wikipedia — [Bellman–Ford algorithm](https://en.wikipedia.org/wiki/Bellman%E2%80%93Ford_algorithm).
+- Wikipedia — [Minimum spanning tree](https://en.wikipedia.org/wiki/Minimum_spanning_tree).
+- Wikipedia — [Kruskal's algorithm](https://en.wikipedia.org/wiki/Kruskal%27s_algorithm).
+- Wikipedia — [Prim's algorithm](https://en.wikipedia.org/wiki/Prim%27s_algorithm).
 - cp-algorithms — [Breadth-first search](https://cp-algorithms.com/graph/breadth-first-search.html).
+- cp-algorithms — [Minimum spanning tree - Kruskal](https://cp-algorithms.com/graph/mst_kruskal.html).
+- cp-algorithms — [Minimum spanning tree - Prim](https://cp-algorithms.com/graph/mst_prim.html).
 - cp-algorithms — [Depth First Search](https://cp-algorithms.com/graph/depth-first-search.html).
 - cp-algorithms — [Disjoint Set Union](https://cp-algorithms.com/data_structures/disjoint_set_union.html).
 - cp-algorithms — [Dijkstra's algorithm](https://cp-algorithms.com/graph/dijkstra.html).

@@ -329,11 +329,25 @@
     "complexity": "O(E log V)"
   },
   {
+    "file": "kruskal.json",
+    "title": "Kruskal's MST (sort + union-find)",
+    "topic": "graphs",
+    "steps": 12,
+    "complexity": "O(E log E)"
+  },
+  {
     "file": "number-of-islands.json",
     "title": "Number of Islands",
     "topic": "graphs",
     "steps": 20,
     "complexity": "O(rows*cols)"
+  },
+  {
+    "file": "prim.json",
+    "title": "Prim's MST (grow tree + min-heap)",
+    "topic": "graphs",
+    "steps": 15,
+    "complexity": "O(E log V)"
   },
   {
     "file": "rotting-oranges.json",
@@ -607,6 +621,20 @@
     "topic": "recursion-and-divide-and-conquer",
     "steps": 17,
     "complexity": "O(n)"
+  },
+  {
+    "file": "fenwick.json",
+    "title": "Fenwick Tree (Binary Indexed Tree)",
+    "topic": "segment-tree-and-fenwick",
+    "steps": 19,
+    "complexity": "O(log n)"
+  },
+  {
+    "file": "segment-tree.json",
+    "title": "Segment Tree (range query + update)",
+    "topic": "segment-tree-and-fenwick",
+    "steps": 17,
+    "complexity": "O(log n)"
   },
   {
     "file": "best-time-buy-sell.json",

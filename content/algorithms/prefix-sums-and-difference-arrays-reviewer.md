@@ -4,7 +4,7 @@ A **[prefix sum](algorithms-glossary-reviewer.md#prefix-sum "Running totals up t
 
 This pattern matters in interviews and exams because it is the right answer the moment you see repeated range queries, "sum of subarray equals `k`," or "apply these range increments." It is also the canonical example where a naive [sliding window](algorithms-glossary-reviewer.md#sliding-window "A contiguous range you expand and shrink to track a property in one pass.") *fails* — the moment a sum constraint involves negative numbers, the window loses [monotonicity](algorithms-glossary-reviewer.md#monotonic "Consistently moving one direction; never decreasing or never increasing.") and you must reach for prefix sums plus a hash map instead. This reviewer builds the 1D convention carefully (the off-by-one is where most bugs live), extends to 2D, walks the prefix-plus-hashmap counting trick, and closes with difference arrays and the [overflow](algorithms-glossary-reviewer.md#integer-overflow "A value exceeds its integer type's max and silently wraps to a wrong value.")/index pitfalls to watch.
 
-Related: [Algorithm Patterns Index](algorithm-patterns-index-reviewer.md) · [Arrays & Hashing](arrays-and-hashing-reviewer.md) · [Sliding Window](sliding-window-reviewer.md) · [Two Pointers](two-pointers-reviewer.md) · [Glossary](algorithms-glossary-reviewer.md)
+Related: [Algorithm Patterns Index](algorithm-patterns-index-reviewer.md) · [Arrays & Hashing](arrays-and-hashing-reviewer.md) · [Sliding Window](sliding-window-reviewer.md) · [Two Pointers](two-pointers-reviewer.md) · [Segment Trees & Fenwick Trees](segment-tree-and-fenwick-reviewer.md) · [Glossary](algorithms-glossary-reviewer.md)
 
 ## Contents
 

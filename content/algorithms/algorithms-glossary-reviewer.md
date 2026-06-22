@@ -970,6 +970,36 @@ disguise. Do not forget to mark cells visited (or mutate them) as you go; withou
 forever on the same cells. It is the grid-shaped face of BFS/DFS.
 See: [Graphs](graphs-reviewer.md)
 
+### Minimum spanning tree
+**A minimum spanning tree (MST) is the cheapest set of edges that connects every vertex of a connected,
+undirected, weighted graph — exactly `V − 1` edges, no cycle, minimum total weight.** Picture wiring
+several towns with the least total cable: every town must be connected (spanning) with no wasteful loop
+(tree) at the lowest cost (minimum). Two greedy algorithms build it. **Kruskal** sorts all edges and
+adds each one whose endpoints lie in different components, using union-find to detect the cycles it must
+skip. **Prim** grows a single tree outward, repeatedly adding the lightest edge that leaves it, using a
+min-heap exactly like Dijkstra. Both are O(E log V) and both rest on the **cut property**: the lightest
+edge crossing any split of the vertices into two non-empty sides is always safe to include in some MST.
+It matters because MST is a classic weighted-graph interview topic and the model for network design and
+clustering. Do not confuse an MST with a shortest-path tree — Dijkstra minimizes distance *from a
+source* to each vertex, while an MST minimizes *total edge weight* over the whole graph, so the two
+trees are usually different.
+See: [Graphs](graphs-reviewer.md)
+
+### Fenwick tree and segment tree
+**A Fenwick tree (binary indexed tree) and a segment tree are compact structures that answer range
+queries on a *changing* array — both a range aggregate and a point update in O(log n) each.** They
+exist because prefix sums answer a range sum in O(1) but cost O(n) to update; these structures accept a
+log factor on the query so updates become cheap too. A **Fenwick tree** is a 1-indexed array where
+`tree[i]` holds the sum of a block of length `i & -i` (its lowest set bit) ending at `i`; a query peels
+that bit off down to 0 and an update adds it on past `n`, both O(log n). A **segment tree** is a binary
+tree over index ranges (stored flat in `4n`), each node holding its range's aggregate; it is more
+general — it handles min/max/gcd and range updates via lazy propagation, which a Fenwick tree cannot. It
+matters whenever a problem mixes updates with range queries (LC 307 Range Sum Query Mutable, counting
+inversions). Do not confuse the two: a Fenwick tree is smaller and faster but limited to invertible
+aggregates like sum, while a segment tree is bigger but handles non-invertible aggregates (min/max) and
+range updates. Reach for the Fenwick tree when sum + point-update is all you need.
+See: [Segment Trees & Fenwick Trees](segment-tree-and-fenwick-reviewer.md)
+
 ## Techniques & patterns
 
 ### Brute force
