@@ -150,16 +150,46 @@
     "steps": 6
   },
   {
+    "file": "counting-bits.json",
+    "title": "Counting Bits (DP)",
+    "topic": "bit-manipulation",
+    "steps": 12
+  },
+  {
+    "file": "missing-number.json",
+    "title": "Missing Number",
+    "topic": "bit-manipulation",
+    "steps": 8
+  },
+  {
     "file": "count-bits.json",
     "title": "Number of 1 Bits",
     "topic": "bit-manipulation",
     "steps": 8
   },
   {
+    "file": "reverse-bits.json",
+    "title": "Reverse Bits",
+    "topic": "bit-manipulation",
+    "steps": 26
+  },
+  {
+    "file": "single-number.json",
+    "title": "Single Number (XOR)",
+    "topic": "bit-manipulation",
+    "steps": 12
+  },
+  {
     "file": "linear-search.json",
     "title": "Linear Search (O(n))",
     "topic": "complexity-and-big-o",
     "steps": 6
+  },
+  {
+    "file": "nested-loops-quadratic.json",
+    "title": "Nested Loops (O(n²))",
+    "topic": "complexity-and-big-o",
+    "steps": 10
   },
   {
     "file": "climbing-stairs.json",
@@ -354,6 +384,18 @@
     "steps": 17
   },
   {
+    "file": "insert-interval.json",
+    "title": "Insert Interval",
+    "topic": "intervals",
+    "steps": 14
+  },
+  {
+    "file": "meeting-rooms-ii.json",
+    "title": "Meeting Rooms II",
+    "topic": "intervals",
+    "steps": 12
+  },
+  {
     "file": "merge-intervals.json",
     "title": "Merge Intervals",
     "topic": "intervals",
@@ -414,6 +456,24 @@
     "steps": 6
   },
   {
+    "file": "euclid-gcd.json",
+    "title": "Euclid's GCD",
+    "topic": "math-and-number-theory",
+    "steps": 11
+  },
+  {
+    "file": "happy-number.json",
+    "title": "Happy Number (seen-set)",
+    "topic": "math-and-number-theory",
+    "steps": 19
+  },
+  {
+    "file": "plus-one.json",
+    "title": "Plus One (carry right-to-left)",
+    "topic": "math-and-number-theory",
+    "steps": 7
+  },
+  {
     "file": "sieve.json",
     "title": "Sieve of Eratosthenes",
     "topic": "math-and-number-theory",
@@ -426,10 +486,52 @@
     "steps": 11
   },
   {
+    "file": "range-sum-2d.json",
+    "title": "Range Sum Query 2D",
+    "topic": "prefix-sums-and-difference-arrays",
+    "steps": 17
+  },
+  {
+    "file": "subarray-sum-k.json",
+    "title": "Subarray Sum Equals K",
+    "topic": "prefix-sums-and-difference-arrays",
+    "steps": 17
+  },
+  {
+    "file": "fast-power.json",
+    "title": "Fast Power (Exponentiation by Squaring)",
+    "topic": "recursion-and-divide-and-conquer",
+    "steps": 20
+  },
+  {
+    "file": "fibonacci-memo.json",
+    "title": "Fibonacci (memoized recursion)",
+    "topic": "recursion-and-divide-and-conquer",
+    "steps": 17
+  },
+  {
     "file": "merge-sort.json",
     "title": "Merge Sort",
     "topic": "recursion-and-divide-and-conquer",
     "steps": 23
+  },
+  {
+    "file": "quickselect.json",
+    "title": "Quickselect (Kth Largest)",
+    "topic": "recursion-and-divide-and-conquer",
+    "steps": 17
+  },
+  {
+    "file": "best-time-buy-sell.json",
+    "title": "Best Time to Buy and Sell Stock",
+    "topic": "sliding-window",
+    "steps": 14
+  },
+  {
+    "file": "longest-repeating-replacement.json",
+    "title": "Longest Repeating Character Replacement",
+    "topic": "sliding-window",
+    "steps": 33
   },
   {
     "file": "longest-substring.json",
@@ -438,10 +540,28 @@
     "steps": 23
   },
   {
+    "file": "max-vowels-window.json",
+    "title": "Maximum Vowels in a Window",
+    "topic": "sliding-window",
+    "steps": 17
+  },
+  {
     "file": "insertion-sort.json",
     "title": "Insertion Sort",
     "topic": "sorting-algorithms",
     "steps": 21
+  },
+  {
+    "file": "quicksort.json",
+    "title": "Quicksort",
+    "topic": "sorting-algorithms",
+    "steps": 28
+  },
+  {
+    "file": "sort-colors.json",
+    "title": "Sort Colors (Dutch Flag)",
+    "topic": "sorting-algorithms",
+    "steps": 14
   },
   {
     "file": "daily-temperatures.json",
@@ -540,10 +660,22 @@
     "steps": 20
   },
   {
+    "file": "add-search-word.json",
+    "title": "Add and Search Word (wildcard)",
+    "topic": "tries",
+    "steps": 12
+  },
+  {
     "file": "trie.json",
     "title": "Trie Insert & Search",
     "topic": "tries",
     "steps": 18
+  },
+  {
+    "file": "word-search-ii.json",
+    "title": "Word Search II (Trie + DFS)",
+    "topic": "tries",
+    "steps": 12
   },
   {
     "file": "three-sum.json",
