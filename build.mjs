@@ -28,7 +28,7 @@ const SITE = {
 };
 
 const GROUPS = [
-  { title: "Start here", accent: "blue", items: ["algorithm-patterns-index-reviewer"] },
+  { title: "Start here", accent: "blue", items: ["algorithm-patterns-index-reviewer", "algomonster-flowchart-reviewer"] },
   { title: "Foundations", accent: "teal", items: [
     "complexity-and-big-o-reviewer", "arrays-and-hashing-reviewer",
     "recursion-and-divide-and-conquer-reviewer", "sorting-algorithms-reviewer",
@@ -343,4 +343,19 @@ for (const f of files) {
 writeFileSync(join(OUT, "assets", "search-index.json"), JSON.stringify(searchIndex));
 writeFileSync(join(OUT, "index.html"), renderHome(meta));
 
-// Publish the standalone visualizer sub-site (player + built frames) at dist/viz/, if syn
+// Publish standalone HTML companions verbatim (e.g. the interactive flowchart the pages link to).
+for (const f of readdirSync(CONTENT)) {
+  if (f.endsWith(".html")) {
+    copyFileSync(join(CONTENT, f), join(OUT, f));
+    console.log(`Copied ${f} -> dist/${f} (standalone HTML companion)`);
+  }
+}
+
+// Publish the standalone visualizer sub-site (player + built frames) at dist/viz/, if synced.
+const VIZ = join(ROOT, "viz");
+if (existsSync(VIZ)) {
+  cpSync(VIZ, join(OUT, "viz"), { recursive: true });
+  console.log("Copied viz/ -> dist/viz/ (visualizations sub-site)");
+}
+
+console.log(`Built ${files.length} topic pages + homepage -> dist/`);
