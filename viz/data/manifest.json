@@ -114,6 +114,42 @@
     "steps": 5
   },
   {
+    "file": "find-min-rotated.json",
+    "title": "Find Minimum in Rotated Sorted Array",
+    "topic": "binary-search",
+    "steps": 6
+  },
+  {
+    "file": "first-last-occurrence.json",
+    "title": "First & Last Occurrence",
+    "topic": "binary-search",
+    "steps": 19
+  },
+  {
+    "file": "binary-search-sqrt.json",
+    "title": "Integer Square Root",
+    "topic": "binary-search",
+    "steps": 10
+  },
+  {
+    "file": "koko-bananas.json",
+    "title": "Koko Eating Bananas",
+    "topic": "binary-search",
+    "steps": 15
+  },
+  {
+    "file": "search-rotated.json",
+    "title": "Search in Rotated Sorted Array",
+    "topic": "binary-search",
+    "steps": 9
+  },
+  {
+    "file": "search-insert.json",
+    "title": "Search Insert Position",
+    "topic": "binary-search",
+    "steps": 6
+  },
+  {
     "file": "count-bits.json",
     "title": "Number of 1 Bits",
     "topic": "bit-manipulation",
@@ -234,10 +270,40 @@
     "steps": 13
   },
   {
+    "file": "gas-station.json",
+    "title": "Gas Station",
+    "topic": "greedy",
+    "steps": 20
+  },
+  {
+    "file": "hand-of-straights.json",
+    "title": "Hand of Straights",
+    "topic": "greedy",
+    "steps": 18
+  },
+  {
     "file": "jump-game.json",
     "title": "Jump Game",
     "topic": "greedy",
     "steps": 12
+  },
+  {
+    "file": "jump-game-ii.json",
+    "title": "Jump Game II",
+    "topic": "greedy",
+    "steps": 10
+  },
+  {
+    "file": "kadane.json",
+    "title": "Maximum Subarray (Kadane)",
+    "topic": "greedy",
+    "steps": 18
+  },
+  {
+    "file": "non-overlapping-intervals.json",
+    "title": "Non-overlapping Intervals",
+    "topic": "greedy",
+    "steps": 8
   },
   {
     "file": "build-heap.json",
@@ -376,6 +442,30 @@
     "title": "Insertion Sort",
     "topic": "sorting-algorithms",
     "steps": 21
+  },
+  {
+    "file": "daily-temperatures.json",
+    "title": "Daily Temperatures",
+    "topic": "stacks-and-monotonic-stacks",
+    "steps": 34
+  },
+  {
+    "file": "eval-rpn.json",
+    "title": "Evaluate Reverse Polish Notation",
+    "topic": "stacks-and-monotonic-stacks",
+    "steps": 13
+  },
+  {
+    "file": "largest-rectangle.json",
+    "title": "Largest Rectangle in Histogram",
+    "topic": "stacks-and-monotonic-stacks",
+    "steps": 33
+  },
+  {
+    "file": "min-stack.json",
+    "title": "Min Stack",
+    "topic": "stacks-and-monotonic-stacks",
+    "steps": 13
   },
   {
     "file": "valid-parentheses.json",
