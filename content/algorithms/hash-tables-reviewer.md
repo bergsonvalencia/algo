@@ -122,7 +122,7 @@ public int UnstableHash(string input)
 
 ```text
 StableHash("foo")   -> 324    StableHash("foo")   -> 324    StableHash("foo")   -> 324
-UnstableHash("foo") -> 1449447443   -> 1449447444   -> 1449447445   (changes every second!)
+UnstableHash("foo") -> 341   -> 342   -> 343   (= 324 + DateTime.Now.Second; changes every second, wraps at 60!)
 ```
 
 ```mermaid

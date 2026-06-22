@@ -87,7 +87,7 @@ The invariants in one table:
 
 Key points:
 
-- **Why the height is logarithmic in base `t`.** Worst case (sparsest legal tree), the root has `1` key and `2` children, and every other node is minimal with `t - 1` keys and `t` children. The node count per level then grows by a factor of `t`, so a tree of height `h` holds at least `1 + 2(t^h - 1)/(t - 1)` keys. Solving for `h` gives `h <= log_t((n + 1) / 2)`, i.e. **`h = O(log_t n)`**.
+- **Why the height is logarithmic in base `t`.** Worst case (sparsest legal tree), the root has `1` key and `2` children, and every other node is minimal with `t - 1` keys and `t` children. The node count per level then grows by a factor of `t`, so a tree of height `h` has at least `1 + 2(t^h - 1)/(t - 1)` nodes — and since the root holds 1 key while every other node holds at least `t - 1`, that is at least `2*t^h - 1` keys. Solving `n >= 2*t^h - 1` for `h` gives `h <= log_t((n + 1) / 2)`, i.e. **`h = O(log_t n)`**.
 - Because `t` can be in the hundreds, `log_t n` is tiny: with `t = 200`, even a billion keys give height ~4. **The height bound is the I/O bound** — height equals the number of block reads for a root-to-leaf path.
 - Compare to a balanced BST's `log2 n`. The B-tree's height is smaller by a factor of `log2 t`. That factor is exactly the keys-per-node win, paid back as fewer levels.
 - **Height changes only at the root.** Insertions increase height only when a full root splits (adding one level on top); deletions decrease height only when the root loses its last key to a merge of its two children. All other restructuring happens without changing depth, which is how every [leaf](algorithms-glossary-reviewer.md#leaf "A node with no children; the bottom of a tree.") stays at the same level.
@@ -144,7 +144,7 @@ B-tree (t = 3), search for 8:
  At root: 8 > 3, 8 > 6, 8 < 10  -> first key > 8 is 10 (index 2) -> descend child[2] = [7|8|9]
  At [7|8|9]: 8 > 7, 8 == 8      -> match, return true
 
- Block reads: 2 (root, then the leaf). Comparisons: 4.
+ Block reads: 2 (root, then the leaf). Comparisons: 5.
 ```
 
 *Search makes a multiway branch per node — scan keys, pick the gap child — touching only one node per level.*
@@ -304,15 +304,15 @@ Key points:
 - **When to use which** (the rule of thumb): rotate when a sibling has a key to spare (it is cheaper and preserves more nodes); merge/push-down only when no sibling can spare one. Rotation requires the parent to have a spare key to give down (it does, except possibly at the root); push-down is what handles the case where the parent is itself thin.
 
 ```text
-ROTATION (borrow), t = 3 — deficient child [7|8] needs a key; right sibling [10|11] has a spare:
+ROTATION (borrow), t = 3 — deficient child [7|8] needs a key; right sibling [10|11|12] has a spare:
 
         [ 3 | 9 ]                                   [ 3 | 10 ]
        /    |    \              left rotation       /    |    \
-   [1|2]  [7|8]  [10|11]   ───────────────────►  [1|2] [7|8|9] [11]
+   [1|2]  [7|8]  [10|11|12]   ────────────────►  [1|2] [7|8|9] [11|12]
 
  The separator 9 drops down into the deficient child -> [7|8|9].
  The right sibling's smallest key 10 rises to become the new separator.
- Deficient child now has t = 3 keys; sibling [11] still legal (t-1 = 2... here shown after losing one).
+ Deficient child now has t = 3 keys; sibling [11|12] still legal (t-1 = 2 keys).
 ```
 
 ```mermaid

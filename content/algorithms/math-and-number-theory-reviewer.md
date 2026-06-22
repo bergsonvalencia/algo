@@ -14,7 +14,11 @@ bread-and-butter digit tricks: extracting and reversing digits, digit sums, cycl
 function (happy numbers), base conversion, and integer `sqrt` by binary search. Learn these cold and
 the "easy/medium math" tier becomes free points.
 
-Related: [Algorithm Patterns Index](algorithm-patterns-index-reviewer.md) · [Bit Manipulation](bit-manipulation-reviewer.md) · [Binary Search](binary-search-reviewer.md) · [Recursion & Divide and Conquer](recursion-and-divide-and-conquer-reviewer.md) · [Glossary](algorithms-glossary-reviewer.md)
+Shaky on the underlying high-school concepts (number bases, logarithms, factorials, 2^n subsets, the
+modular distributive rule)? Start with the [Math Basics](math-basics-reviewer.md) reviewer, then come
+back here for the algorithms built on them.
+
+Related: [Algorithm Patterns Index](algorithm-patterns-index-reviewer.md) · [Math Basics](math-basics-reviewer.md) · [Bit Manipulation](bit-manipulation-reviewer.md) · [Binary Search](binary-search-reviewer.md) · [Recursion & Divide and Conquer](recursion-and-divide-and-conquer-reviewer.md) · [Glossary](algorithms-glossary-reviewer.md)
 
 ## Contents
 - [GCD via the Euclidean algorithm](#gcd-via-the-euclidean-algorithm)

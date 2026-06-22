@@ -20,6 +20,7 @@ Related: [Algorithm Patterns Index](algorithm-patterns-index-reviewer.md) · [Re
 ## Contents
 - [What Big-O, Big-Theta, and Big-Omega mean](#what-big-o-big-theta-and-big-omega-mean)
 - [The complexity ladder](#the-complexity-ladder)
+- [Runtime cheat sheet: how big can n be?](#runtime-cheat-sheet-how-big-can-n-be)
 - [Counting loops and sequential vs nested code](#counting-loops-and-sequential-vs-nested-code)
 - [Logarithms in algorithms](#logarithms-in-algorithms)
 - [Analyzing recursion: recursion trees and recurrences](#analyzing-recursion-recursion-trees-and-recurrences)
@@ -107,6 +108,121 @@ O(n!)         3 628 800  ~9.3 * 10^157          off-chart
 ```
 
 *Concrete operation counts: between O(n^2) and O(2^n) the gap explodes — that is the line between "scales" and "does not."*
+
+## Runtime cheat sheet: how big can n be?
+
+AlgoMonster's *Runtime to Algo* summary turns the [complexity ladder](#the-complexity-ladder) into a
+practical cheat sheet: for each class, **how large can `n` get before the solution is too slow?** The
+single assumption behind it is a budget of roughly **10–20 million operations** per solution (other
+sources phrase the same limit as about `10^8` operations *per second* — either way it is an
+order-of-magnitude sanity check, not a hard cap). Constants and lower-order terms drop as usual, so
+O(2n) and O(5n) are both O(n), and a loop from `-100` to `5n` is still O(n) — the *class* is what
+decides whether you clear the budget. Read against the input bound, this table tells you the intended
+complexity and warns you when a candidate will [time out](algorithms-glossary-reviewer.md#time-limit-exceeded "Verdict when a solution is correct but too slow for the input size.").
+
+| Class | Max `n` (rule of thumb) | Typical algorithms at that size |
+| --- | --- | --- |
+| O(1) | n > 10^9 | hashmap lookup, array access/update, stack push/pop, closed-form formula |
+| O(log n) | n > 10^8 | binary search or a variant, balanced-BST lookup, walking the digits of `n` |
+| O(n) | n ≤ 10^6 | single array/list scan, two pointers, tree/graph traversal, stack/queue |
+| O(k log n) | n ≤ 10^6 | k heap push/pops (top-K), k binary searches |
+| O(n log n) | n ≤ 10^6 | sorting, divide-and-conquer with a linear merge |
+| O(n^2) | n ≤ 3000 | nested loops over the same data, many brute-force solutions |
+| O(2^n) | n ≤ 20 | subsets / backtracking, naive recursive Fibonacci |
+| O(n!) | n ≤ 12 | permutations, brute-force orderings |
+
+Key points:
+
+- **It adds two things to the ladder:** the practical *cutoffs*, and the O(k log n) "top-K" rung —
+  push/pop a [heap](algorithms-glossary-reviewer.md#heap "A tree structure keeping the smallest or largest element instantly accessible.") `k` times, or run `k` [binary searches](algorithms-glossary-reviewer.md#binary-search "Repeatedly halve a sorted range to locate a target in O(log n)."). With `k` near `n` this is just O(n log n); for
+  small `k` it is much cheaper.
+- **The cutoffs are soft.** "O(n^2) up to n ≈ 3000" assumes ~10^7 ops with a small constant; the
+  *inverse* mapping (constraint → complexity, with reasoning) is tabulated under
+  [Reading constraints to guess the target complexity](#reading-constraints-to-guess-the-target-complexity).
+- **`log n` is nearly free.** `log2(10^6) ≈ 20` and `log2(10^9) ≈ 30`, so O(log n) clears an `n` far
+  larger than anything you could scan — and the `log n` *factor* separating O(n) from O(n log n) rarely
+  decides feasibility.
+- **The expensive rungs need pruning or memoization.** O(2^n) and O(n!) only finish for tiny `n`; the
+  same problems become tractable with [memoization / DP](algorithms-glossary-reviewer.md#memoization "Caching a function's results by its arguments so repeated calls are O(1).") or [backtracking](algorithms-glossary-reviewer.md#backtracking "Building candidate solutions incrementally and abandoning a path as soon as it cannot succeed.") with [pruning](algorithms-glossary-reviewer.md#pruning "Cutting off a search branch early once it cannot lead to a valid or better answer.").
+
+```mermaid
+flowchart TD
+    Q["Budget: about 10-20 million operations. How big is n?"] -->|"n &gt; 10^9"| C["O(1): formula, hashmap lookup"]
+    Q -->|"n &gt; 10^8"| L["O(log n): binary search"]
+    Q -->|"n ≤ 10^6"| Lin["O(n), O(k log n), O(n log n): scan, top-K, sort"]
+    Q -->|"n ≤ 3000"| Sq["O(n^2): nested loops"]
+    Q -->|"n ≤ 20"| Ex["O(2^n): subsets, backtracking"]
+    Q -->|"n ≤ 12"| Fa["O(n!): permutations"]
+```
+
+*Match the input bound to the largest class that still fits the operation budget; anything growing faster than your `n` allows is too slow.*
+
+```text
+reading a constraint backwards (n up to 100,000, ~10^7-10^8 op budget):
+  O(n^2)      -> (10^5)^2 = 10^10 ops  -> times out
+  O(n log n)  -> ~1.7 * 10^6 ops       -> fits
+  O(n)        -> 10^5 ops              -> fits easily
+```
+
+*At n = 10^5 the quadratic shape blows the budget by ~100x while the linearithmic and linear shapes clear it with room to spare — which is why "n up to 10^5" almost always means "find the O(n log n) or O(n) solution."*
+
+A tiny C# example pinned to each class — the same programs AlgoMonster shows in Python/Java/C++/JS,
+written in C#:
+
+```csharp
+// O(1): a fixed number of operations, independent of n
+int a = 5, b = 7, c = 4;
+int d = a + b + c + 153;
+
+// O(log n): n is halved each step, so about log2(n) iterations
+long m = 100_000_000;
+while (m > 0)
+    m /= 2;                  // constant work per iteration
+
+// O(n): one pass; constant factors and +k terms drop, so 5n + 17 is still O(n)
+for (int i = 0; i < 5 * n + 17; i++) { /* constant-time work */ }
+```
+
+```csharp
+// O(k log n): pop the k smallest from a heap of n items; each pop is O(log n)
+var heap = new PriorityQueue<int, int>();      // assume n items already enqueued
+var topK = new List<int>();
+for (int i = 0; i < k; i++)
+    topK.Add(heap.Dequeue());                  // k pops × O(log n) = O(k log n)
+
+// O(n log n): the default library sort is introsort (n log n) in .NET
+Array.Sort(nums);
+```
+
+```csharp
+// O(n^2): nested loops over the same n. A triangular inner loop (j from i)
+// runs 1 + 2 + ... + n = n(n+1)/2 times — still O(n^2).
+for (int i = 0; i < n; i++)
+    for (int j = i; j < n; j++) { /* constant-time work */ }
+```
+
+```csharp
+// O(2^n): each call branches into two and recomputes overlapping subproblems
+static long Fib(int n)
+{
+    if (n == 0 || n == 1) return 1;
+    return Fib(n - 1) + Fib(n - 2);
+}
+```
+
+```csharp
+// O(n!): the recursion tree that emits every ordering has n! leaves
+static void Permute(List<int> nums, int start, List<IList<int>> output)
+{
+    if (start == nums.Count) { output.Add(new List<int>(nums)); return; }
+    for (int i = start; i < nums.Count; i++)
+    {
+        (nums[start], nums[i]) = (nums[i], nums[start]);   // choose
+        Permute(nums, start + 1, output);                  // explore
+        (nums[start], nums[i]) = (nums[i], nums[start]);   // un-choose
+    }
+}
+```
 
 ## Counting loops and sequential vs nested code
 
@@ -609,6 +725,10 @@ A: Yes — each pending recursive call holds a stack frame, so recursion depth `
 - Constraint n <= 20 hints → **O(2^n) / bitmask DP.**
 - Constraint n <= 10^5 hints → **O(n log n) or O(n).**
 - Two Sum brute vs hash → **O(n^2) → O(n) with a [hash map](algorithms-glossary-reviewer.md#hash-map "Stores key-value pairs and retrieves a value by key in O(1) average time.").**
+- Operation budget per solution → **~10–20 million ops (≈ 10^7–10^8/sec) — an order-of-magnitude check.**
+- Max n by class → **O(n^2) ≈ 3000, O(2^n) ≈ 20, O(n!) ≈ 12.**
+- O(k log n) shows up as → **top-K via a heap, or k binary searches.**
+- Binary recursion of depth log n → **O(n) leaves, not O(log n) (2^(log n) = n).**
 
 ## Exam-style questions
 
@@ -681,6 +801,97 @@ the stack simultaneously — the space is the depth, not the number of calls.
 operations, well beyond the roughly 10^8 ops/second budget, so it times out. The constraint is the hint:
 "n up to 10^5" almost always means "find the linear or linearithmic solution."
 
+The next six are the AlgoMonster *Big-O practice* drills from the runtime cheat sheet, rewritten in C#
+(assume `Next()` reads one input value in O(1) and `Swap(ref a, ref b)` is an O(1) swap).
+
+7. Give the tight asymptotic bound of each expression.
+
+   - `3n + 2n + n`
+   - `2n^3 + 5n^2`
+   - `n + log n`
+   - `n^2 log n`
+   - `2^n + n^2`
+   - `10`
+
+**Answer:** Drop constants and lower-order terms, keep the dominant one: `3n + 2n + n = 6n →`
+**O(n)**; `2n^3 + 5n^2 →` **O(n^3)**; `n + log n →` **O(n)**; `n^2 log n →` **O(n^2 log n)** (already a
+single term); `2^n + n^2 →` **O(2^n)** (exponential dominates any polynomial); `10 →` **O(1)** (a
+constant — no dependence on n).
+
+8. What is the time complexity?
+
+```csharp
+int[] ar = new int[n];
+for (int i = 0; i < n; i++) ar[i] = Next();      // read one value: O(1)
+int maxVal = ar[0];
+for (int i = 1; i < n; i++) maxVal = Math.Max(maxVal, ar[i]);
+```
+
+**Answer:** **O(n)**. Allocating the array is O(n), the fill loop is O(n), and the max loop is O(n).
+Sequential blocks add and the dominant term is still linear: O(n) + O(n) + O(n) = O(n).
+
+9. What is the time complexity?
+
+```csharp
+int[][] ar = new int[n][];
+for (int i = 0; i < n; i++) ar[i] = new int[n];
+for (int i = 0; i < n; i++)
+    for (int j = 0; j < n; j++)
+        ar[i][j] = Next();
+for (int i = 0; i < n; i++)
+    Array.Sort(ar[i]);                           // sort one row of length n: O(n log n)
+```
+
+**Answer:** **O(n^2 log n)**. Filling the matrix is O(n^2); sorting each of the `n` rows costs
+O(n log n), so the sort phase is `n × O(n log n) = O(n^2 log n)`, which dominates the O(n^2) fill.
+
+10. What is the time complexity?
+
+```csharp
+int[,] ar = new int[n, n];
+for (int i = 0; i < n; i++)
+    for (int j = 0; j < n / 2; j++)
+        Swap(ref ar[i, j], ref ar[i, n - j - 1]);   // reverse row i in place
+```
+
+**Answer:** **O(n^2)**. The outer loop runs `n` times and the inner loop `n/2` times, so the body runs
+`n × n/2 = n^2 / 2` times — the constant ½ drops, leaving O(n^2).
+
+11. What is the time complexity? (`len = log2(n)`.)
+
+```csharp
+static void Func(string s, int idx, int len)
+{
+    if (idx == len) { /* an O(1) op */ }
+    else
+    {
+        Func(s + "a", idx + 1, len);
+        Func(s + "b", idx + 1, len);
+    }
+}
+// called as:
+Func("", 0, (int)Math.Log2(n));
+```
+
+**Answer:** **O(n)**. The recursion branches into two each level and stops at depth `len = log2 n`, so
+the call tree has `2^(log2 n) = n` leaves and O(n) nodes total; with O(1) work per node the total is
+O(n). The trap: a binary recursion of depth `log2 n` is *linear*, not logarithmic — because
+`2^(log n) = n`.
+
+12. What is the time complexity?
+
+```csharp
+var bin = new List<int>();
+while (n != 0)
+{
+    bin.Add(n);
+    n /= 2;
+}
+```
+
+**Answer:** **O(log n)**. `n` is integer-halved each iteration, reaching 0 after about `log2 n` steps —
+the standard "extract the binary digits of n" loop, which is O(d) for `d = ⌊log2 n⌋ + 1` digits.
+
 ## 30-second takeaway
 
 > Big-O is about *scaling*: drop constants and lower-order terms, then place the algorithm on the ladder
@@ -711,6 +922,8 @@ operations, well beyond the roughly 10^8 ops/second budget, so it times out. The
   worst.
 - **Constraints:** n ≤ 20 → O(2^n)/bitmask; n ≤ 10^3 → O(n^2); n ≤ 10^5 → O(n log n)/O(n); n ≥ 10^9 →
   O(log n)/O(1).
+- **Runtime cheat sheet (class → max n, ~10–20M-op budget):** O(1) n>10^9, O(log n) n>10^8,
+  O(n)/O(k log n)/O(n log n) n≤10^6, O(n^2) n≤3000, O(2^n) n≤20, O(n!) n≤12.
 
 ## References
 
@@ -722,5 +935,6 @@ operations, well beyond the roughly 10^8 ops/second budget, so it times out. The
 - cp-algorithms — [Binary search](https://cp-algorithms.com/num_methods/binary_search.html).
 - Microsoft Learn — [`Array.Sort` Method](https://learn.microsoft.com/en-us/dotnet/api/system.array.sort).
 - Microsoft Learn — [`List<T>` Class](https://learn.microsoft.com/en-us/dotnet/api/system.collections.generic.list-1) (capacity doubling).
+- AlgoMonster — [Runtime to Algo Cheat Sheet](https://algo.monster/problems/runtime_summary) (the input-size cheat sheet and Big-O practice drills the runtime cheat-sheet section mirrors).
 - NeetCode — [Roadmap](https://neetcode.io/roadmap).
 - LeetCode — [Study Plans](https://leetcode.com/studyplan/).

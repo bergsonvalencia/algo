@@ -559,7 +559,7 @@ static bool IsNStraightHand(int[] hand, int groupSize)
 }
 ```
 
-The `PriorityQueue<TElement,TPriority>` BCL type (a binary min-heap) is the go-to when the greedy needs
+The `PriorityQueue<TElement,TPriority>` BCL type (a 4-ary min-heap) is the go-to when the greedy needs
 the *minimum* priority repeatedly rather than ordered-by-key:
 
 ```csharp

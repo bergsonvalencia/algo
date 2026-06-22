@@ -759,7 +759,7 @@ static int BadSearch(int[] a, int lo, int hi, int target)
 }
 ```
 
-**Answer:** Two bugs. There is **no base case** for "not found" (no `lo > hi` guard), and the left
+**Answer:** Two bugs. There is **no base case** for "not found" (no `lo > hi` guard), and the right-half
 recursion `BadSearch(a, mid, hi, …)` does not shrink the range — when `hi - lo == 1`, `mid == lo`, so
 it recurses on the identical `[lo, hi]` forever. Both cause infinite recursion and a stack overflow.
 Fix: add `if (lo > hi) return -1;` and recurse on `mid + 1`/`mid - 1`, with an overflow-safe midpoint

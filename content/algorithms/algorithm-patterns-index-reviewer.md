@@ -13,6 +13,14 @@ deep-dive reviewer for each pattern.
 > [Glossary](algorithms-glossary-reviewer.md), a beginner-friendly reference that defines every
 > algorithm, data-structure, and LeetCode term used across these reviewers (with examples and common
 > pitfalls). If a word ever looks unfamiliar, it is almost certainly a link.
+>
+> **Newer still — fuzzy on the data structures themselves** (arrays, linked lists, stacks, queues, hash
+> maps, trees, graphs, heaps)? Start with the [Quick DSA Review](quick-dsa-review-reviewer.md): a fast,
+> visual tour of the fundamentals, with a Go-deeper link from each one into the pattern reviewers below.
+>
+> **Rusty on the math?** The [Math Basics](math-basics-reviewer.md) reviewer refreshes the high-school
+> essentials these patterns assume — number bases, logarithms, factorials, subsets, arithmetic and
+> geometric sums, and modular arithmetic — and explains the math behind `O(log n)`, `O(2^n)`, and `O(n^2)`.
 
 A reliable problem-solving loop works the same way every time. **(1) Read the [constraints](algorithms-glossary-reviewer.md#constraints "The limits a problem places on inputs; reading them first picks your complexity target.") first** —
 the input bounds (`n`), value ranges, and whether the data is sorted/unique tell you the target
@@ -295,6 +303,12 @@ two-pointer/window thinking sets up binary search, stacks/linked-lists/trees bui
 intuition, and [recursion](algorithms-glossary-reviewer.md#recursion "A function solving a problem by calling itself on smaller versions of it.") is the foundation for backtracking, graphs, and DP. Greedy, intervals,
 tries, and prefix sums round out the toolbox.
 
+**Step 0 — brand new to data structures?** Before step 1, skim the [Quick DSA Review](quick-dsa-review-reviewer.md):
+a visual on-ramp covering arrays, linked lists, stacks, queues, hash maps, trees, graphs, and heaps from
+first principles. It is the "what is a heap / why is a hash map O(1)" layer the pattern track assumes.
+Pair it with [Math Basics](math-basics-reviewer.md) if the notation (logs, `n!`, `2^n`, modular
+arithmetic) feels shaky — together they are the prerequisites the numbered steps build on.
+
 ```mermaid
 flowchart TD
     C["1. Complexity &amp; Big-O"] --> AH["2. Arrays &amp; Hashing"]
@@ -345,6 +359,8 @@ Every reviewer in this folder, with the cue it answers. Open the one matching yo
 | Reviewer | One-line description |
 | --- | --- |
 | [Glossary](algorithms-glossary-reviewer.md) | **Start here if any term is unfamiliar** — plain-English definitions of every algorithm, data-structure, and LeetCode term, with examples and pitfalls |
+| [Quick DSA Review](quick-dsa-review-reviewer.md) | **New to the data structures themselves? Start here** — a fast, visual tour of arrays, linked lists, stacks, queues, hash maps, trees, graphs, and heaps, each with a Go-deeper link |
+| [Math Basics](math-basics-reviewer.md) | **Shaky on interview math? Start here** — number bases, logarithms, permutations/factorial, subsets (2^n), arithmetic & geometric sums, and modular arithmetic, each with a Go-deeper link |
 | [Algorithmic Complexity & Big-O](complexity-and-big-o-reviewer.md) | O / Θ / Ω notation, the master theorem, amortized analysis, reading complexity from code |
 | [Recursion & Divide and Conquer](recursion-and-divide-and-conquer-reviewer.md) | [Base](algorithms-glossary-reviewer.md#base-case "The condition where a recursive function stops and returns a direct answer.")/recursive cases, the [call stack](algorithms-glossary-reviewer.md#call-stack "Memory tracking active function calls; each call pushes a frame, popped on return."), merge sort / quickselect, [recurrence](algorithms-glossary-reviewer.md#recurrence-relation "An algorithm's running time expressed in terms of its cost on smaller inputs.") solving |
 | [Two Pointers](two-pointers-reviewer.md) | Converging and fast/slow pointers over sorted data; pairs, partitions, palindromes |

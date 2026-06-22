@@ -373,6 +373,42 @@ number of multiplications, not avoiding overflow, which is why you usually combi
 Also called fast exponentiation or binary exponentiation.
 See: [Math & Number Theory](math-and-number-theory-reviewer.md)
 
+### Number base (radix)
+**A number base (or radix) is how many distinct digits a numeral system uses; each position is worth the
+next power of that base.** Base 10 has digits 0-9, so the places are 1, 10, 100, ...; base 2 has only 0
+and 1, so the places are 1, 2, 4, 8, ..., and binary `1011` is `8 + 2 + 1 = 11`. Computers use base 2
+because a circuit is naturally on/off. It matters because binary intuition underlies bitmasks, and
+"powers of 2" thinking is what makes logarithms and tree heights click. Do not confuse the *base* (how
+many digits) with the *value* — the same quantity is written `1011` in base 2 and `11` in base 10.
+See: [Math Basics](math-basics-reviewer.md) · [Bit Manipulation](bit-manipulation-reviewer.md)
+
+### Factorial
+**The factorial of `n`, written `n!`, is the product `n * (n-1) * ... * 1`, and it counts the number of
+ways to order `n` distinct items.** `5! = 5 * 4 * 3 * 2 * 1 = 120`, and `0! = 1` by convention. It
+matters because permutation counts are factorials, and `n!` grows faster than any exponential, so
+"enumerate all orderings" is feasible only for tiny `n` (around 10) — itself a cue for backtracking. Do
+not confuse the factorial *operation* (`n!`, a number) with *factorial time* O(n!) (a complexity class);
+note also that `n!` overflows a 64-bit `long` past `20!`.
+See: [Math Basics](math-basics-reviewer.md) · [Backtracking](backtracking-reviewer.md)
+
+### Arithmetic sequence
+**An arithmetic sequence has a constant difference between consecutive terms, and its sum is
+`(first + last) * count / 2`.** `2, 5, 8, 11` is arithmetic (difference 3); its sum is
+`(2 + 11) * 4 / 2 = 26`. The formula comes from pairing the smallest term with the largest. It matters
+most for nested-loop analysis: `1 + 2 + ... + n = n(n+1)/2`, which is why a triangular double loop is
+O(n^2). Do not confuse an arithmetic sequence (constant *difference*, add each step) with a *geometric*
+sequence (constant *ratio*, multiply each step).
+See: [Math Basics](math-basics-reviewer.md) · [Complexity & Big-O](complexity-and-big-o-reviewer.md)
+
+### Geometric sequence
+**A geometric sequence has a constant ratio between consecutive terms, and its sum is
+`first * (ratio^n - 1) / (ratio - 1)` for ratio != 1.** `1, 2, 4, 8` is geometric (ratio 2); its sum is
+`1 + 2 + 4 + 8 = 15 = 2^4 - 1`. It matters because a doubling sum is "one less than the next power,"
+which counts the nodes of a perfect binary tree (`2^(h+1) - 1`) and shows the bottom level holds about
+half of them. Do not confuse a geometric sequence (constant *ratio*, multiply) with an *arithmetic*
+sequence (constant *difference*, add) — the giveaway is whether terms scale or step up evenly.
+See: [Math Basics](math-basics-reviewer.md) · [Trees & Binary Search Trees](trees-and-binary-search-trees-reviewer.md)
+
 ## Core data structures
 
 ### Array

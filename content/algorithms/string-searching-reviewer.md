@@ -344,9 +344,14 @@ text:  T H E _ T R U T H _ I S _ O U T _ T H E R E
 index: 0 1 2 3 4 5 6 7 8 9 ...
 
 Alignment at startIndex=0:   "TRUTH" over "THE T"
-  compare right-to-left: pattern[4]='H' vs text[4]=' '  -> MISMATCH
-  window's last char = text[4] = ' ' (not in table) -> shift = default 5
-  startIndex += 5  ->  startIndex = 5? No: shift uses table[text[0+4]]=table[' ']=5 -> startIndex = 5
+  compare right-to-left: pattern[4]='H' vs text[4]='T'  -> MISMATCH
+  window's last char = text[0+4] = text[4] = 'T' -> table['T'] = 1
+  startIndex += 1  ->  startIndex = 1
+
+Alignment at startIndex=1:   "TRUTH" over "HE TR"
+  compare right-to-left: pattern[4]='H' vs text[5]='R'  -> MISMATCH
+  window's last char = text[1+4] = text[5] = 'R' -> table['R'] = 3
+  startIndex += 3  ->  startIndex = 4
 
 Alignment at startIndex=4:   "TRUTH" over "TRUTH"   (after the shift lands here)
   compare right-to-left:
@@ -361,11 +366,11 @@ Alignment at startIndex=4:   "TRUTH" over "TRUTH"   (after the shift lands here)
 ...subsequent alignments shift by table lookups (often the full 5) until the text is exhausted.
 ```
 
-*The first mismatch on a space — a character absent from the pattern — lets BMH jump a full pattern-length forward, skipping characters it never inspects.*
+*Each mismatch's window-ending character ('T' then 'R') IS in the pattern, so BMH shifts by the table amount (1, then 3) and lands exactly on the match at index 4 — inspecting only a handful of characters.*
 
-The payoff is visible: where naive search would test alignments at indices 1, 2, 3 one by one, BMH
-leaps straight past them. On a large alphabet most mismatched characters are absent from the pattern,
-so most shifts are the full `m`, and BMH examines only about `n / m` characters in the best case.
+The payoff is visible: where naive search would test every alignment one by one, BMH skips ahead by
+table-driven amounts (here 1 then 3). On a large alphabet most mismatched characters are absent from the
+pattern, so most shifts are the full `m`, and BMH examines only about `n / m` characters in the best case.
 
 ## BMH complexity
 

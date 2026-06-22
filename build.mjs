@@ -30,6 +30,7 @@ const SITE = {
 const GROUPS = [
   { title: "Start here", accent: "blue", items: ["algorithm-patterns-index-reviewer", "algomonster-flowchart-reviewer"] },
   { title: "Foundations", accent: "teal", items: [
+    "quick-dsa-review-reviewer", "math-basics-reviewer",
     "complexity-and-big-o-reviewer", "arrays-and-hashing-reviewer",
     "recursion-and-divide-and-conquer-reviewer", "sorting-algorithms-reviewer",
     "bit-manipulation-reviewer", "math-and-number-theory-reviewer",
@@ -44,7 +45,7 @@ const GROUPS = [
     "linked-lists-reviewer", "trees-and-binary-search-trees-reviewer",
     "heaps-and-priority-queues-reviewer", "tries-reviewer", "graphs-reviewer",
     "hash-tables-reviewer", "balanced-trees-and-avl-reviewer", "b-trees-reviewer",
-    "sets-and-set-algorithms-reviewer",
+    "sets-and-set-algorithms-reviewer", "segment-tree-and-fenwick-reviewer",
   ]},
   { title: "Systems & concurrency", accent: "green", items: ["collection-concurrency-reviewer"] },
   { title: "Reference", accent: "rose", items: ["algorithms-glossary-reviewer"] },

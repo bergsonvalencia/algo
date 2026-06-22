@@ -710,7 +710,7 @@ graph TD
     3 ---|6| 4
 ```
 
-*The weighted graph below; Kruskal and Prim both select MST edges 0–1, 1–2, 1–3, 2–4 for a total weight of 12, rejecting the heavier 0–2 (weight 3) and 3–4 (weight 6) that would only close cycles.*
+*The weighted graph above; Kruskal and Prim both select MST edges 0–1, 1–2, 1–3, 2–4 for a total weight of 12, rejecting 0–2 (weight 3) and 3–4 (weight 6) because, by the time they are reached in ascending order, their endpoints are already connected and adding them would only close a cycle.*
 
 ```csharp
 // Kruskal's MST: sort edges by weight, add each with union-find unless it closes a cycle.
