@@ -3,20 +3,27 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Algorithm Visualizer — Reviewer add-on</title>
+  <title>Algorithm Visualizer</title>
+  <meta name="description" content="Watch every LeetCode algorithm pattern run step by step — animated playback with a synced code panel and a mentor note on every step.">
   <link rel="stylesheet" href="src/player/player.css">
   <style>
-    :root { color-scheme: dark; }
+    :root { color-scheme: dark;
+      --bg: #0b0d12; --side: #0e1117; --border: #20242e; --text: #e6e9ef; --muted: #8b93a4; --accent: #5b8cff;
+      --acc-blue:#5b8cff; --acc-teal:#2bd0a8; --acc-purple:#b07bf0; --acc-amber:#f0a93b; --acc-rose:#fc5b7a;
+      --acc-green:#36c692; --acc-cyan:#45b6e0; --acc-pink:#e478c8; }
     * { box-sizing: border-box; }
-    body { margin: 0; background: #0b0d12; color: #e6e9ef;
+    body { margin: 0; background: var(--bg); color: var(--text);
       font-family: "Inter", system-ui, -apple-system, Segoe UI, Roboto, sans-serif; }
-    .app { display: grid; grid-template-columns: 280px 1fr; min-height: 100vh; }
-    .side { border-right: 1px solid #20242e; padding: 18px 14px; overflow-y: auto; }
-    .brand { font-weight: 700; font-size: 15px; padding: 4px 8px 14px; letter-spacing: .2px; }
-    .brand small { display: block; font-weight: 400; color: #8b93a4; font-size: 11.5px; margin-top: 3px; }
-    .search-box { width: 100%; margin: 0 0 4px; padding: 8px 11px; background: #11141b; border: 1px solid #20242e;
-      border-radius: 8px; color: #e6e9ef; font-size: 13px; font-family: inherit; }
-    .search-box:focus { outline: none; border-color: #5b8cff; }
+    .app { display: grid; grid-template-columns: 286px 1fr; min-height: 100vh; }
+
+    /* sidebar */
+    .side { border-right: 1px solid var(--border); padding: 16px 14px; overflow-y: auto; background: var(--side);
+      position: sticky; top: 0; height: 100vh; }
+    .brand { display: block; font-weight: 700; font-size: 15px; padding: 4px 8px 12px; letter-spacing: .2px; color: var(--text); text-decoration: none; cursor: pointer; }
+    .brand small { display: block; font-weight: 400; color: var(--muted); font-size: 11.5px; margin-top: 3px; }
+    .search-box { width: 100%; margin: 0 0 4px; padding: 8px 11px; background: #11141b; border: 1px solid var(--border);
+      border-radius: 8px; color: var(--text); font-size: 13px; font-family: inherit; }
+    .search-box:focus { outline: none; border-color: var(--accent); }
     .search-box::placeholder { color: #6b7384; }
     .search-box::-webkit-search-cancel-button { filter: invert(.5); cursor: pointer; }
     .no-results { color: #6b7384; font-size: 13px; padding: 10px; }
@@ -27,42 +34,124 @@
     .nav-item:hover { background: #161a22; }
     .nav-item.active { background: #1d2330; color: #fff; }
     .nav-item .meta { display: block; color: #6b7384; font-size: 11px; font-family: "JetBrains Mono", ui-monospace, monospace; margin-top: 2px; }
-    .main { padding: 26px clamp(16px, 4vw, 48px); display: flex; flex-direction: column; gap: 14px; }
-    .main-head { display: flex; align-items: baseline; gap: 14px; flex-wrap: wrap; }
-    .main h1 { font-size: 19px; margin: 0; }
-    .home-link { display: block; color: #8b93a4; font-size: 12px; text-decoration: none; padding: 0 8px 12px; }
+
+    /* main */
+    .main { padding: 28px clamp(16px, 4vw, 52px); }
+    .home-link { display: inline-block; color: var(--muted); font-size: 12.5px; text-decoration: none; margin-bottom: 16px; }
     .home-link:hover { color: #c4cad6; }
-    .reviewer-link { color: #5b8cff; font-size: 13px; text-decoration: none; white-space: nowrap; }
+
+    /* landing */
+    .hero { max-width: 760px; margin-bottom: 26px; }
+    .hero h1 { font-size: clamp(26px, 4vw, 38px); margin: 0 0 12px; letter-spacing: -.5px; line-height: 1.1; }
+    .hero h1 .grad { background: linear-gradient(90deg, var(--acc-blue), var(--acc-teal)); -webkit-background-clip: text; background-clip: text; color: transparent; }
+    .lede { font-size: 15.5px; line-height: 1.6; color: #c4cad6; margin: 0 0 14px; }
+    .stats { font-size: 13px; color: var(--muted); margin: 0; }
+    .stats b { color: var(--text); font-variant-numeric: tabular-nums; }
+    .kbd-hint { color: var(--muted); font-size: 12.5px; margin: 6px 0 0; }
+    .kbd-hint kbd { font-family: var(--mono, monospace); background: #1a1f29; border: 1px solid var(--border); border-bottom-width: 2px; border-radius: 5px; padding: 1px 6px; font-size: 11px; color: #c4cad6; }
+
+    .cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(290px, 1fr)); gap: 16px; }
+    .card { background: #11141b; border: 1px solid var(--border); border-radius: 12px; padding: 14px 14px 8px; border-top: 3px solid var(--ca, var(--accent)); }
+    .card-head { display: flex; align-items: baseline; justify-content: space-between; margin-bottom: 8px; }
+    .card-head h3 { font-size: 14px; margin: 0; color: var(--text); }
+    .card-count { font-family: var(--mono, monospace); font-size: 11.5px; color: var(--ca, var(--accent)); font-weight: 700; }
+    .card-list { list-style: none; margin: 0; padding: 0; }
+    .chip { display: flex; align-items: center; justify-content: space-between; gap: 8px; width: 100%; text-align: left;
+      background: none; border: none; color: #c4cad6; padding: 6px 8px; border-radius: 7px; cursor: pointer; font-size: 13px; }
+    .chip:hover { background: #181d27; color: #fff; }
+    .chip-cx { font-family: var(--mono, monospace); font-size: 10.5px; color: #6b7384; white-space: nowrap; }
+    .acc-blue{--ca:var(--acc-blue)} .acc-teal{--ca:var(--acc-teal)} .acc-purple{--ca:var(--acc-purple)}
+    .acc-amber{--ca:var(--acc-amber)} .acc-rose{--ca:var(--acc-rose)} .acc-green{--ca:var(--acc-green)}
+    .acc-cyan{--ca:var(--acc-cyan)} .acc-pink{--ca:var(--acc-pink)}
+
+    /* player view */
+    .back-link { background: none; border: none; color: var(--accent); font-size: 13px; cursor: pointer; padding: 0; margin-bottom: 14px; font-family: inherit; }
+    .back-link:hover { text-decoration: underline; }
+    .main-head { display: flex; align-items: baseline; gap: 14px; flex-wrap: wrap; margin-bottom: 6px; }
+    .main-head h1 { font-size: 19px; margin: 0; }
+    .reviewer-link { color: var(--accent); font-size: 13px; text-decoration: none; white-space: nowrap; }
     .reviewer-link:hover { text-decoration: underline; }
-    .hint { color: #8b93a4; font-size: 13px; margin: 0 0 6px; }
+    .hint { color: var(--muted); font-size: 13px; margin: 0 0 14px; }
     .player-host { max-width: 1280px; }
-    @media (max-width: 760px) { .app { grid-template-columns: 1fr; } .side { border-right: none; border-bottom: 1px solid #20242e; } }
+
+    /* mobile menu + keyboard overlay */
+    .menu-toggle { display: none; }
+    .backdrop { position: fixed; inset: 0; background: rgba(0,0,0,.5); z-index: 40; }
+    .kbd-overlay { position: fixed; inset: 0; display: grid; place-items: center; z-index: 60; }
+    .kbd-card { background: #11141b; border: 1px solid var(--border); border-radius: 14px; padding: 22px 26px; max-width: 360px; box-shadow: 0 20px 60px rgba(0,0,0,.5); }
+    .kbd-card h2 { margin: 0 0 14px; font-size: 16px; }
+    .kbd-card dl { display: grid; grid-template-columns: auto 1fr; gap: 9px 16px; margin: 0; align-items: center; }
+    .kbd-card dt { text-align: right; }
+    .kbd-card dd { margin: 0; color: #c4cad6; font-size: 13px; }
+    .kbd-card kbd { font-family: var(--mono, monospace); background: #1a1f29; border: 1px solid var(--border); border-bottom-width: 2px; border-radius: 5px; padding: 2px 7px; font-size: 11.5px; color: var(--text); }
+    .kbd-card .close-hint { color: var(--muted); font-size: 11.5px; margin: 14px 0 0; text-align: center; }
+
+    @media (max-width: 900px) {
+      .app { grid-template-columns: 1fr; }
+      .menu-toggle { display: inline-grid; place-items: center; position: fixed; top: 12px; left: 12px; z-index: 50;
+        width: 40px; height: 40px; background: #11141b; border: 1px solid var(--border); border-radius: 9px; color: var(--text); cursor: pointer; font-size: 18px; }
+      .side { position: fixed; top: 0; left: 0; width: 280px; z-index: 45; transform: translateX(-102%); transition: transform .22s ease; }
+      .side.open { transform: translateX(0); }
+      .main { padding-top: 64px; }
+    }
   </style>
 </head>
 <body>
+  <button class="menu-toggle" id="menu-toggle" aria-label="Toggle menu" aria-expanded="false">☰</button>
   <div class="app">
-    <aside class="side">
-      <a id="home-link" class="home-link" href="../index.html" hidden>← Algorithm Patterns</a>
-      <div class="brand">Algorithm Visualizer<small>Animated playback for the algorithms reviewer</small></div>
+    <aside class="side" id="side">
+      <a class="brand" id="brand" href="#" aria-label="Home">Algorithm Visualizer<small>Animated playback for the algorithms reviewer</small></a>
       <input id="search" class="search-box" type="search" placeholder="Search visualizations…  (press /)" aria-label="Search visualizations" autocomplete="off">
-      <nav id="nav"></nav>
+      <nav id="nav" aria-label="All visualizations"></nav>
       <p id="no-results" class="no-results" hidden>No visualizations match your search.</p>
     </aside>
-    <main class="main">
-      <div class="main-head">
-        <h1 id="title">Loading…</h1>
-        <a id="reviewer-link" class="reviewer-link" target="_blank" rel="noopener" hidden>Read the full reviewer ↗</a>
-      </div>
-      <p class="hint">▶ play · ←/→ step · space play/pause · −/+ speed · drag the scrubber. This is an add-on; it never modifies the reviewer markdown.</p>
-      <div class="player-host" id="host"></div>
+
+    <main class="main" id="main">
+      <!-- LANDING -->
+      <section class="landing" id="landing" aria-label="Gallery">
+        <a id="home-link" class="home-link" href="../index.html" hidden>← Algorithm Patterns</a>
+        <div class="hero">
+          <h1>Algorithm <span class="grad">Visualizer</span></h1>
+          <p class="lede">Watch every LeetCode pattern run — step by step. The data structure animates, the code line lights up, and a mentor note explains the <em>why</em> behind each step.</p>
+          <p class="stats"><b id="stat-viz">0</b> visualizations · <b id="stat-topics">0</b> topics · each synced 1:1 with its reviewer section</p>
+          <p class="kbd-hint">Tip: press <kbd>/</kbd> to search · <kbd>?</kbd> for keyboard shortcuts</p>
+        </div>
+        <div class="cards" id="cards"></div>
+      </section>
+
+      <!-- PLAYER -->
+      <section class="player-view" id="player-view" hidden>
+        <button class="back-link" id="back-link">← Gallery</button>
+        <div class="main-head">
+          <h1 id="title"></h1>
+          <a id="reviewer-link" class="reviewer-link" target="_blank" rel="noopener" hidden>Read the full reviewer ↗</a>
+        </div>
+        <p class="hint">▶ play · ←/→ step · space play/pause · −/+ speed · drag the scrubber · <kbd>?</kbd> shortcuts. An add-on; it never modifies the reviewer.</p>
+        <div class="player-host" id="host"></div>
+      </section>
     </main>
+  </div>
+
+  <div class="backdrop" id="backdrop" hidden></div>
+  <div class="kbd-overlay" id="kbd-overlay" hidden role="dialog" aria-modal="true" aria-label="Keyboard shortcuts">
+    <div class="kbd-card">
+      <h2>Keyboard shortcuts</h2>
+      <dl>
+        <dt><kbd>Space</kbd></dt><dd>Play / pause</dd>
+        <dt><kbd>←</kbd> <kbd>→</kbd></dt><dd>Step back / forward</dd>
+        <dt><kbd>−</kbd> <kbd>+</kbd></dt><dd>Slower / faster</dd>
+        <dt><kbd>Home</kbd> <kbd>End</kbd></dt><dd>First / last step</dd>
+        <dt><kbd>/</kbd></dt><dd>Search visualizations</dd>
+        <dt><kbd>?</kbd></dt><dd>This help</dd>
+        <dt><kbd>Esc</kbd></dt><dd>Close / back to gallery</dd>
+      </dl>
+      <p class="close-hint">Press <kbd>?</kbd> or <kbd>Esc</kbd> to close</p>
+    </div>
   </div>
 
   <script type="module">
     import { mountFromUrl } from './src/player/player.mjs';
 
-    // Topic slugs + labels match the algo reviewer basenames/titles, so a visualization
-    // here lines up 1:1 with its topic page on the main site.
     const TOPIC_LABELS = {
       'complexity-and-big-o': 'Algorithmic Complexity & Big-O',
       'arrays-and-hashing': 'Arrays & Hashing',
@@ -85,48 +174,94 @@
       'tries': 'Tries (Prefix Trees)',
       'graphs': 'Graphs',
     };
-    // Pedagogical order matching the algo site's groups (Foundations → Core → Data structures).
     const TOPIC_ORDER = Object.keys(TOPIC_LABELS);
+    const ACCENTS = ['acc-blue', 'acc-teal', 'acc-purple', 'acc-amber', 'acc-rose', 'acc-green', 'acc-cyan', 'acc-pink'];
 
     const nav = document.getElementById('nav');
     const host = document.getElementById('host');
     const titleEl = document.getElementById('title');
     const reviewerLink = document.getElementById('reviewer-link');
-    // When served as a sub-site of the main algo site (under /viz/), show links back to it.
+    const landing = document.getElementById('landing');
+    const playerView = document.getElementById('player-view');
+    const side = document.getElementById('side');
     const onSite = location.pathname.includes('/viz');
     if (onSite) document.getElementById('home-link').hidden = false;
 
-    const manifest = await fetch('data/manifest.json').then((r) => r.json());
-    if (!manifest.length) { titleEl.textContent = 'No visualizations built yet — run `npm run build`.'; }
+    const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+    const escapeRe = (s) => s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 
-    // group by topic, ordered by the learning path (unknown topics fall to the end)
+    const manifest = await fetch('data/manifest.json').then((r) => r.json());
     const byTopic = {};
     for (const m of manifest) (byTopic[m.topic] ??= []).push(m);
     const orderedTopics = [...new Set([...TOPIC_ORDER, ...Object.keys(byTopic)])].filter((t) => byTopic[t]);
 
-    const buttons = [], ordered = [], groups = [];
-    for (const topic of orderedTopics) {
+    document.getElementById('stat-viz').textContent = manifest.length;
+    document.getElementById('stat-topics').textContent = orderedTopics.length;
+
+    let currentPlayer = null;
+    const btnFor = new Map();
+    const buttons = [], groups = [];
+
+    // sidebar nav + landing cards (built together so they share btnFor)
+    const cardsEl = document.getElementById('cards');
+    orderedTopics.forEach((topic, ti) => {
       const items = byTopic[topic];
       const label = TOPIC_LABELS[topic] ?? topic;
-      const h = document.createElement('div'); h.className = 'group-h';
-      h.textContent = label; nav.appendChild(h);
-      const groupButtons = [];
-      for (const m of items) {
-        const b = document.createElement('button');
-        b.className = 'nav-item';
-        b.dataset.title = m.title;
-        b.innerHTML = `<span class="nav-title">${m.title}</span><span class="meta">${m.steps} steps</span>`;
-        b.dataset.q = `${m.title} ${label} ${m.topic}`.toLowerCase();
-        b.addEventListener('click', () => select(m, b));
-        nav.appendChild(b); buttons.push(b); ordered.push(m); groupButtons.push(b);
-      }
-      groups.push({ header: h, buttons: groupButtons });
-    }
+      const accent = ACCENTS[ti % ACCENTS.length];
 
-    // --- search/filter ---
+      const h = document.createElement('div'); h.className = 'group-h'; h.textContent = label; nav.appendChild(h);
+      const groupButtons = [];
+
+      const card = document.createElement('div'); card.className = 'card ' + accent;
+      card.innerHTML = `<div class="card-head"><h3>${esc(label)}</h3><span class="card-count">${items.length}</span></div>`;
+      const ul = document.createElement('ul'); ul.className = 'card-list';
+
+      for (const m of items) {
+        // sidebar button
+        const b = document.createElement('button');
+        b.className = 'nav-item'; b.dataset.title = m.title;
+        b.innerHTML = `<span class="nav-title">${esc(m.title)}</span><span class="meta">${m.steps} steps${m.complexity ? ' · ' + esc(m.complexity) : ''}</span>`;
+        b.dataset.q = `${m.title} ${label} ${m.topic} ${m.complexity || ''}`.toLowerCase();
+        b.addEventListener('click', () => select(m));
+        nav.appendChild(b); buttons.push(b); groupButtons.push(b); btnFor.set(m, b);
+
+        // landing card chip
+        const li = document.createElement('li');
+        const chip = document.createElement('button'); chip.className = 'chip';
+        chip.innerHTML = `<span>${esc(m.title)}</span>${m.complexity ? `<span class="chip-cx">${esc(m.complexity)}</span>` : ''}`;
+        chip.addEventListener('click', () => select(m));
+        li.appendChild(chip); ul.appendChild(li);
+      }
+      card.appendChild(ul); cardsEl.appendChild(card);
+      groups.push({ header: h, buttons: groupButtons });
+    });
+
+    // --- views ---
+    function showLanding() {
+      currentPlayer?.pause?.();
+      playerView.hidden = true; landing.hidden = false;
+      buttons.forEach((b) => b.classList.remove('active'));
+      history.replaceState(null, '', location.pathname);
+      window.scrollTo(0, 0);
+    }
+    async function select(m) {
+      const btn = btnFor.get(m);
+      buttons.forEach((b) => b.classList.toggle('active', b === btn));
+      landing.hidden = true; playerView.hidden = false;
+      titleEl.textContent = m.title;
+      if (onSite) { reviewerLink.hidden = false; reviewerLink.href = `../${m.topic}-reviewer.html`; }
+      else reviewerLink.hidden = true;
+      closeMenu();
+      btn?.scrollIntoView({ block: 'nearest' });
+      window.scrollTo(0, 0);
+      currentPlayer = await mountFromUrl(host, `data/${m.file}`);
+    }
+    document.getElementById('brand').addEventListener('click', (e) => { e.preventDefault(); showLanding(); });
+    document.getElementById('back-link').addEventListener('click', showLanding);
+
+    // --- search ---
     const searchBox = document.getElementById('search');
     const noResults = document.getElementById('no-results');
-    const escapeRe = (s) => s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
     function applyFilter() {
       const q = searchBox.value.trim().toLowerCase();
       const rx = q ? new RegExp(`(${escapeRe(q)})`, 'ig') : null;
@@ -136,8 +271,7 @@
         for (const b of g.buttons) {
           const show = !q || b.dataset.q.includes(q);
           b.style.display = show ? '' : 'none';
-          const t = b.querySelector('.nav-title');
-          t.innerHTML = rx ? b.dataset.title.replace(rx, '<mark>$1</mark>') : b.dataset.title;
+          b.querySelector('.nav-title').innerHTML = rx ? esc(b.dataset.title).replace(rx, '<mark>$1</mark>') : esc(b.dataset.title);
           if (show) groupVisible = true;
         }
         g.header.style.display = groupVisible ? '' : 'none';
@@ -146,21 +280,35 @@
       noResults.hidden = anyVisible;
     }
     searchBox.addEventListener('input', applyFilter);
-    searchBox.addEventListener('keydown', (e) => { if (e.key === 'Escape') { searchBox.value = ''; applyFilter(); searchBox.blur(); } });
+
+    // --- mobile menu ---
+    const menuToggle = document.getElementById('menu-toggle');
+    const backdrop = document.getElementById('backdrop');
+    function openMenu() { side.classList.add('open'); backdrop.hidden = false; menuToggle.setAttribute('aria-expanded', 'true'); }
+    function closeMenu() { side.classList.remove('open'); backdrop.hidden = true; menuToggle.setAttribute('aria-expanded', 'false'); }
+    menuToggle.addEventListener('click', () => side.classList.contains('open') ? closeMenu() : openMenu());
+    backdrop.addEventListener('click', closeMenu);
+
+    // --- keyboard help overlay ---
+    const kbd = document.getElementById('kbd-overlay');
+    const toggleHelp = () => { kbd.hidden = !kbd.hidden; backdrop.hidden = kbd.hidden; };
+    kbd.addEventListener('click', () => { kbd.hidden = true; backdrop.hidden = true; });
+
+    // --- global keys ---
     document.addEventListener('keydown', (e) => {
-      if (e.key === '/' && !/^(INPUT|TEXTAREA)$/.test(document.activeElement?.tagName || '')) { e.preventDefault(); searchBox.focus(); }
+      const typing = /^(INPUT|TEXTAREA)$/.test(document.activeElement?.tagName || '');
+      if (e.key === 'Escape') {
+        if (!kbd.hidden) { kbd.hidden = true; backdrop.hidden = true; }
+        else if (searchBox.value) { searchBox.value = ''; applyFilter(); searchBox.blur(); }
+        else if (!playerView.hidden) showLanding();
+        return;
+      }
+      if (typing) return;
+      if (e.key === '/') { e.preventDefault(); openMenu(); searchBox.focus(); }
+      else if (e.key === '?') { e.preventDefault(); toggleHelp(); }
     });
 
-    async function select(m, btn) {
-      buttons.forEach((b) => b.classList.toggle('active', b === btn));
-      titleEl.textContent = m.title;
-      // The viz topic slug matches the reviewer basename, so the same example links 1:1.
-      if (onSite) { reviewerLink.hidden = false; reviewerLink.href = `../${m.topic}-reviewer.html`; }
-      else reviewerLink.hidden = true;
-      await mountFromUrl(host, `data/${m.file}`);
-    }
-
-    if (ordered.length) select(ordered[0], buttons[0]);
+    showLanding();
   </script>
 </body>
 </html>

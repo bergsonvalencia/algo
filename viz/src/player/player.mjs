@@ -50,6 +50,7 @@ export class AlgVizPlayer {
     root.innerHTML = `
       <div class="algviz-head">
         <span class="algviz-title"></span>
+        <span class="algviz-cx" title="Big-O complexity (estimated from the mentor notes)" hidden></span>
         <span class="algviz-spacer"></span>
         <span class="algviz-step" aria-live="off"></span>
         <button class="algviz-btn algviz-full" aria-label="Toggle fullscreen">${icon(ICONS.full)}</button>
@@ -78,6 +79,7 @@ export class AlgVizPlayer {
     this.$ = (s) => root.querySelector(s);
 
     this.$('.algviz-title').textContent = this.trace.title;
+    if (this.trace.complexity) { const cx = this.$('.algviz-cx'); cx.hidden = false; cx.textContent = this.trace.complexity; }
     this.$('.algviz-scrub').max = String(this.frames.length - 1);
     if (!this.trace.code?.length) this.$('.algviz-code').hidden = true;
 

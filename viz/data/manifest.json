@@ -3,726 +3,847 @@
     "file": "contains-duplicate.json",
     "title": "Contains Duplicate (seen-set)",
     "topic": "arrays-and-hashing",
-    "steps": 9
+    "steps": 9,
+    "complexity": "O(n log n)"
   },
   {
     "file": "encode-decode.json",
     "title": "Encode & Decode Strings",
     "topic": "arrays-and-hashing",
-    "steps": 16
+    "steps": 16,
+    "complexity": "O(N)"
   },
   {
     "file": "group-anagrams.json",
     "title": "Group Anagrams (canonical key)",
     "topic": "arrays-and-hashing",
-    "steps": 14
+    "steps": 14,
+    "complexity": "O(k)"
   },
   {
     "file": "longest-consecutive.json",
     "title": "Longest Consecutive Sequence (hash set)",
     "topic": "arrays-and-hashing",
-    "steps": 17
+    "steps": 17,
+    "complexity": "O(n)"
   },
   {
     "file": "product-except-self.json",
     "title": "Product of Array Except Self",
     "topic": "arrays-and-hashing",
-    "steps": 21
+    "steps": 21,
+    "complexity": "O(n)"
   },
   {
     "file": "top-k-frequent.json",
     "title": "Top K Frequent (bucket sort)",
     "topic": "arrays-and-hashing",
-    "steps": 18
+    "steps": 18,
+    "complexity": "O(1)"
   },
   {
     "file": "two-sum.json",
     "title": "Two Sum (hash map)",
     "topic": "arrays-and-hashing",
-    "steps": 6
+    "steps": 6,
+    "complexity": "O(n)"
   },
   {
     "file": "valid-anagram.json",
     "title": "Valid Anagram",
     "topic": "arrays-and-hashing",
-    "steps": 9
+    "steps": 9,
+    "complexity": "O(n)"
   },
   {
     "file": "combination-sum.json",
     "title": "Combination Sum",
     "topic": "backtracking",
-    "steps": 29
+    "steps": 29,
+    "complexity": "O(target/min)"
   },
   {
     "file": "combinations.json",
     "title": "Combinations",
     "topic": "backtracking",
-    "steps": 36
+    "steps": 36,
+    "complexity": "O(k * C(n,k)"
   },
   {
     "file": "generate-parentheses.json",
     "title": "Generate Parentheses",
     "topic": "backtracking",
-    "steps": 41
+    "steps": 41,
+    "complexity": "O(4^n / sqrt(n)"
   },
   {
     "file": "letter-combinations.json",
     "title": "Letter Combinations of a Phone Number",
     "topic": "backtracking",
-    "steps": 35
+    "steps": 35,
+    "complexity": "O(n * 4^n)"
   },
   {
     "file": "n-queens.json",
     "title": "N-Queens",
     "topic": "backtracking",
-    "steps": 22
+    "steps": 22,
+    "complexity": "O(n!)"
   },
   {
     "file": "palindrome-partitioning.json",
     "title": "Palindrome Partitioning",
     "topic": "backtracking",
-    "steps": 23
+    "steps": 23,
+    "complexity": "O(n)"
   },
   {
     "file": "permutations.json",
     "title": "Permutations",
     "topic": "backtracking",
-    "steps": 26
+    "steps": 26,
+    "complexity": "O(n * n!)"
   },
   {
     "file": "subsets.json",
     "title": "Subsets",
     "topic": "backtracking",
-    "steps": 24
+    "steps": 24,
+    "complexity": "O(n * 2^n)"
   },
   {
     "file": "subsets-ii.json",
     "title": "Subsets II",
     "topic": "backtracking",
-    "steps": 20
+    "steps": 20,
+    "complexity": "O(n * 2^n)"
   },
   {
     "file": "word-search.json",
     "title": "Word Search",
     "topic": "backtracking",
-    "steps": 23
+    "steps": 23,
+    "complexity": "O(m·n·4^L)"
   },
   {
     "file": "binary-search.json",
     "title": "Binary Search",
     "topic": "binary-search",
-    "steps": 5
+    "steps": 5,
+    "complexity": "O(log n)"
   },
   {
     "file": "find-min-rotated.json",
     "title": "Find Minimum in Rotated Sorted Array",
     "topic": "binary-search",
-    "steps": 6
+    "steps": 6,
+    "complexity": "O(log n)"
   },
   {
     "file": "first-last-occurrence.json",
     "title": "First & Last Occurrence",
     "topic": "binary-search",
-    "steps": 19
+    "steps": 19,
+    "complexity": "O(log n)"
   },
   {
     "file": "binary-search-sqrt.json",
     "title": "Integer Square Root",
     "topic": "binary-search",
-    "steps": 10
+    "steps": 10,
+    "complexity": "O(log x)"
   },
   {
     "file": "koko-bananas.json",
     "title": "Koko Eating Bananas",
     "topic": "binary-search",
-    "steps": 15
+    "steps": 15,
+    "complexity": "O(n)"
   },
   {
     "file": "search-rotated.json",
     "title": "Search in Rotated Sorted Array",
     "topic": "binary-search",
-    "steps": 9
+    "steps": 9,
+    "complexity": "O(log n)"
   },
   {
     "file": "search-insert.json",
     "title": "Search Insert Position",
     "topic": "binary-search",
-    "steps": 6
+    "steps": 6,
+    "complexity": null
   },
   {
     "file": "counting-bits.json",
     "title": "Counting Bits (DP)",
     "topic": "bit-manipulation",
-    "steps": 12
+    "steps": 12,
+    "complexity": "O(n)"
   },
   {
     "file": "missing-number.json",
     "title": "Missing Number",
     "topic": "bit-manipulation",
-    "steps": 8
+    "steps": 8,
+    "complexity": null
   },
   {
     "file": "count-bits.json",
     "title": "Number of 1 Bits",
     "topic": "bit-manipulation",
-    "steps": 8
+    "steps": 8,
+    "complexity": "O(popcount)"
   },
   {
     "file": "reverse-bits.json",
     "title": "Reverse Bits",
     "topic": "bit-manipulation",
-    "steps": 26
+    "steps": 26,
+    "complexity": "O(1)"
   },
   {
     "file": "single-number.json",
     "title": "Single Number (XOR)",
     "topic": "bit-manipulation",
-    "steps": 12
+    "steps": 12,
+    "complexity": "O(n)"
   },
   {
     "file": "linear-search.json",
     "title": "Linear Search (O(n))",
     "topic": "complexity-and-big-o",
-    "steps": 6
+    "steps": 6,
+    "complexity": "O(n)"
   },
   {
     "file": "nested-loops-quadratic.json",
     "title": "Nested Loops (O(n²))",
     "topic": "complexity-and-big-o",
-    "steps": 10
+    "steps": 10,
+    "complexity": "O(n)"
   },
   {
     "file": "climbing-stairs.json",
     "title": "Climbing Stairs",
     "topic": "dynamic-programming",
-    "steps": 6
+    "steps": 6,
+    "complexity": "O(n)"
   },
   {
     "file": "coin-change.json",
     "title": "Coin Change",
     "topic": "dynamic-programming",
-    "steps": 8
+    "steps": 8,
+    "complexity": "O(amount × coins)"
   },
   {
     "file": "decode-ways.json",
     "title": "Decode Ways",
     "topic": "dynamic-programming",
-    "steps": 8
+    "steps": 8,
+    "complexity": "O(n)"
   },
   {
     "file": "edit-distance.json",
     "title": "Edit Distance",
     "topic": "dynamic-programming",
-    "steps": 25
+    "steps": 25,
+    "complexity": "O(m·n)"
   },
   {
     "file": "house-robber.json",
     "title": "House Robber",
     "topic": "dynamic-programming",
-    "steps": 12
+    "steps": 12,
+    "complexity": "O(n)"
   },
   {
     "file": "lcs.json",
     "title": "Longest Common Subsequence",
     "topic": "dynamic-programming",
-    "steps": 17
+    "steps": 17,
+    "complexity": "O(m·n)"
   },
   {
     "file": "lis.json",
     "title": "Longest Increasing Subsequence",
     "topic": "dynamic-programming",
-    "steps": 10
+    "steps": 10,
+    "complexity": "O(n^2)"
   },
   {
     "file": "partition-subset-sum.json",
     "title": "Partition Equal Subset Sum",
     "topic": "dynamic-programming",
-    "steps": 16
+    "steps": 16,
+    "complexity": "O(n × sum/2)"
   },
   {
     "file": "unique-paths.json",
     "title": "Unique Paths",
     "topic": "dynamic-programming",
-    "steps": 8
+    "steps": 8,
+    "complexity": "O(m*n)"
   },
   {
     "file": "word-break.json",
     "title": "Word Break",
     "topic": "dynamic-programming",
-    "steps": 28
+    "steps": 28,
+    "complexity": "O(n^2 * L)"
   },
   {
     "file": "bfs.json",
     "title": "Breadth-First Search",
     "topic": "graphs",
-    "steps": 16
+    "steps": 16,
+    "complexity": "O(V + E)"
   },
   {
     "file": "clone-graph.json",
     "title": "Clone Graph",
     "topic": "graphs",
-    "steps": 23
+    "steps": 23,
+    "complexity": "O(V + E)"
   },
   {
     "file": "course-schedule.json",
     "title": "Course Schedule (Topological Sort)",
     "topic": "graphs",
-    "steps": 13
+    "steps": 13,
+    "complexity": "O(V + E)"
   },
   {
     "file": "graph-dfs.json",
     "title": "Depth-First Search",
     "topic": "graphs",
-    "steps": 19
+    "steps": 19,
+    "complexity": "O(V + E)"
   },
   {
     "file": "dijkstra.json",
     "title": "Dijkstra (Shortest Paths)",
     "topic": "graphs",
-    "steps": 17
+    "steps": 17,
+    "complexity": "O(E log V)"
   },
   {
     "file": "number-of-islands.json",
     "title": "Number of Islands",
     "topic": "graphs",
-    "steps": 20
+    "steps": 20,
+    "complexity": "O(rows*cols)"
   },
   {
     "file": "rotting-oranges.json",
     "title": "Rotting Oranges",
     "topic": "graphs",
-    "steps": 12
+    "steps": 12,
+    "complexity": "O(R*C)"
   },
   {
     "file": "union-find.json",
     "title": "Union-Find (Disjoint Set Union)",
     "topic": "graphs",
-    "steps": 13
+    "steps": 13,
+    "complexity": "O(1)"
   },
   {
     "file": "gas-station.json",
     "title": "Gas Station",
     "topic": "greedy",
-    "steps": 20
+    "steps": 20,
+    "complexity": "O(n²)"
   },
   {
     "file": "hand-of-straights.json",
     "title": "Hand of Straights",
     "topic": "greedy",
-    "steps": 18
+    "steps": 18,
+    "complexity": "O(n log k)"
   },
   {
     "file": "jump-game.json",
     "title": "Jump Game",
     "topic": "greedy",
-    "steps": 12
+    "steps": 12,
+    "complexity": "O(n)"
   },
   {
     "file": "jump-game-ii.json",
     "title": "Jump Game II",
     "topic": "greedy",
-    "steps": 10
+    "steps": 10,
+    "complexity": "O(n)"
   },
   {
     "file": "kadane.json",
     "title": "Maximum Subarray (Kadane)",
     "topic": "greedy",
-    "steps": 18
+    "steps": 18,
+    "complexity": "O(n)"
   },
   {
     "file": "non-overlapping-intervals.json",
     "title": "Non-overlapping Intervals",
     "topic": "greedy",
-    "steps": 8
+    "steps": 8,
+    "complexity": "O(n log n)"
   },
   {
     "file": "build-heap.json",
     "title": "Build-Heap (heapify, O(n))",
     "topic": "heaps-and-priority-queues",
-    "steps": 16
+    "steps": 16,
+    "complexity": "O(height)"
   },
   {
     "file": "find-median.json",
     "title": "Find Median from Data Stream",
     "topic": "heaps-and-priority-queues",
-    "steps": 18
+    "steps": 18,
+    "complexity": "O(log n)"
   },
   {
     "file": "k-closest-points.json",
     "title": "K Closest Points to Origin (size-k max-heap)",
     "topic": "heaps-and-priority-queues",
-    "steps": 12
+    "steps": 12,
+    "complexity": "O(n log k)"
   },
   {
     "file": "kth-largest.json",
     "title": "Kth Largest Element",
     "topic": "heaps-and-priority-queues",
-    "steps": 14
+    "steps": 14,
+    "complexity": "O(n log k)"
   },
   {
     "file": "last-stone-weight.json",
     "title": "Last Stone Weight (max-heap)",
     "topic": "heaps-and-priority-queues",
-    "steps": 27
+    "steps": 27,
+    "complexity": "O(n)"
   },
   {
     "file": "heap-pop.json",
     "title": "Min-Heap Extract-Min (sift-down)",
     "topic": "heaps-and-priority-queues",
-    "steps": 9
+    "steps": 9,
+    "complexity": "O(1)"
   },
   {
     "file": "heap-insert.json",
     "title": "Min-Heap Insert (sift-up)",
     "topic": "heaps-and-priority-queues",
-    "steps": 20
+    "steps": 20,
+    "complexity": "O(log n)"
   },
   {
     "file": "task-scheduler.json",
     "title": "Task Scheduler (max-heap greedy)",
     "topic": "heaps-and-priority-queues",
-    "steps": 17
+    "steps": 17,
+    "complexity": "O(1)"
   },
   {
     "file": "insert-interval.json",
     "title": "Insert Interval",
     "topic": "intervals",
-    "steps": 14
+    "steps": 14,
+    "complexity": "O(n)"
   },
   {
     "file": "meeting-rooms-ii.json",
     "title": "Meeting Rooms II",
     "topic": "intervals",
-    "steps": 12
+    "steps": 12,
+    "complexity": "O(n log n)"
   },
   {
     "file": "merge-intervals.json",
     "title": "Merge Intervals",
     "topic": "intervals",
-    "steps": 8
+    "steps": 8,
+    "complexity": "O(n log n)"
   },
   {
     "file": "add-two-numbers.json",
     "title": "Add Two Numbers",
     "topic": "linked-lists",
-    "steps": 8
+    "steps": 8,
+    "complexity": "O(max(n, m)"
   },
   {
     "file": "copy-random-pointer.json",
     "title": "Copy List with Random Pointer",
     "topic": "linked-lists",
-    "steps": 13
+    "steps": 13,
+    "complexity": "O(n)"
   },
   {
     "file": "lru-cache.json",
     "title": "LRU Cache",
     "topic": "linked-lists",
-    "steps": 14
+    "steps": 14,
+    "complexity": "O(1)"
   },
   {
     "file": "merge-k-sorted-lists.json",
     "title": "Merge K Sorted Lists (min-heap)",
     "topic": "linked-lists",
-    "steps": 26
+    "steps": 26,
+    "complexity": "O(N log k)"
   },
   {
     "file": "merge-two-sorted-lists.json",
     "title": "Merge Two Sorted Lists",
     "topic": "linked-lists",
-    "steps": 13
+    "steps": 13,
+    "complexity": "O(n + m)"
   },
   {
     "file": "find-middle.json",
     "title": "Middle of the Linked List",
     "topic": "linked-lists",
-    "steps": 9
+    "steps": 9,
+    "complexity": "O(n)"
   },
   {
     "file": "remove-nth-from-end.json",
     "title": "Remove Nth Node From End",
     "topic": "linked-lists",
-    "steps": 10
+    "steps": 10,
+    "complexity": "O(n)"
   },
   {
     "file": "reorder-list.json",
     "title": "Reorder List",
     "topic": "linked-lists",
-    "steps": 14
+    "steps": 14,
+    "complexity": "O(n)"
   },
   {
     "file": "linked-lists.json",
     "title": "Reverse Linked List",
     "topic": "linked-lists",
-    "steps": 6
+    "steps": 6,
+    "complexity": "O(n)"
   },
   {
     "file": "euclid-gcd.json",
     "title": "Euclid's GCD",
     "topic": "math-and-number-theory",
-    "steps": 11
+    "steps": 11,
+    "complexity": "O(log min(a, b)"
   },
   {
     "file": "happy-number.json",
     "title": "Happy Number (seen-set)",
     "topic": "math-and-number-theory",
-    "steps": 19
+    "steps": 19,
+    "complexity": "O(1)"
   },
   {
     "file": "plus-one.json",
     "title": "Plus One (carry right-to-left)",
     "topic": "math-and-number-theory",
-    "steps": 7
+    "steps": 7,
+    "complexity": null
   },
   {
     "file": "sieve.json",
     "title": "Sieve of Eratosthenes",
     "topic": "math-and-number-theory",
-    "steps": 31
+    "steps": 31,
+    "complexity": "O(n log log n)"
   },
   {
     "file": "prefix-sums.json",
     "title": "Prefix Sums (Range Sum Query)",
     "topic": "prefix-sums-and-difference-arrays",
-    "steps": 11
+    "steps": 11,
+    "complexity": "O(n)"
   },
   {
     "file": "range-sum-2d.json",
     "title": "Range Sum Query 2D",
     "topic": "prefix-sums-and-difference-arrays",
-    "steps": 17
+    "steps": 17,
+    "complexity": "O(1)"
   },
   {
     "file": "subarray-sum-k.json",
     "title": "Subarray Sum Equals K",
     "topic": "prefix-sums-and-difference-arrays",
-    "steps": 17
+    "steps": 17,
+    "complexity": "O(n)"
   },
   {
     "file": "fast-power.json",
     "title": "Fast Power (Exponentiation by Squaring)",
     "topic": "recursion-and-divide-and-conquer",
-    "steps": 20
+    "steps": 20,
+    "complexity": "O(log n)"
   },
   {
     "file": "fibonacci-memo.json",
     "title": "Fibonacci (memoized recursion)",
     "topic": "recursion-and-divide-and-conquer",
-    "steps": 17
+    "steps": 17,
+    "complexity": "O(n)"
   },
   {
     "file": "merge-sort.json",
     "title": "Merge Sort",
     "topic": "recursion-and-divide-and-conquer",
-    "steps": 23
+    "steps": 23,
+    "complexity": "O(n log n)"
   },
   {
     "file": "quickselect.json",
     "title": "Quickselect (Kth Largest)",
     "topic": "recursion-and-divide-and-conquer",
-    "steps": 17
+    "steps": 17,
+    "complexity": "O(n)"
   },
   {
     "file": "best-time-buy-sell.json",
     "title": "Best Time to Buy and Sell Stock",
     "topic": "sliding-window",
-    "steps": 14
+    "steps": 14,
+    "complexity": "O(n)"
   },
   {
     "file": "longest-repeating-replacement.json",
     "title": "Longest Repeating Character Replacement",
     "topic": "sliding-window",
-    "steps": 33
+    "steps": 33,
+    "complexity": "O(1)"
   },
   {
     "file": "longest-substring.json",
     "title": "Longest Substring Without Repeating",
     "topic": "sliding-window",
-    "steps": 23
+    "steps": 23,
+    "complexity": "O(min(n, alphabet)"
   },
   {
     "file": "max-vowels-window.json",
     "title": "Maximum Vowels in a Window",
     "topic": "sliding-window",
-    "steps": 17
+    "steps": 17,
+    "complexity": "O(1)"
   },
   {
     "file": "insertion-sort.json",
     "title": "Insertion Sort",
     "topic": "sorting-algorithms",
-    "steps": 21
+    "steps": 21,
+    "complexity": "O(n + inversions)"
   },
   {
     "file": "quicksort.json",
     "title": "Quicksort",
     "topic": "sorting-algorithms",
-    "steps": 28
+    "steps": 28,
+    "complexity": "O(n log n)"
   },
   {
     "file": "sort-colors.json",
     "title": "Sort Colors (Dutch Flag)",
     "topic": "sorting-algorithms",
-    "steps": 14
+    "steps": 14,
+    "complexity": "O(n)"
   },
   {
     "file": "daily-temperatures.json",
     "title": "Daily Temperatures",
     "topic": "stacks-and-monotonic-stacks",
-    "steps": 34
+    "steps": 34,
+    "complexity": "O(n)"
   },
   {
     "file": "eval-rpn.json",
     "title": "Evaluate Reverse Polish Notation",
     "topic": "stacks-and-monotonic-stacks",
-    "steps": 13
+    "steps": 13,
+    "complexity": "O(n)"
   },
   {
     "file": "largest-rectangle.json",
     "title": "Largest Rectangle in Histogram",
     "topic": "stacks-and-monotonic-stacks",
-    "steps": 33
+    "steps": 33,
+    "complexity": "O(n)"
   },
   {
     "file": "min-stack.json",
     "title": "Min Stack",
     "topic": "stacks-and-monotonic-stacks",
-    "steps": 13
+    "steps": 13,
+    "complexity": "O(1)"
   },
   {
     "file": "valid-parentheses.json",
     "title": "Valid Parentheses",
     "topic": "stacks-and-monotonic-stacks",
-    "steps": 11
+    "steps": 11,
+    "complexity": "O(n)"
   },
   {
     "file": "balanced-tree.json",
     "title": "Balanced Binary Tree",
     "topic": "trees-and-binary-search-trees",
-    "steps": 14
+    "steps": 14,
+    "complexity": "O(n)"
   },
   {
     "file": "trees-bst.json",
     "title": "BST Inorder Traversal",
     "topic": "trees-and-binary-search-trees",
-    "steps": 8
+    "steps": 8,
+    "complexity": "O(n)"
   },
   {
     "file": "tree-diameter.json",
     "title": "Diameter of Binary Tree",
     "topic": "trees-and-binary-search-trees",
-    "steps": 8
+    "steps": 8,
+    "complexity": "O(n)"
   },
   {
     "file": "invert-binary-tree.json",
     "title": "Invert Binary Tree",
     "topic": "trees-and-binary-search-trees",
-    "steps": 20
+    "steps": 20,
+    "complexity": "O(n)"
   },
   {
     "file": "iterative-dfs.json",
     "title": "Iterative DFS (explicit stack)",
     "topic": "trees-and-binary-search-trees",
-    "steps": 19
+    "steps": 19,
+    "complexity": "O(n)"
   },
   {
     "file": "kth-smallest-bst.json",
     "title": "Kth Smallest in a BST",
     "topic": "trees-and-binary-search-trees",
-    "steps": 13
+    "steps": 13,
+    "complexity": "O(h + k)"
   },
   {
     "file": "tree-level-order.json",
     "title": "Level Order Traversal (BFS)",
     "topic": "trees-and-binary-search-trees",
-    "steps": 22
+    "steps": 22,
+    "complexity": "O(n)"
   },
   {
     "file": "lca-bst.json",
     "title": "Lowest Common Ancestor (BST)",
     "topic": "trees-and-binary-search-trees",
-    "steps": 6
+    "steps": 6,
+    "complexity": "O(h)"
   },
   {
     "file": "tree-max-depth.json",
     "title": "Maximum Depth of Binary Tree",
     "topic": "trees-and-binary-search-trees",
-    "steps": 27
+    "steps": 27,
+    "complexity": "O(n)"
   },
   {
     "file": "same-tree.json",
     "title": "Same Tree",
     "topic": "trees-and-binary-search-trees",
-    "steps": 21
+    "steps": 21,
+    "complexity": "O(min(n, m)"
   },
   {
     "file": "validate-bst.json",
     "title": "Validate Binary Search Tree",
     "topic": "trees-and-binary-search-trees",
-    "steps": 20
+    "steps": 20,
+    "complexity": "O(n)"
   },
   {
     "file": "add-search-word.json",
     "title": "Add and Search Word (wildcard)",
     "topic": "tries",
-    "steps": 12
+    "steps": 12,
+    "complexity": "O(1)"
   },
   {
     "file": "trie.json",
     "title": "Trie Insert & Search",
     "topic": "tries",
-    "steps": 18
+    "steps": 18,
+    "complexity": "O(L)"
   },
   {
     "file": "word-search-ii.json",
     "title": "Word Search II (Trie + DFS)",
     "topic": "tries",
-    "steps": 12
+    "steps": 12,
+    "complexity": "O(1)"
   },
   {
     "file": "three-sum.json",
     "title": "3Sum",
     "topic": "two-pointers",
-    "steps": 16
+    "steps": 16,
+    "complexity": "O(n²)"
   },
   {
     "file": "container-water.json",
     "title": "Container With Most Water",
     "topic": "two-pointers",
-    "steps": 26
+    "steps": 26,
+    "complexity": "O(n)"
   },
   {
     "file": "linked-list-cycle.json",
     "title": "Linked List Cycle (Floyd)",
     "topic": "two-pointers",
-    "steps": 4
+    "steps": 4,
+    "complexity": "O(n)"
   },
   {
     "file": "remove-duplicates.json",
     "title": "Remove Duplicates (in-place)",
     "topic": "two-pointers",
-    "steps": 6
+    "steps": 6,
+    "complexity": "O(1)"
   },
   {
     "file": "reverse-string.json",
     "title": "Reverse String",
     "topic": "two-pointers",
-    "steps": 5
+    "steps": 5,
+    "complexity": "O(n)"
   },
   {
     "file": "trapping-rain-water.json",
     "title": "Trapping Rain Water",
     "topic": "two-pointers",
-    "steps": 13
+    "steps": 13,
+    "complexity": "O(n)"
   },
   {
     "file": "two-sum-ii-sorted.json",
     "title": "Two Sum II (sorted)",
     "topic": "two-pointers",
-    "steps": 7
+    "steps": 7,
+    "complexity": "O(n)"
   },
   {
     "file": "valid-palindrome.json",
     "title": "Valid Palindrome",
     "topic": "two-pointers",
-    "steps": 18
+    "steps": 18,
+    "complexity": "O(n)"
   }
 ]
