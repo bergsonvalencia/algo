@@ -8,9 +8,9 @@ triage; this page is the exhaustive walk for when no single cue jumps out. All *
 question diamonds routing to 44 technique leaves): the **diamonds** are questions about the problem, the
 **rounded boxes** are the technique to reach for once you land on a leaf.
 
-> **Tip — the inline diagram below is dense (91 nodes).** For a full-screen view you can zoom and pan, with
-> a top-down ↔ left-right layout toggle, open the interactive companion
-> **[algomonster-flowchart.html](algomonster-flowchart.html)** (double-click it to open in your browser).
+> **Tip — the inline diagram below is dense (91 nodes).** GitHub renders the Mermaid inline here; for a
+> full-screen view you can zoom and pan, with a top-down ↔ left-right layout toggle, open the
+> **[interactive version on the site](https://bergsonvalencia.github.io/algo/algomonster-flowchart.html)**.
 
 Related: [Algorithm Patterns Index](algorithm-patterns-index-reviewer.md) · [Glossary](algorithms-glossary-reviewer.md)
 
@@ -267,7 +267,7 @@ label); a few are advanced or composite tools that the core suite does not give 
 | Monotonic Stack (×2), Stack | [Stacks & Monotonic Stacks](stacks-and-monotonic-stacks-reviewer.md) |
 | Greedy Algorithms | [Greedy](greedy-reviewer.md) |
 | Math / Bit Manipulation, Number Theory | [Math & Number Theory](math-and-number-theory-reviewer.md) · [Bit Manipulation](bit-manipulation-reviewer.md) |
-| Design + Supporting Data Structures | Compose core structures (hash map + heap + linked list, etc.); no standalone reviewer |
+| Design + Supporting Data Structures | No single "design" reviewer — compose the building blocks: [Arrays & Hashing](arrays-and-hashing-reviewer.md) / [Hash Tables](hash-tables-reviewer.md) (hash map), [Heaps & Priority Queues](heaps-and-priority-queues-reviewer.md) (heap), [Linked Lists](linked-lists-reviewer.md), [Stacks & Monotonic Stacks](stacks-and-monotonic-stacks-reviewer.md), [Trees & BSTs](trees-and-binary-search-trees-reviewer.md) |
 | Simulation / Basic DSA | Direct array/string simulation; no standalone reviewer |
 | Specialized / Advanced Pattern | Catch-all for problems outside the recurring patterns |
 

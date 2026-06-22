@@ -130,6 +130,12 @@ family it almost always belongs to; the third routes you to the deep dive.
 | Single non-duplicate number, set/clear/toggle a bit, **[XOR](algorithms-glossary-reviewer.md#xor "Bitwise operator giving 1 only when exactly one input bit is 1; x ^ x = 0.") tricks**, [bitmask](algorithms-glossary-reviewer.md#bitmask "Using an integer's bits to represent a set of flags or a subset of items.") as a set | Bit Manipulation | [Bit Manipulation](bit-manipulation-reviewer.md) |
 | "Sort first", which sort is [stable](algorithms-glossary-reviewer.md#stable-sort "A sort that preserves the relative order of elements comparing equal.")/in-place, partition mechanics, [counting](algorithms-glossary-reviewer.md#counting-sort "Sorts integers in a small range by counting occurrences, O(n + k).")/[radix](algorithms-glossary-reviewer.md#radix-sort "Sorts numbers digit by digit using a stable counting sort each pass.") on bounded keys | Sorting Algorithms | [Sorting Algorithms](sorting-algorithms-reviewer.md) |
 | [GCD](algorithms-glossary-reviewer.md#gcd "The largest integer that divides two numbers with no remainder.")/[LCM](algorithms-glossary-reviewer.md#lcm "The smallest positive number that two integers both divide evenly into."), [primes](algorithms-glossary-reviewer.md#prime-number "An integer above 1 whose only positive divisors are 1 and itself.")/[sieve](algorithms-glossary-reviewer.md#sieve-of-eratosthenes "Finds all primes up to n by marking each prime's multiples as composite."), [modular arithmetic](algorithms-glossary-reviewer.md#modulo-and-modular-arithmetic "The remainder after division, and doing math while always taking that remainder."), [fast exponentiation](algorithms-glossary-reviewer.md#exponentiation-by-squaring "Computes base^exp in O(log exp) by squaring the base and halving the exponent."), digit/overflow tricks | Math & Number Theory | [Math & Number Theory](math-and-number-theory-reviewer.md) |
+| Find a **pattern/substring inside text**, "Ctrl-F", `IndexOf`, skip-on-mismatch | String Searching | [String Searching](string-searching-reviewer.md) |
+| Implement a hash map, "explain collisions", load/fill factor, resize/rehash, worst-case O(n) | Hash Table Internals | [Hash Table Internals](hash-tables-reviewer.md) |
+| Keep a BST height-balanced, rotations, guarantee O(log n) height | Balanced Trees & AVL | [Balanced Trees & AVL](balanced-trees-and-avl-reviewer.md) |
+| On-disk / database / filesystem index, huge sorted data on slow storage, high fan-out tree | B-Trees | [B-Trees](b-trees-reviewer.md) |
+| Distinct elements, **union / intersection / difference** of collections | Sets & Set Algorithms | [Sets & Set Algorithms](sets-and-set-algorithms-reviewer.md) |
+| Share a collection across **threads**, thread-safe / lock-free, race condition | Collection Concurrency | [Collection Concurrency](collection-concurrency-reviewer.md) |
 
 A few high-value disambiguations the table compresses:
 
@@ -185,7 +191,7 @@ with a navigation guide, a leaf→reviewer map, and worked traversals:
 
 - **[AlgoMonster Decision Flowchart](algomonster-flowchart-reviewer.md)** — the complete tree reproduced
   node-for-node as a Mermaid diagram, plus how to read it.
-- **[Interactive version](algomonster-flowchart.html)** — a full-screen, zoomable and pannable rendering
+- **[Interactive version](https://bergsonvalencia.github.io/algo/algomonster-flowchart.html)** — a full-screen, zoomable and pannable rendering
   with a top-down ↔ left-right toggle (the inline diagram is dense; open this to read the labels comfortably).
 
 It complements the cue sheet: the cue sheet is fast recognition from one signal word; the flowchart is the
@@ -258,12 +264,14 @@ Match the operation you repeat most to the structure that does it in the lowest 
 | You need to repeatedly... | Use | Cost | .NET type |
 | --- | --- | --- | --- |
 | Ask "have I seen x?" / dedupe | Hash set | O(1) avg | `HashSet<T>` |
-| Look up a value by key / count frequencies | Hash map | O(1) avg | `Dictionary<K,V>` |
+| Look up a value by key / count frequencies | [Hash map](hash-tables-reviewer.md) | O(1) avg | `Dictionary<K,V>` |
+| Combine collections — union / intersection / difference | [Set](sets-and-set-algorithms-reviewer.md) | O(n) over the sets | `HashSet<T>` / `SortedSet<T>` |
 | Take the min (or max) repeatedly | [Binary heap](algorithms-glossary-reviewer.md#binary-heap "A heap as a complete binary tree packed in an array; children at 2i+1, 2i+2.") | O(log n) push/pop | `PriorityQueue<TElement,TPriority>` |
 | Access "most recent" / undo / [DFS](algorithms-glossary-reviewer.md#depth-first-search "Explores as far down one branch as possible before backtracking.") | Stack (LIFO) | O(1) | `Stack<T>` |
 | Process in arrival order / [BFS](algorithms-glossary-reviewer.md#breadth-first-search "Explores a structure level by level, visiting nearer nodes before farther ones.") | [Queue](algorithms-glossary-reviewer.md#queue "A first-in-first-out collection: add at the back, remove from the front.") (FIFO) | O(1) | `Queue<T>` |
 | Index a sequence, append at end | [Dynamic array](algorithms-glossary-reviewer.md#dynamic-array "A resizable array that grows automatically by copying into a larger backing array.") | O(1) index, O(1) amortized append | `List<T>` / `T[]` |
-| Keep keys sorted, range queries | Balanced BST | O(log n) | `SortedDictionary<K,V>` / `SortedSet<T>` |
+| Keep keys sorted, range queries | [Balanced BST](balanced-trees-and-avl-reviewer.md) | O(log n) | `SortedDictionary<K,V>` / `SortedSet<T>` |
+| Keep sorted data on disk / in a database index | [B-tree](b-trees-reviewer.md) | O(log n), few disk reads | DB / filesystem index |
 | Match prefixes of strings | [Trie](algorithms-glossary-reviewer.md#trie "A tree where each path spells a string, so shared prefixes share nodes.") | O(L) per word, L = length | custom node class |
 | Union/find [connected components](algorithms-glossary-reviewer.md#connected-component "A maximal group of vertices all reachable from one another.") | [Disjoint set](algorithms-glossary-reviewer.md#union-find "Tracks elements in groups with near-O(1) find-group and merge-groups operations.") | ~O(α(n)) amortized | custom (parent array) |
 
@@ -322,6 +330,13 @@ Milestones along the way:
   live.
 - **Specialized tools (15–17):** tries, prefix sums, and the dynamic range structures (Fenwick and
   segment trees) — narrower but decisive when their cue appears.
+- **Internals & systems (companion track):** the slide-deck DSA topics go *under the hood* of
+  structures the pattern track uses as black boxes — read each next to its pattern.
+  [Hash Table Internals](hash-tables-reviewer.md) and [Sets & Set Algorithms](sets-and-set-algorithms-reviewer.md)
+  pair with **Arrays & Hashing**; [Balanced Trees & AVL](balanced-trees-and-avl-reviewer.md) and
+  [B-Trees](b-trees-reviewer.md) pair with **Trees & BSTs**; [String Searching](string-searching-reviewer.md)
+  follows **Sorting**; and [Collection Concurrency](collection-concurrency-reviewer.md) is the
+  thread-safety capstone once the structures themselves are familiar.
 
 ## The full reviewer suite
 
@@ -336,9 +351,13 @@ Every reviewer in this folder, with the cue it answers. Open the one matching yo
 | [Sliding Window](sliding-window-reviewer.md) | Fixed and variable windows over contiguous subarrays/substrings |
 | [Binary Search](binary-search-reviewer.md) | Search on sorted data and on the answer; finding boundaries without off-by-one bugs |
 | [Arrays & Hashing](arrays-and-hashing-reviewer.md) | Hash maps/sets for O(1) lookup, frequency counts, grouping, dedupe |
+| [Hash Table Internals](hash-tables-reviewer.md) | How a hash map works under the hood — hash-function properties, separate chaining vs open addressing, fill/growth factor, resize/rehash |
+| [Sets & Set Algorithms](sets-and-set-algorithms-reviewer.md) | The set ADT and set algebra — union, intersection, difference, symmetric difference; hash-set vs tree-set trade-offs |
 | [Stacks & Monotonic Stacks](stacks-and-monotonic-stacks-reviewer.md) | LIFO problems, bracket matching, next greater/smaller element |
 | [Linked Lists](linked-lists-reviewer.md) | Pointer manipulation, reversal, Floyd cycle detection, merging |
 | [Trees & Binary Search Trees](trees-and-binary-search-trees-reviewer.md) | Traversals, BST [invariants](algorithms-glossary-reviewer.md#invariant "A condition that stays true at every step, used to prove correctness."), [depth](algorithms-glossary-reviewer.md#height-depth-and-level "Depth measures down from the root; height measures up from leaves; level groups by depth.")/height, lowest common ancestor |
+| [Balanced Trees & AVL](balanced-trees-and-avl-reviewer.md) | Why a BST degenerates, the balance factor, the four AVL rotations (LL/RR/LR/RL), self-balancing on insert/delete |
+| [B-Trees](b-trees-reviewer.md) | Disk-friendly balanced trees — minimal degree *t*, node splitting on insert, borrow/merge on delete, the structure behind database indexes |
 | [Heaps & Priority Queues](heaps-and-priority-queues-reviewer.md) | Binary heaps, top-K, streaming median, merge K sorted, scheduling |
 | [Graphs](graphs-reviewer.md) | BFS/DFS, shortest paths ([Dijkstra](algorithms-glossary-reviewer.md#dijkstra "Finds shortest paths from a source on non-negative weights via a min-heap.")/BFS), topological sort, union-find |
 | [Backtracking](backtracking-reviewer.md) | Systematic enumeration of subsets/permutations/combinations with pruning |
@@ -350,8 +369,10 @@ Every reviewer in this folder, with the cue it answers. Open the one matching yo
 | [Tries (Prefix Trees)](tries-reviewer.md) | Prefix-tree structure, insert/search, autocomplete, word dictionaries |
 | [Bit Manipulation](bit-manipulation-reviewer.md) | AND/OR/XOR/shift idioms, test/set/clear/toggle, single-number XOR fold, bitmasks |
 | [Sorting Algorithms](sorting-algorithms-reviewer.md) | Comparison vs non-comparison sorts, stability/in-place, partition mechanics, .NET sort internals |
+| [String Searching](string-searching-reviewer.md) | Finding a pattern inside text — naive scan, Boyer-Moore-Horspool bad-character skips, KMP and Rabin-Karp |
 | [Math & Number Theory](math-and-number-theory-reviewer.md) | GCD/LCM, primes and the sieve, modular arithmetic, fast exponentiation, overflow safety |
-| [AlgoMonster Decision Flowchart](algomonster-flowchart-reviewer.md) | The full algo.monster decision tree (91 nodes) reproduced as a Mermaid diagram, with a zoomable [interactive HTML](algomonster-flowchart.html) version |
+| [Collection Concurrency](collection-concurrency-reviewer.md) | Sharing collections across threads — race conditions, monitor and reader/writer locking, .NET concurrent collections |
+| [AlgoMonster Decision Flowchart](algomonster-flowchart-reviewer.md) | The full algo.monster decision tree (91 nodes) reproduced as a Mermaid diagram, with a zoomable [interactive HTML](https://bergsonvalencia.github.io/algo/algomonster-flowchart.html) version |
 
 For hands-on practice, the companion repo organizes solutions by pattern under folders that mirror
 this suite — for example `two-pointers/convergent`, `sliding-window/variable`,

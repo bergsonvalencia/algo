@@ -637,6 +637,18 @@ O(n) one-shot build (heapify the whole array) with inserting `n` elements one at
 they sound similar but differ. Also called sift up / sift down or bubble up / bubble down.
 See: [Heaps & Priority Queues](heaps-and-priority-queues-reviewer.md)
 
+### Abstract data type
+**An abstract data type (ADT) is a data type defined purely by the operations it supports and how they behave, with no commitment to how it is built underneath.** It is the contract — the "what," not the "how." A *list* ADT promises operations like add, get, and remove; that same contract can be fulfilled by an array behind the scenes or by a linked list, and callers cannot tell the difference. Likewise an *associative array* (map) ADT promises "store a value under a key and fetch it back," and a hash table is one common implementation. It matters because interviewers test whether you can separate the interface you need from the structure you choose to back it. Do not confuse an abstract data type (the behavior/interface) with a *data structure* (the concrete memory layout that implements it).
+See: [Hash Table Internals](hash-tables-reviewer.md) · [Algorithm Patterns Index](algorithm-patterns-index-reviewer.md)
+
+### Collection
+**A collection is a container object that groups many elements together so you can treat them as a single thing.** Lists, sets, queues, stacks, dictionaries, and trees are all collections — each just organizes its elements with different rules and different fast operations. Think of a shopping bag: instead of carrying twelve loose items, you hold one bag and the items travel together. It matters because almost every algorithm problem starts by loading data into the right collection (a hash set for fast membership, a queue for breadth-first order), and naming the collection you need is often the key insight. Do not confuse a collection (the whole container) with an *element* (one item inside it), and note that "collection" is the general family while "list," "set," and "map" are specific kinds.
+See: [Algorithm Patterns Index](algorithm-patterns-index-reviewer.md) · [Arrays & Hashing](arrays-and-hashing-reviewer.md)
+
+### Tombstone
+**A tombstone is a special "deleted" marker left in a slot of an open-addressing hash table when an entry is removed, so that searches for other keys still work.** In open addressing, keys that collide are stored in nearby slots along a probe sequence; if you simply emptied a slot on deletion, a later lookup would hit that gap, conclude the key is absent, and stop early — even though the key sits just past the hole. The tombstone says "something was here, keep probing" while still being reusable for future inserts. The catch is that tombstones pile up over time, lengthen probe chains, and eventually force a full rehash to clean them out. It matters because "how do you delete from an open-addressed table?" is a classic follow-up that trips people up. Do not confuse a tombstone (a marker that keeps probe chains intact) with a truly empty slot (which signals "stop searching, the key is not here").
+See: [Hash Table Internals](hash-tables-reviewer.md)
+
 ## Trees & graphs
 
 ### Tree
@@ -1000,6 +1012,38 @@ aggregates like sum, while a segment tree is bigger but handles non-invertible a
 range updates. Reach for the Fenwick tree when sum + point-update is all you need.
 See: [Segment Trees & Fenwick Trees](segment-tree-and-fenwick-reviewer.md)
 
+### AVL tree
+**An AVL tree is a self-balancing binary search tree that keeps every node's left and right subtree heights within 1 of each other, rotating after each insert or delete to guarantee O(log n) height, search, insert, and remove.** Named after inventors Adelson-Velsky and Landis, it stores a balance factor at each node and, the moment an insertion or deletion pushes that factor out of range, performs one or two rotations to restore balance. Imagine a librarian who reshelves immediately after every book is added so no aisle ever gets lopsided. It matters because it is the textbook answer to "how do you keep a BST from degenerating into a linked list," and exams love asking which rotation fixes a given imbalance. Do not confuse an AVL tree with a plain BST: a plain BST can degrade to O(n), while an AVL tree's strict balancing guarantees O(log n) — at the cost of more rotations on writes than a red-black tree.
+See: [Balanced Trees & AVL](balanced-trees-and-avl-reviewer.md)
+
+### Balance factor
+**A node's balance factor is the height of its left subtree minus the height of its right subtree, and an AVL tree keeps this value in {−1, 0, +1} at every node.** A balance factor of 0 means both sides are equally tall, +1 means the left side is one taller, −1 means the right side is one taller; the instant some node reaches +2 or −2 (|bf| > 1), the tree performs a rotation to fix it. Think of it as a tilt gauge on each node — once a node tilts too far, you straighten it. It matters because reading balance factors is exactly how you decide which AVL rotation (left, right, left-right, or right-left) to apply, a staple of tree exams. Do not confuse the balance factor (a per-node height difference) with the tree's overall height — a tree can be tall yet perfectly balanced if every node's factor stays in range.
+See: [Balanced Trees & AVL](balanced-trees-and-avl-reviewer.md)
+
+### Tree rotation
+**A tree rotation is a local, O(1) pointer rewiring — a left rotation or a right rotation — that changes a binary search tree's shape while preserving the in-order ordering of its values.** It takes a parent and one of its children and pivots them so the child moves up and the parent moves down, relinking the one subtree caught in the middle; only three pointers change. Picture two people on a seesaw trading places — their relative left-to-right order is unchanged, just the heights swap. It matters because rotation is the single mechanism that AVL and red-black trees use to rebalance, so "show the tree after a right rotation at node X" is a classic exam task. Do not confuse a rotation (a constant-time, height-fixing move that preserves sorted order) with a full re-build or re-sort of the tree — a rotation touches only a handful of nodes.
+See: [Balanced Trees & AVL](balanced-trees-and-avl-reviewer.md)
+
+### Red-black tree
+**A red-black tree is a self-balancing binary search tree that colors each node red or black and enforces 5 invariants to keep its height within 2·log(n+1), guaranteeing O(log n) operations.** The rules — root is black, red nodes have black children, every root-to-null path has the same number of black nodes, and so on — together stop any path from being more than twice as long as another. Because its balance condition is looser than an AVL tree's, it does fewer rotations on inserts and deletes but can be a little taller. It matters because red-black trees back the ordered maps and sets in many standard libraries (C++ `std::map`, Java `TreeMap`), so "what balances `TreeMap`?" is a real interview question. Do not confuse a red-black tree (loose balance, fewer write rotations, slightly taller) with an AVL tree (strict balance, more write rotations, shorter and faster lookups) — the trade-off is write speed versus search speed.
+See: [Balanced Trees & AVL](balanced-trees-and-avl-reviewer.md)
+
+### Branching factor
+**The branching factor is the number of children a node may have, also called its fan-out.** A binary tree has a branching factor of 2 — each node points to at most a left and a right child — while a B-tree node can have a branching factor of many (often hundreds), so each node fans out into a wide row of children. Picture a company org chart where one manager has 200 direct reports versus one with only 2: the wide chart is far shallower for the same number of people. It matters because a high branching factor is exactly what keeps a B-tree shallow over enormous data, so each search touches only a few disk pages. Do not confuse the branching factor (how many children per node, a width measure) with the tree's height (how many levels deep, a depth measure) — a larger branching factor is what drives the height down.
+See: [B-Trees](b-trees-reviewer.md)
+
+### Multiway tree
+**A multiway tree is a tree whose nodes can each have more than two children — a high branching factor — generalizing the binary tree.** Where a binary tree caps each node at two children, a multiway tree lets a node fan out to many, which is how structures like B-trees and tries pack lots of keys or characters into a single wide node. Think of a table of contents where one chapter heading lists a dozen sub-sections directly beneath it rather than forcing them into a strict left/right split. It matters because the major disk-and-database trees (B-trees, B+ trees) and the string-indexing trie are all multiway trees, and exams contrast them with binary trees. Do not confuse a multiway tree (any node may have many children) with a binary tree (at most two children per node) — the binary tree is just the special case where the branching factor is fixed at 2.
+See: [B-Trees](b-trees-reviewer.md)
+
+### Separator key
+**A separator key is a key stored in a B-tree's internal node that partitions its child subtrees into non-overlapping value ranges, so everything in child i falls between separator i−1 and separator i.** Each internal node holds an ordered row of separator keys interleaved with child pointers; to search, you scan the separators to find which gap your target lands in, then follow the one child pointer for that range. It is like the letter tabs on a card catalog drawer — "Ma–Mc" tells you exactly which slice of cards to open next. It matters because separator keys are what let a B-tree narrow a search to one child per level, giving its shallow O(log n) lookups, and "which child do we descend into?" is a common exam step. Do not confuse a separator key (a routing signpost in an internal node) with the actual data records, which in a B+ tree live only in the leaves.
+See: [B-Trees](b-trees-reviewer.md)
+
+### Underflow
+**Underflow is the state in a B-tree — or any minimum-occupancy structure — where a node drops below its required minimum number of keys after a deletion, violating the structure's fill rule.** A B-tree of minimum degree t requires each non-root node to hold at least t−1 keys; remove a key and slip under that floor, and you must repair the node by either borrowing a key from an adjacent sibling (a rotation through the parent) or merging with a sibling into one fuller node. Think of a carpool lane that legally needs at least two riders: drop to one and you must either pick someone up or merge into a regular lane. It matters because handling underflow is the trickiest part of B-tree deletion and a frequent exam and interview question. Do not confuse underflow (too few keys, fixed by borrow or merge) with overflow (too many keys after an insert, fixed by splitting the node) — they are the opposite repairs.
+See: [B-Trees](b-trees-reviewer.md)
+
 ## Techniques & patterns
 
 ### Brute force
@@ -1312,6 +1356,34 @@ events, maintain a running count/structure) with brute-force interval comparison
 O(n^2)) — the sweep is the efficient version. Closely related to interval merging.
 See: [Intervals](intervals-reviewer.md)
 
+### Binary search
+**Binary search finds a target (or a boundary) in a sorted range by repeatedly halving the search interval, running in O(log n).** Look up a word in a dictionary: open to the middle, decide whether your word is before or after, and discard half the book; repeat until one page remains. A million-element search takes only about 20 comparisons. The same halving idea powers "binary search on the answer": when a yes/no feasibility test is monotonic (once true, it stays true), you binary-search the smallest value that passes — useful for "minimum capacity," "smallest divisor," and "max distance" optimization questions. It matters because boundary/insertion-point and minimize-the-maximum problems are everywhere, and the off-by-one details are a classic interview filter. Do not confuse binary search (the data or the predicate is sorted/monotonic) with linear scan, which works on unsorted input but costs O(n).
+See: [Binary Search](binary-search-reviewer.md)
+
+### Boyer-Moore
+**Boyer-Moore is a fast substring search that scans the pattern window right-to-left and uses a bad-character (and optionally good-suffix) skip table to jump ahead many positions on a mismatch.** Because it aligns the pattern's end first, a single mismatched letter that does not appear in the pattern lets it skip the whole window at once — sublinear ~O(n/m) in the best case, O(n) on average, but O(n·m) in the adversarial worst case. Searching "EXAMPLE" in a long text, a mismatch on a rare character shifts the window forward by the pattern's full length. Its simplified Boyer-Moore-Horspool variant keeps only the bad-character rule for a smaller, simpler table. It matters because Boyer-Moore is the practical default for single-pattern text search (grep-style tools lean on it). Do not confuse it with KMP, which scans left-to-right and trades raw speed for a guaranteed linear worst case.
+See: [String Searching](string-searching-reviewer.md)
+
+### KMP
+**KMP (Knuth-Morris-Pratt) is a substring search that preprocesses the pattern into a prefix/failure table and scans the text left-to-right without ever re-examining a text character, guaranteeing O(n + m).** When a mismatch happens, the failure table says how far the pattern can shift based on the prefix it has already matched, so the text pointer never moves backward. Matching "ABABC" against "ABABAB...", a mismatch reuses the "ABAB" already seen instead of restarting from scratch. It matters because KMP is the textbook answer when an interviewer wants a strict linear-time guarantee even on adversarial input. Do not confuse KMP (left-to-right, no backtracking, guaranteed O(n + m)) with Boyer-Moore (right-to-left, often faster in practice, but no linear worst-case guarantee).
+See: [String Searching](string-searching-reviewer.md)
+
+### Rabin-Karp
+**Rabin-Karp is a substring search that compares each text window to the pattern by a rolling hash, doing the slow character-by-character check only when the hashes match.** Instead of comparing every window letter by letter, it fingerprints each window with a number and matches numbers; on the rare hash collision it confirms with a direct comparison. Hunting for a quote inside many documents, you compute the quote's hash once and slide a same-width hash across the text. It runs in O(n + m) on average and shines for multi-pattern search and fingerprinting/plagiarism detection, since many patterns can share one pass. It matters because "find these K phrases" and "detect duplicate substrings" cues point straight at it. Do not confuse Rabin-Karp (hash-and-verify, average-case linear) with KMP or Boyer-Moore, which compare characters directly with no hashing.
+See: [String Searching](string-searching-reviewer.md)
+
+### Rolling hash
+**A rolling hash is a hash of a fixed-width window that updates in O(1) as the window slides — subtract the leaving character's contribution and add the entering one — instead of recomputing the whole window from scratch.** Think of a 5-digit odometer-style number over the text: shifting one position drops the highest digit and appends a new low digit in constant time. This is what makes Rabin-Karp's per-window work cheap, turning an O(n·m) recompute into O(n) overall. It matters because rolling hashes also power "longest duplicate substring" and many sliding-substring problems where you need a quick window fingerprint. Do not confuse a rolling hash (a comparison shortcut that may collide, so matches must be verified) with a checksum used for integrity — here a hash match is only a hint, not a proof.
+See: [String Searching](string-searching-reviewer.md)
+
+### Pattern
+**In string searching, the pattern is the short string of length m you are looking for inside a longer text of length n, with m ≤ n; it is also called the needle or the search string.** When you Ctrl-F for "cat" in an article, "cat" is the pattern and the article is the text. Algorithms like KMP, Boyer-Moore, and Rabin-Karp all preprocess this pattern (a failure table, a skip table, or a hash) before scanning the text. It matters because problem statements and APIs constantly split inputs into pattern versus text, and mixing them up flips the whole algorithm. Do not confuse the pattern (the needle, what you search for) with the text (the haystack, what you search through) — the pattern is the smaller one.
+See: [String Searching](string-searching-reviewer.md)
+
+### Set algebra
+**Set algebra is the four operations that combine two sets: union (elements in either), intersection (elements in both), difference (in the first but not the second), and symmetric difference (in exactly one).** Given fans of cats {Ann, Bo} and dogs {Bo, Cy}, union is {Ann, Bo, Cy}, intersection is {Bo}, difference cats−dogs is {Ann}, and symmetric difference is {Ann, Cy}. With a hash set these run in roughly linear time by membership tests. It matters because "common elements," "items in A but not B," and deduplication questions are set-algebra in disguise, and naming the operation clarifies your approach. Do not confuse difference (asymmetric — A−B differs from B−A) with symmetric difference (the elements neither set shares with the other, the same regardless of order).
+See: [Sets & Set Algorithms](sets-and-set-algorithms-reviewer.md)
+
 ## Sorting
 
 ### Comparison sort
@@ -1559,6 +1631,70 @@ confuse a mask (a tool: a bit pattern used to operate on bits) with a *bitmask* 
 that *represents* a set/subset) — the same machinery, but one is the operator and the other is the
 operand.
 See: [Bit Manipulation](bit-manipulation-reviewer.md)
+
+### Strategy pattern
+**The Strategy pattern is a design pattern that encapsulates a family of interchangeable algorithms behind one common interface, so a caller can swap implementations without changing its own code.** Imagine an `IStringSearchAlgorithm.Search` interface implemented by naive scan, Knuth-Morris-Pratt, and Boyer-Moore; the calling code holds an `IStringSearchAlgorithm` and works the same whichever concrete strategy you plug in. Picking the strategy at runtime is like choosing a route in a maps app — same "get me there" contract, different algorithm under the hood. It matters because it shows up in design questions and lets you A/B different approaches cleanly. Do not confuse the Strategy pattern (swap the *whole algorithm* behind an interface) with the Template Method pattern (a fixed algorithm skeleton where subclasses fill in only specific steps).
+See: [String Searching](string-searching-reviewer.md)
+
+### Thread-safe
+**A structure or operation is thread-safe when it stays correct under concurrent access from multiple threads without the caller adding external locking.** A plain `Queue<T>` corrupts if two threads enqueue at once, whereas `ConcurrentQueue<T>` is built to be hammered from many threads safely. Think of a bank teller window with a proper line versus a free-for-all — the thread-safe version has the coordination built in. It matters because interviewers ask "is this collection safe to share?" and the answer drives whether you reach for a concurrent type or a lock. Do not confuse thread-safe (correct under concurrency by design) with simply *fast* — a thread-safe type often pays a synchronization cost a single-threaded type avoids.
+See: [Collection Concurrency](collection-concurrency-reviewer.md)
+
+### Race condition
+**A race condition is a correctness bug where the outcome depends on the nondeterministic interleaving of concurrent operations on shared state.** The classic case: two threads each run `count++`, both read 5, both write 6, and one increment vanishes — the final value is wrong only on unlucky timing. It is like two people editing the same shared note at once and one person's edit clobbering the other's. It matters because race conditions pass most test runs and fail intermittently, making them a favorite "what's wrong here?" interview trap. Do not confuse a race condition (a high-level *wrong result* from bad interleaving) with a deadlock (threads *freeze* forever) or a data race (the low-level *unsynchronized memory access* that often causes the race).
+See: [Collection Concurrency](collection-concurrency-reviewer.md)
+
+### Data race
+**A data race occurs when two threads access the same memory location concurrently, at least one of them writing, with no synchronization ordering the accesses.** It is the low-level cause behind many race conditions: without a lock or atomic operation, the reads and writes can overlap and the CPU/compiler may even reorder them, producing values that "shouldn't be possible." Picture two hands grabbing for the same Lego brick at the same instant with no rule about who goes first. It matters because eliminating data races (via locks, `Interlocked`, or concurrent collections) is the foundation of correct multithreaded code. Do not confuse a data race (a specific *unsynchronized memory access* defined by the memory model) with a race condition (a broader *logic bug* about ordering that can exist even when every individual access is synchronized).
+See: [Collection Concurrency](collection-concurrency-reviewer.md)
+
+### Atomic operation
+**An atomic operation is one that appears indivisible: it either completes fully or not at all, and no other thread can observe it halfway done.** Incrementing a counter with `Interlocked.Increment` is atomic, whereas a plain `count++` is really three steps (read, add, write) that another thread can interrupt. Think of swiping a transit card — the balance either goes through or it doesn't; there is no in-between state riders can catch. It matters because atomicity is what makes operations safe to run concurrently without a surrounding lock. Do not confuse atomic (no thread sees a *partial* result) with thread-safe in general — a sequence of individually atomic steps, like check-then-act, can still race overall.
+See: [Collection Concurrency](collection-concurrency-reviewer.md)
+
+### Deadlock
+**A deadlock is a liveness bug where two or more threads each hold a lock the other needs, so all of them block forever and make no progress.** Thread A locks resource X and waits for Y while thread B locks Y and waits for X — neither can proceed, like two people in a narrow hallway each refusing to step aside. The program freezes rather than producing wrong data. It matters because deadlocks are a top interview topic, and the standard cure (always acquire locks in a consistent global order) is expected knowledge. Do not confuse a deadlock (threads *stuck*, nothing happens) with a race condition (threads *run* but produce a wrong result) — one is a frozen program, the other is a corrupted answer.
+See: [Collection Concurrency](collection-concurrency-reviewer.md)
+
+### Monitor lock
+**A monitor lock is the simplest mutual-exclusion mechanism: only one thread can hold it at a time, and any other thread that tries to enter blocks until the holder releases it.** In C# you use it through `lock(obj) { ... }`, which compiles to `Monitor.Enter`/`Monitor.Exit`, guarding the enclosed critical section. It works like a single key to a one-person restroom — whoever has the key is in, everyone else waits outside. It matters because it is the default, easy-to-reason-about tool for protecting shared state, and most lock-based code starts here. Do not confuse a monitor lock (the *enforcement mechanism* that grants exclusive entry) with the critical section it guards (the *region of code* that needs that exclusive access).
+See: [Collection Concurrency](collection-concurrency-reviewer.md)
+
+### Critical section
+**A critical section is a region of code that touches shared state and must execute with mutual exclusion — only one thread inside it at a time.** It is the body protected by a lock: the few lines that read-modify-write a shared counter or update a shared dictionary. Keep it small and short, like minimizing the time you occupy a single shared phone booth so the line moves. It matters because oversized critical sections serialize threads and kill throughput, so interviewers look for you to lock the *minimum* necessary code. Do not confuse the critical section (the *protected code region*) with the monitor lock or mutex (the *mechanism* that grants one thread at a time into that region).
+See: [Collection Concurrency](collection-concurrency-reviewer.md)
+
+### Lock-free algorithm
+**A lock-free algorithm coordinates threads using atomic instructions like compare-and-swap instead of locks, so no single thread being slow or paused can block the others from progressing.** Instead of "take the lock, change the value, release," a thread reads the current value, computes the new one, and atomically swaps it in only if nothing changed underneath — retrying if it did. This is how `ConcurrentQueue<T>` and `ConcurrentStack<T>` stay fast under contention. It matters because lock-free designs avoid deadlock entirely and scale better, and explaining the CAS-retry loop signals real concurrency depth. Do not confuse lock-free (the system as a whole *always* makes progress, though one thread may retry) with wait-free (the stronger guarantee that *every* thread finishes in a bounded number of steps).
+See: [Collection Concurrency](collection-concurrency-reviewer.md)
+
+### Reader-writer lock
+**A reader-writer lock allows many threads to read shared state concurrently OR a single thread to write exclusively, but never readers and a writer at the same time.** In C# `ReaderWriterLockSlim` exposes separate read and write locks; readers pile in together, but a writer waits for all readers to leave and then locks everyone else out. Picture a museum exhibit: any number of visitors can look at once, but when a curator rearranges it the room is cleared. It matters because it dramatically boosts throughput when reads vastly outnumber writes, a common real-world pattern. Do not confuse a reader-writer lock (asymmetric: *shared* reads, *exclusive* writes) with a plain monitor lock (symmetric: every entry is exclusive, even read-only ones).
+See: [Collection Concurrency](collection-concurrency-reviewer.md)
+
+### Compare-and-swap
+**Compare-and-swap (CAS) is a single atomic CPU instruction that writes a new value to a location only if it still holds an expected value, and reports whether the write succeeded.** A thread reads the current value, computes its update, then CASes "if you're still the old value, become the new one"; if another thread changed it first, the CAS fails and the thread loops to try again. In .NET it surfaces as `Interlocked.CompareExchange`. It matters because CAS is the fundamental primitive every lock-free structure is built on, so interviewers expect you to describe the read-compute-CAS-retry loop. Do not confuse compare-and-swap (a *conditional* atomic write that can fail and retry) with a plain atomic store or `Interlocked.Exchange` (an *unconditional* write that always succeeds).
+See: [Collection Concurrency](collection-concurrency-reviewer.md)
+
+### Interlocked
+**Interlocked is the family of .NET helper methods (`Interlocked.Increment`, `Add`, `Exchange`, `CompareExchange`) that update a single variable indivisibly using hardware atomic instructions, with no lock required.** Where `count++` is a racy three-step read-modify-write, `Interlocked.Increment(ref count)` performs the whole bump as one uninterruptible action. Think of it as a tamper-proof turnstile counter that can't lose a click no matter how many people pass at once. It matters because it is the correct, lock-free way to do concurrent counters and flags, and reaching for it instead of a lock shows you know the lightweight tool. Do not confuse Interlocked (atomic updates to a *single* variable) with a monitor lock (needed when you must update *several* fields together as one consistent unit).
+See: [Collection Concurrency](collection-concurrency-reviewer.md)
+
+### Lost update
+**A lost update happens when two threads read the same value, each modify their copy independently, and write back, so one thread's change silently overwrites the other's.** It is the canonical `count++` race: both threads read 10, both compute 11, both store 11, and the result is 11 instead of 12 — one increment is gone. Picture two people editing the same wiki paragraph from the same starting text; whoever saves last erases the other's edit. It matters because it is the textbook motivation for atomic increments, locks, or optimistic concurrency with version checks. Do not confuse a lost update (a *write* clobbering another write) with a torn read (a *read* observing a half-updated value mid-write).
+See: [Collection Concurrency](collection-concurrency-reviewer.md)
+
+### Torn read
+**A torn read occurs when one thread reads a value while another is partway through writing it, so the reader observes an inconsistent, half-updated snapshot.** On some platforms a 64-bit value written without synchronization can be seen with its high half new and low half old — a number that never actually existed. It is like photographing a flip-clock at the instant the digits are mid-flip and catching a garbled time. It matters because torn reads explain why you must synchronize even when "just reading," and why atomic or properly-aligned types exist. Do not confuse a torn read (a *single* value seen partially written) with a lost update (two complete writes where one *overwrites* the other) — torn read is about a corrupt snapshot, lost update is about a missing change.
+See: [Collection Concurrency](collection-concurrency-reviewer.md)
+
+### Happens-before
+**Happens-before is a guarantee that the memory effects of one operation are visible to another, establishing a causal ordering between them across threads.** For example, releasing a lock happens-before another thread acquiring that same lock, so everything the first thread wrote before releasing is guaranteed visible to the second after it acquires. Without such an edge, the compiler and CPU are free to reorder or cache writes, and one thread may never see another's updates. It matters because happens-before is the precise rule that tells you whether your synchronization actually publishes data, a deeper-level concurrency question. Do not confuse happens-before (a *visibility and ordering* guarantee about memory) with mutual exclusion (a *one-at-a-time access* guarantee) — a lock provides both, but they are distinct properties.
+See: [Collection Concurrency](collection-concurrency-reviewer.md)
+
+### Check-then-act
+**Check-then-act is a non-atomic two-step pattern — test a condition, then act on it — that races when another thread changes the state in the gap between the check and the act.** A classic example is `if (!dict.Contains(k)) dict.Add(k, v)`: two threads can both pass the `Contains` check before either calls `Add`, and the second `Add` throws or overwrites. It is like two people both seeing the last seat is empty and both sitting down. It matters because it is one of the most common concurrency bugs in real code, and the fix is an atomic operation such as `ConcurrentDictionary.TryAdd` or `GetOrAdd`. Do not confuse check-then-act (a *composite* action that is racy even when each step is individually safe) with a single atomic operation (which fuses the test and the update into one indivisible step).
+See: [Collection Concurrency](collection-concurrency-reviewer.md)
 
 ## How to use this glossary
 

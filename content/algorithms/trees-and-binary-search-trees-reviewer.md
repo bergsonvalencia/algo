@@ -84,6 +84,7 @@ Key points:
 - **Height of the tree** — the height of its root. LeetCode's "maximum depth" (LC 104) counts **nodes** on the longest root-to-leaf path, so it equals tree-height-in-edges plus 1.
 - **[Balanced](algorithms-glossary-reviewer.md#balanced-tree "A tree kept near minimum height (about log n) so operations stay O(log n).")** — for **every** node, the heights of its left and right subtrees differ by at most 1 (LC 110). Balance is a per-node property, not just a root property.
 - For `n` nodes, height ranges from `⌊log₂ n⌋` (perfectly balanced) to `n - 1` edges (a degenerate "[linked-list](algorithms-glossary-reviewer.md#linked-list "A chain of nodes each holding a value and a reference to the next node.")" tree). Recursion-stack space and BST operation cost both scale with height, so balance matters.
+- A plain BST never re-balances itself, so adversarial inserts can skew it. **[Self-balancing trees](balanced-trees-and-avl-reviewer.md)** — AVL and red-black — rotate after each insert/delete to *guarantee* `O(log n)` height; **[B-trees](b-trees-reviewer.md)** push the same idea to high-fan-out nodes for on-disk and database indexes.
 
 ```mermaid
 flowchart TD

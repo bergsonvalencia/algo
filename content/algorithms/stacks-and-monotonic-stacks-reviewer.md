@@ -89,6 +89,8 @@ flowchart TD
 
 *If the answer to "most recent first?" is no and it is "oldest first," you want a [queue](algorithms-glossary-reviewer.md#queue "A first-in-first-out collection: add at the back, remove from the front."), not a stack.*
 
+A **[deque](algorithms-glossary-reviewer.md#deque "A double-ended queue: add and remove at both the front and the back in O(1).")** (double-ended queue) generalizes both: it supports add/remove/peek at *both* ends in O(1), so the same structure can serve as a stack (one end), a queue (both ends), or the sliding-window **monotonic deque** that maintains a running max/min. In .NET, `LinkedList<T>` offers O(1) operations at both ends; there is no dedicated `Deque<T>` in the BCL.
+
 ## Matching and nesting: Valid Parentheses
 
 [LC](algorithms-glossary-reviewer.md#leetcode "An online platform of coding-interview problems with an automated judge.") 20 — Valid Parentheses: given a string of `()[]{}`, decide if every opener has a correctly-ordered matching closer. This is the canonical "stack models nesting" problem.

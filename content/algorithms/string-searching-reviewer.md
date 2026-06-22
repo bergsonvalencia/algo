@@ -1,6 +1,6 @@
 # String Searching Algorithms (Reviewer)
 
-String searching — also called **substring search** or **pattern matching** — asks the most literal
+String searching — also called **[substring](algorithms-glossary-reviewer.md#subarray-subsequence-and-substring "A contiguous slice of a string; a subsequence keeps order but may skip characters.") search** or **pattern matching** — asks the most literal
 question in text processing: where, if anywhere, does a short [pattern](algorithms-glossary-reviewer.md#pattern "The short string you are looking for inside a larger text.") string of length `m` occur inside a
 longer `toSearch` text of length `n`? Every text editor's Ctrl-F, every `grep`, every DNA-motif scan,
 and every `String.IndexOf` call is solving exactly this problem. The naive answer — slide the pattern
@@ -11,14 +11,14 @@ position instead of restarting one character over.
 
 This reviewer models the problem the way the source slides do: an `IStringSearchAlgorithm` whose
 `Search(pattern, toSearch)` returns **all** matches as `ISearchMatch` objects carrying a `Start` index
-and a `Length`. It builds the **naive (brute-force) scan** first, proves its cost, then develops
+and a `Length`. It builds the **naive ([brute-force](algorithms-glossary-reviewer.md#brute-force "Try every possibility directly with no cleverness — correct but often slow.")) scan** first, proves its cost, then develops
 **[Boyer-Moore-Horspool](algorithms-glossary-reviewer.md#boyer-moore "A fast substring search that skips ahead using a bad-character table, scanning right-to-left.")** (BMH) — the practical, easy-to-implement member of the Boyer-Moore family —
 including how its **bad-character skip table** is built (`table[pattern[i]] = pattern.Length - i - 1`)
 and used to leap ahead on a mismatch while scanning the window **right-to-left**. A complexity table
 then places BMH among its cousins **[KMP](algorithms-glossary-reviewer.md#kmp "Knuth-Morris-Pratt: linear-time search using a prefix-function failure table.")** (guaranteed [O(n+m)](algorithms-glossary-reviewer.md#linear-time "Work grows in direct proportion to input size, about one unit per element.")) and **[Rabin-Karp](algorithms-glossary-reviewer.md#rabin-karp "Substring search using a rolling hash to compare windows in O(1) amortized.")** (rolling hash, O(n+m)
 average), so you know exactly where Horspool sits and when to reach for something else.
 
-Related: [Algorithm Patterns Index](algorithm-patterns-index-reviewer.md) · [Tries](tries-reviewer.md) · [Sliding Window](sliding-window-reviewer.md) · [Two Pointers](two-pointers-reviewer.md) · [Glossary](algorithms-glossary-reviewer.md)
+Related: [Algorithm Patterns Index](algorithm-patterns-index-reviewer.md) · [Tries](tries-reviewer.md) · [Sliding Window](sliding-window-reviewer.md) · [Two Pointers](two-pointers-reviewer.md) · [Hash Tables](hash-tables-reviewer.md) · [Glossary](algorithms-glossary-reviewer.md)
 
 ## Contents
 - [The substring-search problem](#the-substring-search-problem)
@@ -166,7 +166,8 @@ toSearch = "THE CAT CHASED A DOG"     pattern = "AT"
  startIndex 1: 'H' vs 'A'  mismatch  -> slide
  startIndex 2: 'E' vs 'A'  mismatch  -> slide
  startIndex 3: ' ' vs 'A'  mismatch  -> slide
- startIndex 4: 'A' vs 'A'  match, 'T' vs 'T'  match  -> MATCH at index 4
+ startIndex 4: 'C' vs 'A'  mismatch  -> slide
+ startIndex 5: 'A' vs 'A'  match, 'T' vs 'T'  match  -> MATCH at index 5
  ...continue sliding by one to find any further "AT"...
 ```
 
@@ -176,7 +177,7 @@ toSearch = "THE CAT CHASED A DOG"     pattern = "AT"
 
 Key points:
 
-- **Worst case O(n·m).** Pathological inputs like `toSearch = "AAAA...AAB"`, `pattern = "AAAB"` force
+- **[Worst case](algorithms-glossary-reviewer.md#best-average-and-worst-case "Three input scenarios for analyzing running time: luckiest, typical, and most adversarial.") O(n·m).** Pathological inputs like `toSearch = "AAAA...AAB"`, `pattern = "AAAB"` force
   the inner loop to compare nearly all of the pattern at every one of the `~n` alignments before
   mismatching on the last character — `n` alignments × `m` comparisons.
 - **Average / typical O(n + m)** (often quoted simply as roughly O(n)). On natural text mismatches
@@ -185,7 +186,7 @@ Key points:
   O(nm) worst**.
 - **Best case O(n).** If the very first character mismatches at almost every alignment, each alignment
   costs one comparison.
-- **Space O(1)** — no tables, no recursion. **Preprocessing: none.**
+- **Space O(1)** — no tables, no [recursion](algorithms-glossary-reviewer.md#recursion "A function that calls itself on smaller inputs until a base case."). **Preprocessing: none.**
 - Because the constants are tiny and there is nothing to build, naive search frequently *beats* fancier
   algorithms on **short patterns and short texts** — which is why `String.IndexOf`-style routines
   special-case small inputs.

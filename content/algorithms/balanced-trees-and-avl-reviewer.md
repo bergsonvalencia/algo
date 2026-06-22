@@ -2,9 +2,9 @@
 
 A plain **[binary search tree](algorithms-glossary-reviewer.md#binary-search-tree "A binary tree where left subtree values are smaller and right are larger.") (BST)** promises `O(h)` search, insert, and delete — but that promise is only as good as the [height](algorithms-glossary-reviewer.md#height-depth-and-level "Depth measures down from the root; height measures up from leaves; level groups by depth.") `h`. Feed a naive BST already-sorted keys (1, 2, 3, 4, 5, …) and every insert lands on the right spine: the tree degenerates into a "vine" — effectively a [linked list](algorithms-glossary-reviewer.md#linked-list "A linear structure of nodes each pointing to the next; no random access.") — and `h` grows to `n`, dragging every operation back to **[O(n)](algorithms-glossary-reviewer.md#linear-time "Work grows in direct proportion to input size, about one unit per element.")**. The whole reason to reach for a tree evaporates.
 
-A **balanced** BST keeps `h` bounded by `O(log n)` no matter the insertion order, restoring **[O(log n)](algorithms-glossary-reviewer.md#logarithmic-time "Each step discards a constant fraction, so steps equal the log of n.")** search/insert/delete. The classic self-balancing scheme is the **AVL tree** (Adelson-Velsky and Landis, 1962): every node tracks the height of its subtrees, and after each modification the tree checks a **balance factor** and applies **rotations** — constant-time pointer rewirings — to restore balance. This reviewer covers why balance matters, height and balance factor with C# helpers, the AVL invariant, the four rotation cases (LL, RR, LR, RL), how insert and delete trigger rebalancing, the complexity summary, and a contrast with red-black trees (what .NET's `SortedDictionary`/`SortedSet` actually use).
+A **[balanced](algorithms-glossary-reviewer.md#balanced-tree "A tree whose height stays O(log n), keeping operations fast.") BST** keeps `h` bounded by `O(log n)` no matter the insertion order, restoring **[O(log n)](algorithms-glossary-reviewer.md#logarithmic-time "Each step discards a constant fraction, so steps equal the log of n.")** search/insert/delete. The classic self-balancing scheme is the **[AVL tree](algorithms-glossary-reviewer.md#avl-tree "A self-balancing BST that keeps every node's subtree heights within one via rotations.")** (Adelson-Velsky and Landis, 1962): every node tracks the height of its subtrees, and after each modification the tree checks a **[balance factor](algorithms-glossary-reviewer.md#balance-factor "Height of left subtree minus right; an AVL node keeps it in {-1, 0, +1}.")** and applies **[rotations](algorithms-glossary-reviewer.md#tree-rotation "A local pointer rewiring that rebalances a BST while preserving its ordering.")** — constant-time pointer rewirings — to restore balance. This reviewer covers why balance matters, height and balance factor with C# helpers, the AVL invariant, the four rotation cases (LL, RR, LR, RL), how insert and delete trigger rebalancing, the complexity summary, and a contrast with red-black trees (what .NET's `SortedDictionary`/`SortedSet` actually use).
 
-Related: [Algorithm Patterns Index](algorithm-patterns-index-reviewer.md) · [Trees & Binary Search Trees](trees-and-binary-search-trees-reviewer.md) · [B-Trees](b-trees-reviewer.md) · [Sets & Set Algorithms](sets-and-set-algorithms-reviewer.md) · [Glossary](algorithms-glossary-reviewer.md)
+Related: [Algorithm Patterns Index](algorithm-patterns-index-reviewer.md) · [Trees & Binary Search Trees](trees-and-binary-search-trees-reviewer.md) · [Recursion & Divide and Conquer](recursion-and-divide-and-conquer-reviewer.md) · [B-Trees](b-trees-reviewer.md) · [Sets & Set Algorithms](sets-and-set-algorithms-reviewer.md) · [Glossary](algorithms-glossary-reviewer.md)
 
 ## Contents
 
@@ -36,7 +36,7 @@ Key points:
 
 - A BST's operations cost **`O(h)`**, where `h` is the height. Balanced, `h = O(log n)`; degenerate, `h = n - 1`.
 - **Insertion order is the enemy.** Insert sorted (or reverse-sorted) keys into a naive BST and every new key is larger (or smaller) than all before it, so each one chains off the previous on the same side. The result is a one-sided "vine."
-- A fully unbalanced binary tree **is just a linked list** — same `O(n)` traversal cost — except it wastes a `null` child pointer per node. You lose every advantage the tree was supposed to give.
+- A fully unbalanced [binary tree](algorithms-glossary-reviewer.md#binary-tree "A tree where each node has at most two children, a left and a right.") **is just a linked list** — same `O(n)` traversal cost — except it wastes a `null` child pointer per node. You lose every advantage the tree was supposed to give.
 - This is not a rare corner case: bulk-loading already-sorted data is extremely common (importing a sorted file, replaying ordered events). A **self-balancing** tree makes the worst case impossible by construction.
 
 ```mermaid
@@ -59,7 +59,7 @@ graph TD
 
 *Same six keys, same BST ordering — but the unbalanced vine searches in `O(n)`, while the balanced tree searches in `O(log n)`.*
 
-The takeaway: BST correctness (the ordering invariant) and BST **performance** (bounded height) are two separate guarantees. A naive BST gives you the first for free and the second only by luck. AVL trees pay a small bookkeeping cost on every write to guarantee both.
+The takeaway: BST correctness (the ordering [invariant](algorithms-glossary-reviewer.md#invariant "A condition that stays true throughout an algorithm or data-structure operation.")) and BST **performance** (bounded height) are two separate guarantees. A naive BST gives you the first for free and the second only by luck. AVL trees pay a small bookkeeping cost on every write to guarantee both.
 
 ## Height and balance factor
 
@@ -401,7 +401,7 @@ Deletion follows the standard BST delete, then retraces and rebalances exactly l
 
 Key points:
 
-- **BST delete** has three cases: a leaf is removed outright; a node with one child is replaced by that child; a node with two children is replaced by its **inorder successor** (smallest key in the right subtree), then that successor is deleted from the right subtree.
+- **BST delete** has three cases: a leaf is removed outright; a node with one child is replaced by that child; a node with two children is replaced by its **[inorder successor](algorithms-glossary-reviewer.md#preorder-inorder-and-postorder "Inorder visits left subtree, node, then right subtree, yielding sorted order in a BST.")** (smallest key in the right subtree), then that successor is deleted from the right subtree.
 - After the structural removal, retrace toward the root and `Rebalance` each ancestor — identical machinery to insert.
 - Unlike insertion, a deletion **shrinks** a subtree's height, and one rotation may not restore the ancestor's original height, so the imbalance can propagate. You must keep checking and rotating **all the way to the root** — but that is still only `O(log n)` levels, each `O(1)`, so delete remains **`O(log n)`**.
 
@@ -459,7 +459,7 @@ Key points:
 
 ## AVL vs red-black trees
 
-AVL is not the only self-balancing BST. The **red-black tree** is the other workhorse — and the one the .NET Base Class Library actually uses internally.
+AVL is not the only self-balancing BST. The **[red-black tree](algorithms-glossary-reviewer.md#red-black-tree "A self-balancing BST that uses node colors and weaker invariants; fewer rotations per write than AVL.")** is the other workhorse — and the one the .NET Base Class Library actually uses internally.
 
 Key points:
 
