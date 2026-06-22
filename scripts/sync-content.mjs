@@ -21,10 +21,9 @@ mkdirSync(DEST, { recursive: true });
 
 let n = 0;
 for (const f of readdirSync(SRC)) {
-  // .md reviewers plus standalone .html companions (e.g. the interactive flowchart).
-  if (f.endsWith('.md') || f.endsWith('.html')) {
+  if (f.endsWith('.md')) {
     copyFileSync(join(SRC, f), join(DEST, f));
     n++;
   }
 }
-console.log(`Synced ${n} files (Markdown + HTML companions) -> content/algorithms (source left untouched)`);
+console.log(`Synced ${n} Markdown files -> content/algorithms (source left untouched)`);

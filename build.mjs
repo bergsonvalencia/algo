@@ -343,11 +343,15 @@ for (const f of files) {
 writeFileSync(join(OUT, "assets", "search-index.json"), JSON.stringify(searchIndex));
 writeFileSync(join(OUT, "index.html"), renderHome(meta));
 
-// Publish standalone HTML companions verbatim (e.g. the interactive flowchart the pages link to).
-for (const f of readdirSync(CONTENT)) {
-  if (f.endsWith(".html")) {
-    copyFileSync(join(CONTENT, f), join(OUT, f));
-    console.log(`Copied ${f} -> dist/${f} (standalone HTML companion)`);
+// Publish standalone static pages (e.g. the interactive flowchart the topic pages link to)
+// from static/ -> dist root. Kept out of content/ so `npm run sync` never wipes them.
+const STATIC = join(ROOT, "static");
+if (existsSync(STATIC)) {
+  for (const f of readdirSync(STATIC)) {
+    if (f.endsWith(".html")) {
+      copyFileSync(join(STATIC, f), join(OUT, f));
+      console.log(`Copied ${f} -> dist/${f} (standalone static page)`);
+    }
   }
 }
 
