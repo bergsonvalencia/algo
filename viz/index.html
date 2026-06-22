@@ -88,12 +88,16 @@
     .kbd-card dd { margin: 0; color: #c4cad6; font-size: 13px; }
     .kbd-card kbd { font-family: var(--mono, monospace); background: #1a1f29; border: 1px solid var(--border); border-bottom-width: 2px; border-radius: 5px; padding: 2px 7px; font-size: 11.5px; color: var(--text); }
     .kbd-card .close-hint { color: var(--muted); font-size: 11.5px; margin: 14px 0 0; text-align: center; }
+    .kbd-close { display: block; margin: 16px auto 0; padding: 7px 16px; background: #1a1f29; color: var(--text);
+      border: 1px solid var(--border); border-radius: 8px; cursor: pointer; font-size: 13px; }
+    .kbd-close:hover { background: #222836; }
+    .kbd-close kbd { font-family: var(--mono, monospace); font-size: 11px; opacity: .8; }
 
     @media (max-width: 900px) {
       .app { grid-template-columns: 1fr; }
       .menu-toggle { display: inline-grid; place-items: center; position: fixed; top: 12px; left: 12px; z-index: 50;
         width: 40px; height: 40px; background: #11141b; border: 1px solid var(--border); border-radius: 9px; color: var(--text); cursor: pointer; font-size: 18px; }
-      .side { position: fixed; top: 0; left: 0; width: 280px; z-index: 45; transform: translateX(-102%); transition: transform .22s ease; }
+      .side { position: fixed; top: 0; left: 0; width: 280px; z-index: 45; transform: translateX(-102%); transition: transform .22s ease; padding-top: 60px; }
       .side.open { transform: translateX(0); }
       .main { padding-top: 64px; }
     }
@@ -106,7 +110,7 @@
       <a class="brand" id="brand" href="#" aria-label="Home">Algorithm Visualizer<small>Animated playback for the algorithms reviewer</small></a>
       <input id="search" class="search-box" type="search" placeholder="Search visualizations…  (press /)" aria-label="Search visualizations" autocomplete="off">
       <nav id="nav" aria-label="All visualizations"></nav>
-      <p id="no-results" class="no-results" hidden>No visualizations match your search.</p>
+      <p id="no-results" class="no-results" role="status" hidden>No visualizations match your search.</p>
     </aside>
 
     <main class="main" id="main">
@@ -136,9 +140,9 @@
   </div>
 
   <div class="backdrop" id="backdrop" hidden></div>
-  <div class="kbd-overlay" id="kbd-overlay" hidden role="dialog" aria-modal="true" aria-label="Keyboard shortcuts">
-    <div class="kbd-card">
-      <h2>Keyboard shortcuts</h2>
+  <div class="kbd-overlay" id="kbd-overlay" hidden role="dialog" aria-modal="true" aria-labelledby="kbd-title">
+    <div class="kbd-card" tabindex="-1">
+      <h2 id="kbd-title">Keyboard shortcuts</h2>
       <dl>
         <dt><kbd>Space</kbd></dt><dd>Play / pause</dd>
         <dt><kbd>←</kbd> <kbd>→</kbd></dt><dd>Step back / forward</dd>
@@ -148,7 +152,7 @@
         <dt><kbd>?</kbd></dt><dd>This help</dd>
         <dt><kbd>Esc</kbd></dt><dd>Close / back to gallery</dd>
       </dl>
-      <p class="close-hint">Press <kbd>?</kbd> or <kbd>Esc</kbd> to close</p>
+      <button class="kbd-close" id="kbd-close">Close <kbd>Esc</kbd></button>
     </div>
   </div>
 
@@ -193,7 +197,13 @@
     const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
     const escapeRe = (s) => s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 
-    const manifest = await fetch('data/manifest.json').then((r) => r.json());
+    let manifest;
+    try {
+      manifest = await fetch('data/manifest.json').then((r) => { if (!r.ok) throw new Error('HTTP ' + r.status); return r.json(); });
+    } catch (e) {
+      document.getElementById('cards').innerHTML = '<p class="no-results">Failed to load visualizations — try refreshing.</p>';
+      throw e;
+    }
     const byTopic = {};
     for (const m of manifest) (byTopic[m.topic] ??= []).push(m);
     const orderedTopics = [...new Set([...TOPIC_ORDER, ...Object.keys(byTopic)])].filter((t) => byTopic[t]);
@@ -242,12 +252,15 @@
     // --- views ---
     function showLanding() {
       currentPlayer?.pause?.();
+      if (document.fullscreenElement) document.exitFullscreen().catch(() => {});
       playerView.hidden = true; landing.hidden = false;
       buttons.forEach((b) => b.classList.remove('active'));
-      history.replaceState(null, '', location.pathname);
       window.scrollTo(0, 0);
     }
+    let selToken = 0;
     async function select(m) {
+      const my = ++selToken;
+      currentPlayer?.pause?.();           // stop the outgoing player's autoplay timer (no leak)
       const btn = btnFor.get(m);
       buttons.forEach((b) => b.classList.toggle('active', b === btn));
       landing.hidden = true; playerView.hidden = false;
@@ -257,7 +270,15 @@
       closeMenu();
       btn?.scrollIntoView({ block: 'nearest' });
       window.scrollTo(0, 0);
-      currentPlayer = await mountFromUrl(host, `data/${m.file}`);
+      try {
+        const p = await mountFromUrl(host, `data/${m.file}`);
+        if (my !== selToken) { p?.pause?.(); return; }   // a newer selection won the race
+        currentPlayer = p;
+      } catch (err) {
+        if (my !== selToken) return;
+        host.innerHTML = '<p class="hint">Could not load this visualization — try refreshing.</p>';
+        currentPlayer = null; console.error(err);
+      }
     }
     document.getElementById('brand').addEventListener('click', (e) => { e.preventDefault(); showLanding(); });
     document.getElementById('back-link').addEventListener('click', showLanding);
@@ -284,31 +305,36 @@
     }
     searchBox.addEventListener('input', applyFilter);
 
-    // --- mobile menu ---
+    // --- overlays: mobile drawer + keyboard help share ONE backdrop, with a single
+    //     source of truth so the two can never desync (shown iff drawer OR help is open). ---
     const menuToggle = document.getElementById('menu-toggle');
     const backdrop = document.getElementById('backdrop');
-    function openMenu() { side.classList.add('open'); backdrop.hidden = false; menuToggle.setAttribute('aria-expanded', 'true'); }
-    function closeMenu() { side.classList.remove('open'); backdrop.hidden = true; menuToggle.setAttribute('aria-expanded', 'false'); }
-    menuToggle.addEventListener('click', () => side.classList.contains('open') ? closeMenu() : openMenu());
-    backdrop.addEventListener('click', closeMenu);
-
-    // --- keyboard help overlay ---
     const kbd = document.getElementById('kbd-overlay');
-    const toggleHelp = () => { kbd.hidden = !kbd.hidden; backdrop.hidden = kbd.hidden; };
-    kbd.addEventListener('click', () => { kbd.hidden = true; backdrop.hidden = true; });
+    const kbdClose = document.getElementById('kbd-close');
+    const isMobile = () => matchMedia('(max-width: 900px)').matches;
+    const syncBackdrop = () => { backdrop.hidden = kbd.hidden && !side.classList.contains('open'); };
+    function openMenu() { side.classList.add('open'); menuToggle.setAttribute('aria-expanded', 'true'); syncBackdrop(); }
+    function closeMenu() { side.classList.remove('open'); menuToggle.setAttribute('aria-expanded', 'false'); syncBackdrop(); }
+    let lastFocus = null;
+    function showHelp() { lastFocus = document.activeElement; closeMenu(); kbd.hidden = false; syncBackdrop(); kbdClose.focus(); }
+    function hideHelp() { kbd.hidden = true; syncBackdrop(); lastFocus?.focus?.(); }
+    menuToggle.addEventListener('click', () => side.classList.contains('open') ? closeMenu() : openMenu());
+    backdrop.addEventListener('click', () => { if (!kbd.hidden) hideHelp(); else closeMenu(); });
+    kbd.addEventListener('click', (e) => { if (e.target === kbd) hideHelp(); });   // click scrim, not the card
+    kbdClose.addEventListener('click', hideHelp);
 
     // --- global keys ---
     document.addEventListener('keydown', (e) => {
-      const typing = /^(INPUT|TEXTAREA)$/.test(document.activeElement?.tagName || '');
       if (e.key === 'Escape') {
-        if (!kbd.hidden) { kbd.hidden = true; backdrop.hidden = true; }
+        if (!kbd.hidden) hideHelp();
+        else if (side.classList.contains('open')) closeMenu();
         else if (searchBox.value) { searchBox.value = ''; applyFilter(); searchBox.blur(); }
         else if (!playerView.hidden) showLanding();
         return;
       }
-      if (typing) return;
-      if (e.key === '/') { e.preventDefault(); openMenu(); searchBox.focus(); }
-      else if (e.key === '?') { e.preventDefault(); toggleHelp(); }
+      if (/^(INPUT|TEXTAREA)$/.test(document.activeElement?.tagName || '')) return;
+      if (e.key === '/') { e.preventDefault(); if (isMobile()) openMenu(); searchBox.focus(); }
+      else if (e.key === '?') { e.preventDefault(); kbd.hidden ? showHelp() : hideHelp(); }
     });
 
     showLanding();

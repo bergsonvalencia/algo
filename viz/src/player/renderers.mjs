@@ -275,6 +275,11 @@ export function renderCode(host, code = [], line = null) {
   lines.forEach((li, i) => {
     const on = line === i + 1;
     li.classList.toggle('current', on);
-    if (on) li.scrollIntoView({ block: 'nearest' });
+    // Scroll ONLY the code panel — never let scrollIntoView walk up to the document and
+    // yank the whole gallery page (it would fight window.scrollTo and jank during playback).
+    if (on && li.isConnected && host.scrollHeight > host.clientHeight) {
+      const lr = li.getBoundingClientRect(), hr = host.getBoundingClientRect();
+      host.scrollTop += (lr.top - hr.top) - (host.clientHeight - li.clientHeight) / 2;
+    }
   });
 }

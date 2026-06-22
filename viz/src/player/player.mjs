@@ -108,6 +108,10 @@ export class AlgVizPlayer {
   }
 
   _onKey(e) {
+    // Let native control semantics win: the range scrubber owns ←/→ (step value) and
+    // the transport buttons own Space (activate). Global transport keys still fire when
+    // focus is on the player root itself (its default after mount).
+    if (e.target.closest('input, button')) return;
     const k = e.key;
     if (k === 'ArrowRight') { this.next(); }
     else if (k === 'ArrowLeft') { this.prev(); }
