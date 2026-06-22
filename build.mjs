@@ -38,11 +38,15 @@ const GROUPS = [
     "two-pointers-reviewer", "sliding-window-reviewer", "binary-search-reviewer",
     "stacks-and-monotonic-stacks-reviewer", "prefix-sums-and-difference-arrays-reviewer",
     "intervals-reviewer", "greedy-reviewer", "backtracking-reviewer", "dynamic-programming-reviewer",
+    "string-searching-reviewer",
   ]},
   { title: "Data structures", accent: "amber", items: [
     "linked-lists-reviewer", "trees-and-binary-search-trees-reviewer",
     "heaps-and-priority-queues-reviewer", "tries-reviewer", "graphs-reviewer",
+    "hash-tables-reviewer", "balanced-trees-and-avl-reviewer", "b-trees-reviewer",
+    "sets-and-set-algorithms-reviewer",
   ]},
+  { title: "Systems & concurrency", accent: "green", items: ["collection-concurrency-reviewer"] },
   { title: "Reference", accent: "rose", items: ["algorithms-glossary-reviewer"] },
 ];
 
@@ -339,11 +343,4 @@ for (const f of files) {
 writeFileSync(join(OUT, "assets", "search-index.json"), JSON.stringify(searchIndex));
 writeFileSync(join(OUT, "index.html"), renderHome(meta));
 
-// Publish the standalone visualizer sub-site (player + built frames) at dist/viz/, if synced.
-const VIZ = join(ROOT, "viz");
-if (existsSync(VIZ)) {
-  cpSync(VIZ, join(OUT, "viz"), { recursive: true });
-  console.log("Copied viz/ -> dist/viz/ (visualizations sub-site)");
-}
-
-console.log(`Built ${files.length} topic pages + homepage -> dist/`);
+// Publish the standalone visualizer sub-site (player + built frames) at dist/viz/, if syn
