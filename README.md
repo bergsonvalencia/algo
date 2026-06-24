@@ -1,7 +1,12 @@
 # Algorithm Patterns
 
-A visual study website built from the algorithms reviewer. **Vanilla HTML/CSS/JS**
-output (no front-end framework) — a tiny Node build step renders the Markdown to static pages.
+**🔗 Live site: <https://bergsonvalencia.github.io/algo/>**
+
+A visual study website built from the algorithms reviewer — a diagram-first guide covering 32
+algorithm-pattern topics (foundations, core patterns, data structures, and an interactive
+[algo.monster decision flowchart](https://bergsonvalencia.github.io/algo/algomonster-flowchart.html)).
+**Vanilla HTML/CSS/JS** output (no front-end framework) — a tiny Node build step renders the
+Markdown to static pages.
 
 The reviewer Markdown is the single source of truth and is **never modified** by this project; a
 sync script copies it in.
@@ -37,5 +42,6 @@ REVIEWER_SRC=/path/to/reviewer/algorithms npm run sync
 
 ## Deploy (GitHub Pages)
 
-Pushing to `main` runs `.github/workflows/deploy.yml`, which syncs, builds, and publishes `dist/`.
-For a project site at `user.github.io/<repo>/`, links are relative so no base-path config is needed.
+Pushing to `main` runs `.github/workflows/deploy.yml`, which syncs, builds, and publishes `dist/`
+to <https://bergsonvalencia.github.io/algo/>. For a project site at `user.github.io/<repo>/`, links
+are relative so no base-path config is needed.
