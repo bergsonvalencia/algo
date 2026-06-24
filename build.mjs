@@ -229,6 +229,7 @@ function topbar() {
   <a class="brand" href="index.html"><span>${escHtml(SITE.title)}</span></a>
   <span class="spacer"></span>
   <div class="search"><span class="icon">&#9906;</span><input id="search" type="search" placeholder="Search topics…  (press /)" autocomplete="off" aria-label="Search"><div class="search-results" id="search-results"></div></div>
+  <a class="icon-btn quiz-link" href="quiz.html" title="Test yourself with the pattern quiz" aria-label="Quiz" style="width:auto;padding:0 12px;gap:6px;font-size:13px;font-weight:600;text-decoration:none">&#9998;&nbsp;Quiz</a>
   <a class="icon-btn viz-link" href="viz/index.html" title="Step-by-step visualizations" aria-label="Visualizations" style="width:auto;padding:0 12px;gap:6px;font-size:13px;font-weight:600;text-decoration:none">&#9654;&nbsp;Visualize</a>
   <button class="icon-btn" id="theme-toggle" aria-label="Toggle theme">&#9790;</button>
   ${gh}
@@ -286,6 +287,30 @@ function renderHome(meta) {
   }
   const first = built.has("two-pointers-reviewer") ? "two-pointers-reviewer.html" : Object.keys(meta)[0] + ".html";
   const idx = built.has("algorithm-patterns-index-reviewer") ? "algorithm-patterns-index-reviewer.html" : first;
+
+  // Best-effort quiz question count for the practice card (the bank is committed at quiz-data/).
+  let quizCount = 0;
+  try { quizCount = JSON.parse(readFileSync(join(ROOT, "quiz-data", "questions.json"), "utf8")).length; } catch { /* not built yet */ }
+  const practice = `<section class="home-section">
+    <h2>Practice &amp; test yourself</h2>
+    <p class="lead">Don't just read the patterns — prove you can apply them.</p>
+    <div class="card-grid">
+      <a class="card acc-purple" href="quiz.html">
+        <span class="tag">Quiz</span>
+        <h3>Pattern Mastery Quiz</h3>
+        <p>Single-best-answer questions across every core pattern — easy to hard, randomized, each with a full explanation whether you get it right or wrong.</p>
+        ${quizCount ? `<span class="card-meta">${quizCount} questions · easy → hard</span>` : ""}
+        <span class="more">Start the quiz &rarr;</span>
+      </a>
+      <a class="card acc-blue" href="viz/index.html">
+        <span class="tag">Visualize</span>
+        <h3>Step-by-step visualizations</h3>
+        <p>Watch each algorithm run frame by frame, with a synced code panel and a mentor note on every step.</p>
+        <span class="more">Open the visualizer &rarr;</span>
+      </a>
+    </div>
+  </section>`;
+
   const main = `<div class="home">
   <section class="hero">
     <span class="eyebrow">${escHtml(SITE.tagline)}</span>
@@ -293,8 +318,10 @@ function renderHome(meta) {
     <p>Every LeetCode pattern, explained the way you actually remember it — one clear diagram, one worked trace, one clean implementation at a time.</p>
     <div class="cta">
       <a class="btn btn-primary" href="${idx}">Start Here</a>
+      <a class="btn btn-ghost" href="quiz.html">&#9998;&nbsp;Test yourself</a>
     </div>
   </section>
+  ${practice}
   ${sections}
   </div>
   <footer class="site-footer">Generated from the algorithms reviewer · built with vanilla HTML, CSS &amp; JS.</footer>`;

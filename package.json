@@ -7,7 +7,9 @@
   "scripts": {
     "sync": "node scripts/sync-content.mjs",
     "sync:viz": "node scripts/sync-viz.mjs",
-    "build": "node build.mjs",
+    "merge:quiz": "node scripts/merge-quiz.mjs",
+    "build:quiz": "node scripts/build-quiz.mjs",
+    "build": "node scripts/build-quiz.mjs && node build.mjs",
     "serve": "node scripts/serve.mjs",
     "dev": "npm run sync && npm run sync:viz && npm run build && npm run serve"
   },

@@ -40,6 +40,23 @@ REVIEWER_SRC=/path/to/reviewer/algorithms npm run sync
 - `src/theme.css`, `src/app.js` — the hand-written theme and behavior
   (dark mode, Mermaid theming, scrollspy TOC, glossary tooltips, search, mobile nav).
 
+## Pattern Mastery Quiz
+
+A self-contained quiz at [`quiz.html`](https://bergsonvalencia.github.io/algo/quiz.html) tests whether
+you can recognize and apply the core patterns — single-best-answer questions across every topic,
+easy → hard, randomized, each with a full explanation whether you answer right or wrong.
+
+- `quiz-data/questions.json` — the canonical question bank (one entry per question, committed).
+- `scripts/quiz/app.js`, `scripts/quiz/quiz.css` — the quiz app (vanilla JS) and its styles.
+- `scripts/build-quiz.mjs` — inlines the bank + app + styles into the single self-contained
+  `static/quiz.html` (run automatically as the first step of `npm run build`).
+- `scripts/merge-quiz.mjs` — validates and merges the generator's per-topic JSON
+  (`.quizgen/*.json`, git-ignored) into `quiz-data/questions.json`. Each question was written from
+  the reviewer Markdown and independently re-verified for correctness before being kept.
+
+To edit the quiz: change `quiz-data/questions.json` (or the app/styles) and run `npm run build:quiz`
+(or `npm run build`), then `npm run serve`.
+
 ## Deploy (GitHub Pages)
 
 Pushing to `main` runs `.github/workflows/deploy.yml`, which syncs, builds, and publishes `dist/`
