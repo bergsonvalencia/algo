@@ -149,18 +149,13 @@ a:hover { text-decoration: underline; }
 
 .icon-btn {
   height: 38px; min-width: 38px; padding: 0 10px;
-  display: inline-flex; align-items: center; justify-content: center; gap: 6px;
+  display: inline-grid; place-items: center;
   border: 1px solid var(--border); border-radius: var(--radius);
   background: var(--surface-2); color: var(--text-muted); cursor: pointer; font-size: 18px;
   transition: color .15s, border-color .15s, background .15s;
 }
 .icon-btn:hover { color: var(--accent); border-color: var(--accent); }
-.icon-btn[hidden] { display: none; }
 .menu-btn { display: none; }
-.toc-btn { display: none; width: auto; font-size: 13px; font-weight: 600; white-space: nowrap; }
-.toc-btn > [aria-hidden="true"] { font-size: 18px; }
-.quiz-link, .viz-link { width: auto; padding: 0 12px; font-size: 13px; font-weight: 600; text-decoration: none; }
-.quiz-link:hover, .viz-link:hover { text-decoration: none; }
 
 /* ---------- Layout ---------- */
 .layout {
@@ -387,33 +382,15 @@ html[data-theme="dark"] .prose :not(pre) > code { color: var(--accent-2); }
 .backdrop { display: none; }
 
 /* ---------- Responsive ---------- */
-/* Laptops & tablet landscape: keep both navigation areas available via topbar controls. */
+/* Laptops & tablet landscape (incl. iPad Pro 13" portrait 1024): drop the right TOC, keep sidebar. */
 @media (max-width: 1200px) {
-  .topbar { gap: 10px; padding-inline: 14px; }
-  .menu-btn, .toc-btn { display: inline-flex; }
-  .gh-link { display: none; }
-  .search { width: min(300px, 34vw); }
   .layout { grid-template-columns: 300px minmax(0, 1fr); }
-  body.nav-collapsed .layout { grid-template-columns: minmax(0, 1fr); }
-  body.nav-collapsed .sidebar { display: none; }
-  .toc {
-    display: block; position: fixed; z-index: 46;
-    top: var(--topbar-h); right: 0; bottom: 0; width: min(340px, 88vw); height: auto;
-    padding: 28px 20px 48px; background: var(--surface); border-left: 1px solid var(--border);
-    box-shadow: var(--shadow-lg); transform: translateX(102%); transition: transform .22s ease;
-  }
-  body.toc-open .toc { transform: translateX(0); }
-  body.toc-open { overflow: hidden; }
-  body.toc-open .backdrop { display: block; position: fixed; inset: var(--topbar-h) 0 0; background: rgba(0,0,0,.45); z-index: 44; }
+  .toc { display: none; }
   .content { padding: 36px 48px 88px; }
-}
-@media (max-width: 1100px) {
-  .quiz-link .topbar-btn-label, .viz-link .topbar-btn-label { display: none; }
-  .quiz-link, .viz-link { padding-inline: 9px; }
 }
 /* Portrait tablets & phones (incl. iPhone 16 Pro): sidebar becomes a slide-in drawer. */
 @media (max-width: 900px) {
-  body.nav-collapsed .sidebar { display: block; }
+  .menu-btn { display: inline-grid; }
   .layout { grid-template-columns: minmax(0, 1fr); }
   .content { padding: 30px 30px 80px; }
   .sidebar {
@@ -422,20 +399,13 @@ html[data-theme="dark"] .prose :not(pre) > code { color: var(--accent-2); }
     box-shadow: var(--shadow-lg);
   }
   body.nav-open .sidebar { transform: translateX(0); }
-  body.nav-open { overflow: hidden; }
   body.nav-open .backdrop { display: block; position: fixed; inset: var(--topbar-h) 0 0; background: rgba(0,0,0,.45); z-index: 44; }
   .search { width: auto; flex: 1; }
-}
-@media (max-width: 700px) {
-  .brand { display: none; }
-  .topbar .spacer { display: none; }
-  .search { min-width: 0; }
 }
 /* Phones (iPhone 16 Pro 393, etc.): tighten the top bar so search fits. */
 @media (max-width: 560px) {
   .topbar { gap: 10px; padding: 0 14px; }
   .gh-link { display: none; }                  /* hide GitHub star to save room */
-  .toc-btn .topbar-btn-label { display: none; }
   .content { padding: 22px 18px 72px; }
   .prose { font-size: .98rem; }
   .prose h1 { font-size: 1.85rem; }
