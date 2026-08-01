@@ -125,11 +125,99 @@ document.querySelectorAll(".prose a[title], .prose .x-link[title]").forEach((a) 
   a.addEventListener("blur", hideTip);
 });
 
-/* ---------- Mobile nav ---------- */
+/* ---------- Responsive navigation ---------- */
 const menuBtn = document.getElementById("menu-toggle");
+const tocBtn = document.getElementById("toc-toggle");
 const backdrop = document.getElementById("backdrop");
-menuBtn?.addEventListener("click", () => document.body.classList.toggle("nav-open"));
-backdrop?.addEventListener("click", () => document.body.classList.remove("nav-open"));
+const sidebarPanel = document.getElementById("sidebar");
+const tocPanel = document.getElementById("toc");
+const mobileNav = matchMedia("(max-width: 900px)");
+const tabletNav = matchMedia("(min-width: 901px) and (max-width: 1200px)");
+const compactNav = matchMedia("(max-width: 1200px)");
+const hasToc = Boolean(document.querySelector(".toc-list a"));
+
+if (menuBtn && !sidebarPanel) menuBtn.hidden = true;
+if (tocBtn && !hasToc) tocBtn.hidden = true;
+
+function setButtonState(button, expanded, openLabel, closeLabel) {
+  if (!button) return;
+  button.setAttribute("aria-expanded", String(expanded));
+  const label = expanded ? closeLabel : openLabel;
+  button.setAttribute("aria-label", label);
+  button.setAttribute("title", label);
+}
+
+function syncNavigationState() {
+  const navExpanded = mobileNav.matches
+    ? document.body.classList.contains("nav-open")
+    : !tabletNav.matches || !document.body.classList.contains("nav-collapsed");
+  const tocExpanded = document.body.classList.contains("toc-open");
+  setButtonState(menuBtn, navExpanded, "Open topics navigation", "Collapse topics navigation");
+  setButtonState(tocBtn, tocExpanded, "Open On this page navigation", "Close On this page navigation");
+  if (sidebarPanel) {
+    const hidden = mobileNav.matches ? !navExpanded : tabletNav.matches && !navExpanded;
+    sidebarPanel.inert = hidden;
+    sidebarPanel.setAttribute("aria-hidden", String(hidden));
+  }
+  if (tocPanel) {
+    const hidden = compactNav.matches && !tocExpanded;
+    tocPanel.inert = hidden;
+    tocPanel.setAttribute("aria-hidden", String(hidden));
+  }
+}
+
+function closeDrawers() {
+  document.body.classList.remove("nav-open", "toc-open");
+  syncNavigationState();
+}
+
+menuBtn?.addEventListener("click", () => {
+  document.body.classList.remove("toc-open");
+  if (tabletNav.matches) document.body.classList.toggle("nav-collapsed");
+  else if (mobileNav.matches) document.body.classList.toggle("nav-open");
+  syncNavigationState();
+  if (mobileNav.matches && document.body.classList.contains("nav-open")) {
+    (sidebarPanel?.querySelector("a.active") || sidebarPanel?.querySelector("a"))?.focus();
+  }
+});
+
+tocBtn?.addEventListener("click", () => {
+  document.body.classList.remove("nav-open");
+  document.body.classList.toggle("toc-open");
+  syncNavigationState();
+  if (document.body.classList.contains("toc-open")) {
+    (tocPanel?.querySelector("a.active") || tocPanel?.querySelector("a"))?.focus();
+  }
+});
+
+backdrop?.addEventListener("click", () => {
+  const focusTarget = document.body.classList.contains("nav-open") ? menuBtn : tocBtn;
+  closeDrawers();
+  focusTarget?.focus();
+});
+document.addEventListener("keydown", (event) => {
+  if (event.key !== "Escape") return;
+  if (document.body.classList.contains("nav-open")) {
+    closeDrawers();
+    menuBtn?.focus();
+  } else if (document.body.classList.contains("toc-open")) {
+    closeDrawers();
+    tocBtn?.focus();
+  }
+});
+document.querySelectorAll(".toc-list a").forEach((link) => link.addEventListener("click", () => {
+  if (compactNav.matches) closeDrawers();
+}));
+mobileNav.addEventListener("change", () => {
+  document.body.classList.remove("nav-open", "toc-open");
+  syncNavigationState();
+});
+tabletNav.addEventListener("change", () => {
+  document.body.classList.remove("nav-open", "toc-open");
+  if (!tabletNav.matches) document.body.classList.remove("nav-collapsed");
+  syncNavigationState();
+});
+syncNavigationState();
 
 /* ---------- Search ---------- */
 const searchInput = document.getElementById("search");

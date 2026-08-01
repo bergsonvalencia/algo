@@ -225,12 +225,13 @@ function renderRelated(base, meta) {
 function topbar() {
   const gh = SITE.repo ? `<a class="icon-btn gh-link" href="${SITE.repo}" target="_blank" rel="noopener" aria-label="GitHub">&#9733;</a>` : "";
   return `<header class="topbar">
-  <button class="icon-btn menu-btn" id="menu-toggle" aria-label="Menu">&#9776;</button>
+  <button class="icon-btn menu-btn" id="menu-toggle" type="button" aria-label="Collapse topics navigation" aria-controls="sidebar" aria-expanded="true" title="Collapse topics navigation">&#9776;</button>
   <a class="brand" href="index.html"><span>${escHtml(SITE.title)}</span></a>
   <span class="spacer"></span>
   <div class="search"><span class="icon">&#9906;</span><input id="search" type="search" placeholder="Search topics…  (press /)" autocomplete="off" aria-label="Search"><div class="search-results" id="search-results"></div></div>
-  <a class="icon-btn quiz-link" href="quiz.html" title="Test yourself with the pattern quiz" aria-label="Quiz" style="width:auto;padding:0 12px;gap:6px;font-size:13px;font-weight:600;text-decoration:none">&#9998;&nbsp;Quiz</a>
-  <a class="icon-btn viz-link" href="viz/index.html" title="Step-by-step visualizations" aria-label="Visualizations" style="width:auto;padding:0 12px;gap:6px;font-size:13px;font-weight:600;text-decoration:none">&#9654;&nbsp;Visualize</a>
+  <a class="icon-btn quiz-link" href="quiz.html" title="Test yourself with the pattern quiz" aria-label="Quiz"><span aria-hidden="true">&#9998;</span><span class="topbar-btn-label">Quiz</span></a>
+  <a class="icon-btn viz-link" href="viz/index.html" title="Step-by-step visualizations" aria-label="Visualizations"><span aria-hidden="true">&#9654;</span><span class="topbar-btn-label">Visualize</span></a>
+  <button class="icon-btn toc-btn" id="toc-toggle" type="button" aria-label="Open On this page navigation" aria-controls="toc" aria-expanded="false" title="Open On this page navigation"><span aria-hidden="true">&#9783;</span><span class="topbar-btn-label">On this page</span></button>
   <button class="icon-btn" id="theme-toggle" aria-label="Toggle theme">&#9790;</button>
   ${gh}
 </header>`;
@@ -261,9 +262,9 @@ ${bodyMain}
 
 function renderPage({ base, title, excerpt, body, toc, sidebar, breadcrumb, related }) {
   const main = `<div class="layout">
-  <aside class="sidebar" id="sidebar">${sidebar}</aside>
+  <aside class="sidebar" id="sidebar" aria-label="Topics navigation">${sidebar}</aside>
   <main class="content" id="main">${breadcrumb}<article class="prose">${body}</article>${related}</main>
-  <aside class="toc"><div class="toc-inner"><p class="toc-title">On this page</p>${toc}</div></aside>
+  <aside class="toc" id="toc" aria-label="On this page"><div class="toc-inner"><p class="toc-title">On this page</p>${toc}</div></aside>
 </div>`;
   return shell({ title: `${title} · ${SITE.title}`, desc: excerpt, bodyMain: main });
 }
