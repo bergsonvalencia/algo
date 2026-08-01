@@ -80,6 +80,10 @@ md.use(anchor, {
   permalink: anchor.permalink.linkInsideHeader({ symbol: "#", placement: "after", class: "header-anchor", ariaHidden: true }),
 });
 
+// Keep wide comparison tables usable on phones and tablets without widening the page.
+md.renderer.rules.table_open = () => '<div class="table-wrap"><table>\n';
+md.renderer.rules.table_close = () => '</table></div>\n';
+
 // Rewrite relative .md links -> .html (same dir, only if the target was built);
 // links to not-yet-built files become inert spans.
 const defaultLinkOpen = md.renderer.rules.link_open || ((t, i, o, e, s) => s.renderToken(t, i, o));
