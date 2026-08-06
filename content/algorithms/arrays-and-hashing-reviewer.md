@@ -173,6 +173,29 @@ Key points:
 - **Complexity**: O(n) time where n is the string length, O(1) space with the `int[26]` (or O(k) with a dictionary, k = distinct characters, bounded by the alphabet).
 - **Unicode caveat**: `int[26]` assumes lowercase ASCII letters. For arbitrary Unicode use a `Dictionary<char,int>` (or `Dictionary<Rune,int>` to handle surrogate pairs correctly).
 
+Both implementations below use the **same frequency-counting algorithm** and preserve O(n) time and O(1) space. The standard array version is recommended for interviews because it is easier to read, explain, and write quickly. The optimized version remains useful for readers interested in performance-oriented modern C#.
+
+### Standard C#
+
+```csharp
+public bool IsAnagram(string s, string t)
+{
+    if (s.Length != t.Length) return false;
+
+    int[] frequency = new int[26];
+    for (int i = 0; i < s.Length; i++)
+    {
+        frequency[s[i] - 'a']++;
+        frequency[t[i] - 'a']--;
+    }
+    foreach (int count in frequency)
+        if (count != 0) return false; // a surplus or deficit means not an anagram
+    return true;
+}
+```
+
+### Optimized C#
+
 ```csharp
 public bool IsAnagram(string s, string t)
 {
@@ -216,6 +239,35 @@ Key points:
 - **Complexity**: O(n·k log k) time (sorted key) or O(n·k) time (count key); O(n·k) space to hold all strings in the buckets.
 - **The map value is a bucket** (`List<string>`); use `TryGetValue` or `CollectionsMarshal` to fetch-or-create the list.
 - **Output order is unspecified** by the problem, so the dictionary's enumeration order is acceptable.
+
+Both versions below use the same count-signature grouping algorithm and have the same O(n·k) time and O(n·k) output-space complexity. The standard version uses familiar arrays, dictionaries, lists, loops, and string construction, so it is the recommended version for readability and interview preparation. The optimized version keeps the `Span<int>`/`stackalloc` approach to demonstrate more advanced, performance-oriented C# techniques.
+
+### Standard C#
+
+```csharp
+public IList<IList<string>> GroupAnagrams(string[] strs)
+{
+    var groups = new Dictionary<string, IList<string>>();
+    foreach (string word in strs)
+    {
+        // Canonical key: O(26)=O(1) count signature, faster than sorting for long words.
+        int[] counts = new int[26];
+        for (int i = 0; i < word.Length; i++)
+            counts[word[i] - 'a']++;
+        string key = string.Join(",", counts);
+
+        if (!groups.TryGetValue(key, out var bucket))
+        {
+            bucket = new List<string>();
+            groups[key] = bucket;
+        }
+        bucket.Add(word);
+    }
+    return new List<IList<string>>(groups.Values);
+}
+```
+
+### Optimized C#
 
 ```csharp
 public IList<IList<string>> GroupAnagrams(string[] strs)
@@ -273,6 +325,46 @@ Key points:
 - **[Heap](algorithms-glossary-reviewer.md#heap "A tree structure keeping the smallest or largest element instantly accessible.") of size k** is O(n log k): push (value, freq) pairs into a [min-heap](algorithms-glossary-reviewer.md#min-heap-and-max-heap "A min-heap keeps the smallest at its root; a max-heap keeps the largest.") keyed by frequency; pop when size exceeds k so only the k largest survive. Uses `PriorityQueue<TElement,TPriority>` from the BCL. Total O(n log k) time, O(n + k) space. Detailed heap mechanics live in the [Heaps & Priority Queues](heaps-and-priority-queues-reviewer.md) reviewer.
 - **Which to quote**: bucket sort is the optimal O(n) answer; the heap is the more general "top-K stream" pattern and the one to reach for when n is huge and k is tiny, or when elements arrive online.
 - **Sorting the whole frequency list** is O(n log n) — correct but strictly worse than both above; mention it only as the naive baseline.
+
+### Why the bucket array has length `n + 1`
+
+Here, `n` is the number of elements in the input array. The bucket index is the **frequency**, and the item placed inside that bucket is the **number with that frequency**. Because every value in the frequency map appeared at least once, valid frequency indices run from `1` through `n`; index `0` is unused.
+
+The highest possible frequency is `n`, which happens when every input element has the same value. An array of length `n` has only indices `0` through `n - 1`, so it cannot represent that maximum frequency. Allocating length `n + 1` provides indices `0` through `n`, including a valid bucket at index `n`.
+
+```text
+nums = [1, 1, 1, 2, 2, 3]
+n = 6
+
+Frequencies:
+1 -> 3
+2 -> 2
+3 -> 1
+
+Bucket array length:
+n + 1 = 7
+
+Bucket indices:
+0, 1, 2, 3, 4, 5, 6
+
+bucket[1] contains 3
+bucket[2] contains 2
+bucket[3] contains 1
+```
+
+For the maximum-frequency edge case:
+
+```text
+nums = [5, 5, 5, 5]
+
+n = 4
+frequency of 5 = 4
+
+The value must be placed in bucket[4].
+Therefore, the bucket array needs length 5, which is n + 1.
+```
+
+The `+1` is **not** part of the frequency calculation. It is needed only because arrays use zero-based indexing: without `n + 1`, the bucket for a value occurring `n` times would be out of range.
 
 ```csharp
 using System.Collections.Generic;
