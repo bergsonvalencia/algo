@@ -1,4 +1,4 @@
-# Recursion & Divide and Conquer (Reviewer)
+# Recursion & Divide and Conquer
 
 [Recursion](algorithms-glossary-reviewer.md#recursion "A function solving a problem by calling itself on smaller versions of it.") is the technique of solving a problem by having a function call itself on a smaller version
 of the same problem, bottoming out at a **[base case](algorithms-glossary-reviewer.md#base-case "The condition where a recursive function stops and returns a direct answer.")** that is solvable directly. It is less an

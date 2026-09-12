@@ -1,4 +1,4 @@
-# Math & Number Theory (Reviewer)
+# Math & Number Theory
 
 Most "math" interview problems are not about clever identities — they are about three things: knowing
 the right O(log n) trick (Euclid's [GCD](algorithms-glossary-reviewer.md#gcd "The largest integer that divides two numbers with no remainder."), fast exponentiation), knowing the right O(n log log n) sieve

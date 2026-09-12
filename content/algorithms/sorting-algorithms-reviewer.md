@@ -1,4 +1,4 @@
-# Sorting Algorithms (Reviewer)
+# Sorting Algorithms
 
 Sorting is the most over-studied yet under-understood interview topic: everyone can name "quicksort"
 and "merge sort," but the senior signal is knowing *exactly* which one is stable, which is in-place,

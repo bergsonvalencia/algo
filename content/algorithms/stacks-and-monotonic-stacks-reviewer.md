@@ -1,4 +1,4 @@
-# Stacks & Monotonic Stacks (Reviewer)
+# Stacks & Monotonic Stacks
 
 A **[stack](algorithms-glossary-reviewer.md#stack "A last-in-first-out collection: you add and remove only at the top.")** is the last-in-first-out (LIFO) container: you push onto the top and pop from the top, both in O(1). It is the right model whenever the *most recently seen* item is the one you must resolve first — matching brackets, undo histories, call frames, parsing expressions, and depth-first traversal all share that "innermost / latest first" shape. If a problem talks about *nesting*, *balancing*, or *backtracking to the last open thing*, a stack is almost always lurking.
 

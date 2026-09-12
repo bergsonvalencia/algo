@@ -1,4 +1,4 @@
-# Algorithmic Complexity & Big-O (Reviewer)
+# Algorithmic Complexity & Big-O
 
 Big-O is the language interviewers and exam graders use to talk about how an [algorithm](algorithms-glossary-reviewer.md#algorithm "A precise, finite sequence of steps that turns an input into a desired output.") *scales* as its
 input grows. It deliberately throws away constants and lower-order terms so that two implementations can

@@ -1,4 +1,4 @@
-# Segment Trees & Fenwick Trees (Reviewer)
+# Segment Trees & Fenwick Trees
 
 [Prefix sums](algorithms-glossary-reviewer.md#prefix-sum "Running totals up to each position, making any range sum an O(1) subtraction.") answer "sum of a range" in O(1) — but only on a **static** array. The moment the
 data can change between queries, the precomputed prefix array is invalidated, and rebuilding it is

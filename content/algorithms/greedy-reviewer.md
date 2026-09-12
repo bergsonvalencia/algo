@@ -1,4 +1,4 @@
-# Greedy Algorithms (Reviewer)
+# Greedy Algorithms
 
 A **[greedy algorithm](algorithms-glossary-reviewer.md#greedy "Always take the choice that looks best right now, never reconsidering.")** builds a solution one step at a time, and at every step it makes the choice
 that looks best **right now** — the locally optimal, *irrevocable* move — without ever reconsidering.

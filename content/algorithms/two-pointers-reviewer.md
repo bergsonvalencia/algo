@@ -1,4 +1,4 @@
-# Two Pointers (Reviewer)
+# Two Pointers
 
 The **[two-pointers](algorithms-glossary-reviewer.md#two-pointers "Two index variables moving through a sequence to solve it in one linear pass.")** pattern uses two indices that move through a sequence in a coordinated way so
 that a single [linear](algorithms-glossary-reviewer.md#linear-time "Work grows in direct proportion to input size, about one unit per element.") pass replaces the [brute-force](algorithms-glossary-reviewer.md#brute-force "Trying every possibility directly; correct but often too slow.") `O(n^2)` nested scan. It comes in two flavors that

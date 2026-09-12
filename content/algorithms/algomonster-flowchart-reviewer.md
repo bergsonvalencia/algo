@@ -1,4 +1,4 @@
-# AlgoMonster Decision Flowchart (Reviewer)
+# AlgoMonster Decision Flowchart
 
 This reviewer reproduces, node-for-node, the decision flowchart published by
 [AlgoMonster](https://algo.monster/flowchart): a single top-down decision tree you walk one yes/no answer at

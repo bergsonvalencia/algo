@@ -1,4 +1,4 @@
-# Binary Search (Reviewer)
+# Binary Search
 
 Binary search is the canonical "halve the search space" [algorithm](algorithms-glossary-reviewer.md#algorithm "A precise, finite sequence of steps that turns an input into a desired output."): in a domain where you can decide,
 in [O(1)](algorithms-glossary-reviewer.md#constant-time "Cost does not depend on input size; the same fixed work every time.") or O(k), whether the answer lies left or right of a probe point, each comparison throws away

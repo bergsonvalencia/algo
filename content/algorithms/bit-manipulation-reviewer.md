@@ -1,4 +1,4 @@
-# Bit Manipulation (Reviewer)
+# Bit Manipulation
 
 **Bit manipulation** is the art of treating an integer as a fixed-width row of bits and operating on
 those bits directly with `&`, `|`, `^`, `~`, `<<`, and `>>`. Instead of arithmetic on the *value*,

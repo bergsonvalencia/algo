@@ -1,27 +1,19 @@
-# Math Basics for Interviews (Reviewer)
+# Math Basics for Interviews
 
-If these topics feel rusty, start here. This guide assumes you remember ordinary arithmetic but may not
-remember what a logarithm, factorial, or modulus means. Every topic follows the same path:
+The "computer science is math" reputation scares people off, but the truth is reassuring: coding
+interviews need only about **high-school-level math**. The questions companies actually ask test
+problem-solving and coding, not obscure number theory — and on the rare interview that leans on a math
+trick, that round is usually given less weight when the panel reviews your performance. You do not need
+a competition background; you need a handful of small ideas you can recall instantly.
 
-1. **Begin with a familiar idea.** What is happening in plain language?
-2. **Walk through a tiny example.** Small numbers make the pattern visible.
-3. **Name the formula.** The notation comes after the idea, not before it.
-4. **Connect it to code.** What interview clue tells you this idea matters?
-
-You do not need advanced mathematics for most coding interviews. You mainly need seven small tools for
-answering questions such as:
-
-- How many possibilities will this algorithm explore?
-- How many times can this input be halved?
-- How much total work does this loop perform?
-- How do I wrap an index or test divisibility?
-
-This reviewer is the math companion to the [Quick DSA Review](quick-dsa-review-reviewer.md). It explains
-number bases, [logarithms](algorithms-glossary-reviewer.md#logarithm "A logarithm answers to what power you raise the base to get a number; log2 of 8 is 3."),
-[permutations](algorithms-glossary-reviewer.md#permutation "An ordered arrangement of elements; n distinct items have n! permutations."), subsets, arithmetic sequences, geometric sequences, and
-[modular arithmetic](algorithms-glossary-reviewer.md#modulo-and-modular-arithmetic "The remainder after division, and doing math while always taking that remainder."). For GCD, primes,
-the sieve, fast exponentiation, and overflow, continue to the deeper
-[Math & Number Theory](math-and-number-theory-reviewer.md) reviewer after this one feels comfortable.
+This reviewer is the **math companion to the [Quick DSA Review](quick-dsa-review-reviewer.md)**: the few
+foundational concepts the pattern reviewers quietly assume you already know — why binary search is
+[O(log n)](algorithms-glossary-reviewer.md#logarithmic-time "Each step discards a constant fraction, so steps equal the log of n."), why enumerating [subsets](algorithms-glossary-reviewer.md#subset "Any selection from a set; n elements have 2^n subsets including empty and full.") is [O(2ⁿ)](algorithms-glossary-reviewer.md#exponential-time "Adding one element roughly doubles the work; cost of two choices per item."), why a nested loop summing `1 + 2 + … + n` is
+[O(n²)](algorithms-glossary-reviewer.md#quadratic-time "Work grows like the square of n, typically a nested loop over the same data."). It mirrors AlgoMonster's "Math for Technical Interviews" page: seven ideas — number bases,
+[logarithms](algorithms-glossary-reviewer.md#logarithm "A logarithm answers to what power you raise the base to get a number; log2 of 8 is 3."), [permutations](algorithms-glossary-reviewer.md#permutation "An ordered arrangement of elements; n distinct items have n! permutations.") and factorial, subsets, arithmetic sequences, geometric sequences, and
+[modular arithmetic](algorithms-glossary-reviewer.md#modulo-and-modular-arithmetic "The remainder after division, and doing math while always taking that remainder."). Each ends with a **Go deeper →** link into the reviewer that uses it. For the
+algorithmic side of number theory — [GCD](algorithms-glossary-reviewer.md#gcd "The largest integer that divides two numbers with no remainder."), the [sieve](algorithms-glossary-reviewer.md#sieve-of-eratosthenes "Finds all primes up to n by marking each prime's multiples as composite."), [fast exponentiation](algorithms-glossary-reviewer.md#exponentiation-by-squaring "Computes base^exp in O(log exp) by squaring the base and halving the exponent."), overflow — see the
+deeper [Math & Number Theory](math-and-number-theory-reviewer.md) reviewer.
 
 Related: [Algorithm Patterns Index](algorithm-patterns-index-reviewer.md) · [Quick DSA Review](quick-dsa-review-reviewer.md) · [Complexity & Big-O](complexity-and-big-o-reviewer.md) · [Math & Number Theory](math-and-number-theory-reviewer.md) · [Glossary](algorithms-glossary-reviewer.md)
 
@@ -42,39 +34,29 @@ Related: [Algorithm Patterns Index](algorithm-patterns-index-reviewer.md) · [Qu
 - [Quick recall checklist](#quick-recall-checklist)
 - [References](#references)
 
-> **Suggested first pass:** Read from “How much math do you actually need?” through “Where each idea
-> shows up.” Treat the Q&A, rapid-fire round, and exam questions as optional practice for a second pass.
-
 ---
 
 ## How much math do you actually need?
 
-The short answer is **comfortable high-school arithmetic**: multiplication, division, powers, and
-remainders. You do not need calculus, formal proofs, or pages of algebra for the topics in this guide.
+The short answer is **high-school math**. Universities sometimes file computer science under the math
+department, but day-to-day engineering — and the interview that gates it — leans on counting, growth,
+and divisibility, not calculus or proofs.
 
-The goal is not to perform calculations quickly in your head. The goal is to recognize a pattern:
+Key points:
 
-| When you notice... | Think... | It helps answer... |
-| --- | --- | --- |
-| the problem halves each step | logarithm | how many steps? |
-| every item is included or excluded | subsets / `2ⁿ` | how many choices? |
-| every ordering must be tried | permutations / `n!` | is brute force feasible? |
-| work grows by a fixed amount | arithmetic sequence | what is the total work? |
-| work multiplies each level | geometric sequence | how many tree nodes? |
-| values wrap or repeat | modulo | what is the remainder or wrapped index? |
-| binary digits or bit flags | base 2 | what does each bit represent? |
-
-You can read the guide in order, but you do not have to master one topic before moving on. First aim to
-understand the examples. Return later to memorize the formulas and complexity connections.
-
-**Tiny notation guide:**
-
-- `n` means “the input size” or “how many items,” not one particular number.
-- `2ⁿ` (also written `2^n`) means multiply 2 by itself `n` times.
-- `log₂(n)` asks which power of 2 reaches `n`.
-- `n!` means factorial; the exclamation mark is an operator, not punctuation.
-- `a % b` is the remainder after dividing `a` by `b`.
-- `O(...)` describes how running time or memory grows; it is not an exact duration.
+- **Advanced tricks are rarely the point.** LeetCode has thousands of user-submitted problems; a few
+  need an exotic identity, but the questions companies actually ask test coding and reasoning. A
+  question that hinges on knowing one specific math fact is a *knowledge* test, which good interviews
+  try to avoid.
+- **An off-topic round carries less weight.** At most companies your performance is calibrated by
+  engineers other than the interviewer, and a round judged too tricky or unfair is discounted in the
+  final decision. So a single unlucky math question rarely sinks a loop.
+- **The essentials fit in one sitting.** The seven ideas below are the whole toolkit. Each is small,
+  and each maps to a place it shows up in algorithm analysis — that mapping is what makes them worth
+  memorizing.
+- **Math here is mostly about *estimating cost*.** Logarithms explain `O(log n)`; factorials and powers
+  of two explain why some searches are only feasible for tiny `n`; arithmetic and geometric sums are how
+  you read the running time of a loop.
 
 ```mermaid
 flowchart TD
@@ -95,39 +77,21 @@ flowchart TD
 
 ## Number bases and place value
 
-A **[number base](algorithms-glossary-reviewer.md#number-base-radix "The count of distinct digits a numeral system uses; each position is the next power of the base.")** tells you two things: which digits are allowed and how much each position is worth.
+A **[number base](algorithms-glossary-reviewer.md#number-base-radix "The count of distinct digits a numeral system uses; each position is the next power of the base.")** (or *radix*) is just how many distinct digits a numeral system uses, and what each
+position is worth. We count in **base 10** because we have ten digits, `0`–`9`; computers compute in
+**base 2** because a circuit is naturally on/off, giving two digits, `0` and `1`.
 
-Start with the decimal number `352`. You already read it as:
+Key points:
 
-- 3 hundreds = `3 × 100`
-- 5 tens = `5 × 10`
-- 2 ones = `2 × 1`
-
-Those place values are powers of 10: `100 = 10²`, `10 = 10¹`, and `1 = 10⁰`. Binary uses the exact
-same rule, but its place values are powers of 2 because it has only the digits `0` and `1`.
-
-**Walk through binary `1011` from right to left:**
-
-| Bit | Place value | Contribution |
-| --- | --- | --- |
-| rightmost `1` | `2⁰ = 1` | `1 × 1 = 1` |
-| next `1` | `2¹ = 2` | `1 × 2 = 2` |
-| `0` | `2² = 4` | `0 × 4 = 0` |
-| leftmost `1` | `2³ = 8` | `1 × 8 = 8` |
-
-Add the contributions: `8 + 0 + 2 + 1 = 11`. Therefore binary `1011` means decimal `11`.
-
-**The reusable rule:** reading right to left, positions are `base⁰`, `base¹`, `base²`, and so on. A
-digit contributes `digit × base^position`.
-
-**Common mix-up:** `1011` does not mean one thousand eleven when it is labeled binary. The symbols are
-the same, but their positions have different values.
-
-**Interview connection:** base 2 appears in bits, masks, subsets, powers of two, and tree sizes. You do
-not usually need to convert long numbers by hand; you need to know what a bit in a position means.
-
-**Quick check:** What is binary `1101` in decimal? The active place values are `8`, `4`, and `1`, so the
-answer is **13**.
+- **Each position is the next power of the base.** Reading right to left, the places are `base⁰`,
+  `base¹`, `base²`, … A digit's contribution is `digit × base^position`.
+- **Base 10 example — 352:** the `2` is in the ones place (`10⁰`), the `5` in the tens place (`10¹`),
+  the `3` in the hundreds place (`10²`): `300 + 50 + 2`.
+- **Base 2 example — 1011:** the places from the right are `2⁰ = 1`, `2¹ = 2`, `2² = 4`, `2³ = 8`. So
+  binary `1011` is `8 + 0 + 2 + 1 = 11` in decimal.
+- **Why it matters here:** binary is the language of [bitmasks](algorithms-glossary-reviewer.md#bitmask "Using an integer's bits to represent a set of flags or a subset of items."), and "powers of 2" intuition is what makes
+  logarithms, subsets, and tree-height arithmetic click. You convert decimal→binary by repeatedly taking
+  `% 2` (digit) and `/ 2` (shift right).
 
 ```text
 base 10 — each place is a power of 10:
@@ -161,38 +125,21 @@ general base conversion, and [Bit Manipulation](bit-manipulation-reviewer.md) fo
 
 ## Logarithms: the inverse of exponentials
 
-A **[logarithm](algorithms-glossary-reviewer.md#logarithm "A logarithm answers to what power you raise the base to get a number; log2 of 8 is 3.")** is a step counter. For interviews, the most useful reading is:
+A **[logarithm](algorithms-glossary-reviewer.md#logarithm "A logarithm answers to what power you raise the base to get a number; log2 of 8 is 3.")** answers one question: *to what power must I raise the base to get this number?* It is
+the inverse of exponentiation. In interviews the base is almost always **2**, because so many algorithms
+repeatedly cut the problem in half.
 
-> `log₂(n)` asks: “How many times can I halve `n` before I reach 1?”
+Key points:
 
-Take `16`:
-
-1. `16 → 8`
-2. `8 → 4`
-3. `4 → 2`
-4. `2 → 1`
-
-It took four halvings, so `log₂(16) = 4`.
-
-The formal definition says the same thing in reverse: `2⁴ = 16`, so the power needed to turn 2 into 16
-is 4. Exponents build upward; logarithms tell you how many building steps occurred.
-
-**When `n` is not an exact power of 2:** do not panic. The logarithm simply is not a whole number:
-`log₂(20) ≈ 4.32`. A concrete loop may take four or five iterations depending on how it rounds and when
-it stops. Big-O describes the growth pattern, not an exact stopwatch count.
-
-**Why `O(log n)` is fast:** doubling the input adds only one more halving step. A sorted collection can
-grow from about 1,000 items to about 1,000,000 items while binary-search steps grow only from roughly 10
-to roughly 20.
-
-**Common mix-up:** `O(log n)` does not mean “divide by 2 once.” It means the algorithm repeatedly removes
-a constant fraction until very little remains.
-
-**Interview connection:** think logarithm when you see binary search, a balanced-tree height, a heap
-height, or a loop that repeatedly divides or multiplies by 2. The log base is omitted in Big-O because
-changing bases changes the result only by a constant factor.
-
-**Quick check:** `32 → 16 → 8 → 4 → 2 → 1` is five halvings, so `log₂(32) = 5`.
+- **Exponent then log, two directions of one fact.** `2³ = 8` (multiply three 2's), so `log₂(8) = 3`.
+  Likewise `2⁴ = 16`, so `log₂(16) = 4`.
+- **A logarithm counts halvings.** `log₂(n)` is how many times you can divide `n` by 2 before reaching
+  1: `16 / 2 / 2 / 2 / 2 = 1` is four halvings, so `log₂(16) = 4`. That is exactly what
+  [binary search](algorithms-glossary-reviewer.md#binary-search "Repeatedly halve a sorted range to locate a target in O(log n).") does to a sorted range.
+- **Logs grow painfully slowly**, which is the whole appeal of `O(log n)`: doubling the input adds just
+  **one** step. `log₂(1,000,000) ≈ 20`.
+- **The base does not matter in [Big-O](algorithms-glossary-reviewer.md#big-o-notation "Upper bound on how an algorithm's cost grows as input size increases.").** `log₂ n` and `log₁₀ n` differ only by a constant factor, so all
+  logarithms are the same complexity class — write `O(log n)` and never specify the base.
 
 ```text
 two ways to read  log2(16) = 4
@@ -228,57 +175,47 @@ public static int Log2Floor(long n)
 
 ## Permutations and factorial
 
-A **[permutation](algorithms-glossary-reviewer.md#permutation "An ordered arrangement of elements; n distinct items have n! permutations.")** is an arrangement where order matters. Imagine three people—Ana, Ben, and Cy—standing in a
-line. `Ana, Ben, Cy` and `Ben, Ana, Cy` count as different lines because the order changed.
+A **set** is a collection of distinct items where order does *not* matter — `{a, b}` is the same set as
+`{b, a}`. A **[permutation](algorithms-glossary-reviewer.md#permutation "An ordered arrangement of elements; n distinct items have n! permutations.")** is a specific *ordering* of those items, where order is everything: `[a, b]`
+and `[b, a]` are two different permutations.
 
-Instead of listing every line, count the choices for each position:
+Key points:
 
-1. The first position can hold any of **3** people.
-2. After choosing the first, the second position has **2** people left.
-3. The final position has **1** person left.
+- **Count by the multiplication principle.** Arranging `a, b, c`: the first position has 3 choices, then
+  2 remain for the second, then 1 for the last — `3 × 2 × 1 = 6` orderings.
+- **For `n` items that is `n!`** ("n [factorial](algorithms-glossary-reviewer.md#factorial "The product n · (n-1) · … · 1; the number of ways to order n distinct items.")"): `n × (n-1) × (n-2) × … × 1`. For example
+  `5! = 5 × 4 × 3 × 2 × 1 = 120`, so there are 120 ways to line up 5 letters.
+- **Factorials explode**, which is itself a planning cue. Because `n!` grows faster than any exponential,
+  "list every ordering" is only feasible for tiny `n` (roughly `n ≤ 10`). A small bound plus "all
+  arrangements" is the tell for [backtracking](algorithms-glossary-reviewer.md#backtracking "Explore all candidates by building one choice at a time and undoing dead ends.").
+- **Permutation vs [combination](algorithms-glossary-reviewer.md#combination "A selection of elements where order does not matter."):** if reordering the same elements counts as a new answer it is a
+  permutation (more of them); if not, it is a combination (fewer).
 
-Multiply independent stages: `3 × 2 × 1 = 6` possible lines.
+Build an ordering by filling positions left to right. The root is the empty arrangement; each edge
+*places* one remaining element, so the branching factor shrinks `3 → 2 → 1` down the levels. Every
+root-to-leaf path spells one permutation, and the leaves count them:
 
-That descending product has a name: **factorial**.
-
-```text
-3! = 3 × 2 × 1 = 6
-4! = 4 × 3 × 2 × 1 = 24
-5! = 5 × 4 × 3 × 2 × 1 = 120
+```mermaid
+flowchart TD
+    R["[ ]"]
+    R -->|"a"| A["[a]"]
+    R -->|"b"| B["[b]"]
+    R -->|"c"| C["[c]"]
+    A -->|"b"| AB["[a, b]"]
+    A -->|"c"| AC["[a, c]"]
+    B -->|"a"| BA["[b, a]"]
+    B -->|"c"| BC["[b, c]"]
+    C -->|"a"| CA["[c, a]"]
+    C -->|"b"| CB["[c, b]"]
+    AB -->|"c"| ABC["[a, b, c]"]
+    AC -->|"b"| ACB["[a, c, b]"]
+    BA -->|"c"| BAC["[b, a, c]"]
+    BC -->|"a"| BCA["[b, c, a]"]
+    CA -->|"b"| CAB["[c, a, b]"]
+    CB -->|"a"| CBA["[c, b, a]"]
 ```
 
-The notation `n!` means `n × (n-1) × ... × 1`. By convention, `0! = 1`: there is exactly one way to
-arrange nothing—the empty arrangement.
-
-**Permutation or combination?** Ask one question: *If I rearrange the same chosen items, is it a new
-answer?* A race podium is a permutation because first and second place differ. Choosing three members
-for a committee is a combination because the committee is unchanged when you list its members in a
-different order.
-
-**Why factorial matters in code:** it grows extremely quickly. `10! = 3,628,800`, so an algorithm that
-tries every ordering is practical only for small inputs. “Return every arrangement” plus a small `n` is
-a strong [backtracking](algorithms-glossary-reviewer.md#backtracking "Explore all candidates by building one choice at a time and undoing dead ends.") clue.
-
-**Common mix-up:** factorial counts full orderings of distinct items. It does not automatically answer
-“choose a few items without caring about order”; that is a combinations question.
-
-**Quick check:** Four different books can be placed on a shelf in `4! = 24` orders.
-
-```text
-all permutations of {a, b, c}  ->  3! = 3 · 2 · 1 = 6
-
-  pos1     pos2     pos3      sequence
-   a ────── b ────── c         a b c
-     └───── c ────── b         a c b
-   b ────── a ────── c         b a c
-     └───── c ────── a         b c a
-   c ────── a ────── b         c a b
-     └───── b ────── a         c b a
-
-  3 choices  ×  2 choices  ×  1 choice  =  6 leaves
-```
-
-*Each level fixes one more position, and the branching shrinks 3 → 2 → 1; the leaf count is the product 3·2·1 = 6 = 3!.*
+*Each level fixes one more position and the edge label is the element placed there; the branching shrinks 3 → 2 → 1, so the tree has 3 · 2 · 1 = 6 leaves — one per permutation. That product is exactly 3!.*
 
 ```csharp
 // n! = 1·2·…·n. 0! and 1! are 1. Overflows long past 20! — accumulate carefully.
@@ -295,41 +232,20 @@ public static long Factorial(int n)
 
 ## Subsets and the power set
 
-A **[subset](algorithms-glossary-reviewer.md#subset "Any selection from a set; n elements have 2^n subsets including empty and full.")** is any selection taken from a set. If the original set is `{a, b}`, its subsets are:
+A **[subset](algorithms-glossary-reviewer.md#subset "Any selection from a set; n elements have 2^n subsets including empty and full.")** of a set `A` is any set whose elements all come from `A`. The collection of *all* subsets is
+the **power set**. The key fact: a set of `n` elements has exactly **2ⁿ** subsets.
 
-```text
-{}        choose neither item
-{a}       choose only a
-{b}       choose only b
-{a, b}    choose both items
-```
+Key points:
 
-The empty selection `{}` counts, and the full selection `{a, b}` counts.
-
-Why are there `2ⁿ` subsets? Process one element at a time. For each element, you make exactly two
-choices:
-
-- leave it out;
-- include it.
-
-For `{a, b}`, that is `2 × 2 = 4` outcomes. For `{a, b, c}`, it is `2 × 2 × 2 = 8`. With `n` elements,
-it is `2ⁿ`.
-
-**A useful way to see the doubling:** begin with one subset, `{}`. Adding `a` makes a second version with
-`a`: `{}`, `{a}`. Adding `b` copies both existing subsets and adds `b` to each copy, producing four.
-Every new element doubles the list.
-
-**How this becomes a bitmask:** assign one bit to each element. `0` means “out” and `1` means “in.” For
-`{a, b, c}`, the mask `101` means include `a`, exclude `b`, and include `c`. All binary masks from `000`
-through `111` represent the eight subsets.
-
-**Common mix-up:** a subset is a selection, not an ordering. `{a, b}` and `{b, a}` are the same subset.
-
-**Interview connection:** “generate all subsets,” “choose any group,” and “include or exclude each item”
-point to a `2ⁿ` search, often implemented with backtracking or bitmasks. Because the count doubles with
-every new item, exhaustive subset solutions commonly require `n` around 20 or smaller.
-
-**Quick check:** A four-element set has `2⁴ = 16` subsets.
+- **Each element is an independent yes/no.** Building a subset, every element is either *included* or
+  *excluded* — two choices. With `n` independent two-way choices the total is `2 × 2 × … × 2 = 2ⁿ`.
+- **Think of switches.** One element → `2¹ = 2` states; two → `2² = 4`; three → `2³ = 8`. Each new
+  element doubles the count.
+- **The 2ⁿ count includes the extremes:** the empty subset `{}` (everything off) and the full set itself
+  (everything on) both count.
+- **Subsets map onto bits.** An `n`-bit integer is exactly one subset — bit `i` on means "element `i`
+  included" — which is why subset enumeration and [bitmasks](algorithms-glossary-reviewer.md#bitmask "Using an integer's bits to represent a set of flags or a subset of items.") are the same idea, and why
+  `2ⁿ` caps feasible `n` near 20.
 
 ```text
 each element is a switch: ON (in the subset) or OFF (out)
@@ -345,18 +261,30 @@ each element is a switch: ON (in the subset) or OFF (out)
 
 *Adding one element doubles the number of subsets, because that element can be flipped on or off independently of all the others — the source of the 2ⁿ.*
 
+Think of each element as a switch you flip in turn: **`in`** (include) or **`out`** (exclude). The root
+has decided nothing; each level decides one element, so after all `n` elements every root-to-leaf path is
+one subset. For `{a, b, c}` that is three decisions and `2³ = 8` leaves (✓):
+
 ```mermaid
 flowchart TD
-    R["{ }<br/>(decide a, then b)"]
-    R -->|"a: out"| X["{ }"]
-    R -->|"a: in"| A["{a}"]
-    X -->|"b: out"| X0["{ } ✓"]
-    X -->|"b: in"| XB["{b} ✓"]
-    A -->|"b: out"| A0["{a} ✓"]
-    A -->|"b: in"| AB["{a,b} ✓"]
+    R["{ }"]
+    R -->|"a in"| A["{a}"]
+    R -->|"a out"| N["{ }"]
+    A -->|"b in"| AB["{a, b}"]
+    A -->|"b out"| Ax["{a}"]
+    N -->|"b in"| NB["{b}"]
+    N -->|"b out"| Nx["{ }"]
+    AB -->|"c in"| ABC["{a, b, c} ✓"]
+    AB -->|"c out"| ABx["{a, b} ✓"]
+    Ax -->|"c in"| AxC["{a, c} ✓"]
+    Ax -->|"c out"| Axx["{a} ✓"]
+    NB -->|"c in"| NBC["{b, c} ✓"]
+    NB -->|"c out"| NBx["{b} ✓"]
+    Nx -->|"c in"| NxC["{c} ✓"]
+    Nx -->|"c out"| Nxx["{ } ✓"]
 ```
 
-*Two yes/no decisions for the set {a, b} produce 2² = 4 leaf subsets — one branch per independent include/exclude choice.*
+*Three elements, three independent include/exclude decisions — `in` keeps the element, `out` drops it — give 2³ = 8 leaf subsets (✓), from the full set `{a, b, c}` on the far left to the empty set `{ }` on the far right. This is exactly the include/exclude tree backtracking walks to build the power set, and each leaf is one of the eight 3-bit masks.*
 
 ```csharp
 // number of subsets of an n-element set = 2^n. 1L << n is 2^n via a bit shift.
@@ -368,45 +296,20 @@ public static long CountSubsets(int n) => 1L << n;   // CountSubsets(3) == 8
 
 ## Arithmetic sequences
 
-An **[arithmetic sequence](algorithms-glossary-reviewer.md#arithmetic-sequence "A sequence with a constant difference between consecutive terms; its sum is (first+last)·count/2.")** changes by adding the same amount each time.
+An **[arithmetic sequence](algorithms-glossary-reviewer.md#arithmetic-sequence "A sequence with a constant difference between consecutive terms; its sum is (first+last)·count/2.")** has a constant *difference* between consecutive terms. `1, 2, 3, 4, 5`
+(difference 1) and `1, 3, 5, 7, 9` (difference 2) are arithmetic; `1, 2, 4` is not, because the gaps
+(1, then 2) differ.
 
-```text
-2, 5, 8, 11, 14     add 3 each time -> arithmetic
-1, 2, 4, 8, 16      multiply by 2    -> not arithmetic
-```
+Key points:
 
-Be careful to separate two questions:
-
-- **What is a particular term?** Keep adding the common difference.
-- **What is the sum of all terms?** Add the sequence together, often using a formula.
-
-For the sum `1 + 2 + 3 + 4 + 5`, pair numbers from the ends:
-
-```text
-first + last       = 1 + 5 = 6
-second + next-last = 2 + 4 = 6
-middle             = 3
-total              = 15
-```
-
-Every end-to-end pair has the same average: `(first + last) / 2`. Multiply that average by the number of
-terms:
-
-```text
-sum = (first + last) × count / 2
-    = (1 + 5) × 5 / 2
-    = 15
-```
-
-**Why this appears in algorithms:** consider an inner loop that runs once on the first outer iteration,
-twice on the second, and so on. Its work is `1 + 2 + ... + n`, not `n × n` exactly. The formula gives
-`n(n + 1) / 2`, whose dominant term is `n² / 2`, so the complexity is **O(n²)**.
-
-**Common mix-up:** “constant difference” describes arithmetic sequences; it does not mean all terms are
-the same. The terms may rise or fall, but the amount added each time stays constant.
-
-**Quick check:** `3 + 5 + 7 + 9` has first `3`, last `9`, and count `4`, so its sum is
-`(3 + 9) × 4 / 2 = 24`.
+- **The sum has a closed form:** `(first + last) × count / 2`. Pair the smallest with the largest,
+  the second-smallest with the second-largest — each pair has the same total `first + last`, and there
+  are `count / 2` pairs.
+- **Worked sums:** `1 + 2 + 3 + 4 + 5 = (1 + 5) × 5 / 2 = 15`, and
+  `1 + 3 + 5 + 7 + 9 = (1 + 9) × 5 / 2 = 25`.
+- **This is *the* tool for nested-loop complexity.** When an inner loop runs `1, 2, 3, …, n` times, the
+  total work is `1 + 2 + … + n = (1 + n) × n / 2 = (n² + n) / 2`. Drop the lower-order term and the
+  constant and it is **[O(n²)](algorithms-glossary-reviewer.md#quadratic-time "Work grows like the square of n, typically a nested loop over the same data.")** — that triangular sum is why so many double loops are quadratic.
 
 ```text
 nested loop whose inner body runs 1, 2, 3, ..., n times:
@@ -437,44 +340,20 @@ where this triangular sum appears constantly.
 
 ## Geometric sequences
 
-A **[geometric sequence](algorithms-glossary-reviewer.md#geometric-sequence "A sequence with a constant ratio between consecutive terms; its sum is first·(rⁿ−1)/(r−1).")** changes by multiplying by the same amount each time.
+A **[geometric sequence](algorithms-glossary-reviewer.md#geometric-sequence "A sequence with a constant ratio between consecutive terms; its sum is first·(rⁿ−1)/(r−1).")** has a constant *ratio* between consecutive terms. `1, 2, 4, 8, 16`
+(ratio 2) and `1, 3, 9, 27, 81` (ratio 3) are geometric; `1, 2, 6` is not, because `2 / 1 = 2` but
+`6 / 2 = 3`.
 
-```text
-1, 2, 4, 8, 16      multiply by 2 each time -> geometric
-3, 9, 27, 81        multiply by 3 each time -> geometric
-1, 2, 6, 24         multipliers change      -> not geometric
-```
+Key points:
 
-The fixed multiplier is called the **ratio**. Arithmetic sequences have a constant difference;
-geometric sequences have a constant ratio.
-
-The most important interview example is doubling:
-
-```text
-1 + 2 + 4 + 8 = 15
-the next power is 16
-so the sum is 16 - 1
-```
-
-In general, `1 + 2 + 4 + ... + 2^h = 2^(h+1) - 1`. You can remember this special doubling rule first;
-the general formula can come later:
-
-```text
-sum = first × (ratio^count - 1) / (ratio - 1), when ratio != 1
-```
-
-For `1, 2, 4, 8`, the first term is 1, the ratio is 2, and there are 4 terms:
-`1 × (2⁴ - 1) / (2 - 1) = 15`.
-
-**Why this appears in trees:** a perfect binary tree has 1 node at level 0, 2 at level 1, 4 at level 2,
-and so on. Each level doubles, so the total node count is a geometric sum. A height-3 perfect tree has
-`1 + 2 + 4 + 8 = 15` nodes.
-
-**Common mix-up:** `2^h` counts nodes on level `h`; `2^(h+1) - 1` counts all nodes from the root through
-level `h`. Also check whether a problem calls the root height 0 or height 1 before using a formula.
-
-**Quick check:** A perfect binary tree with levels containing `1, 2, 4, 8, 16` nodes has
-`1 + 2 + 4 + 8 + 16 = 31` total nodes.
+- **The sum has a closed form:** `first × (1 − ratioⁿ) / (1 − ratio)` for `ratio ≠ 1`. The same formula
+  rearranges to `first × (ratioⁿ − 1) / (ratio − 1)`, which stays a clean positive integer division when
+  `ratio > 1`.
+- **Doubling sums to "one less than the next power."** `1 + 2 + 4 + 8 = 15 = 2⁴ − 1`. In general
+  `1 + 2 + 4 + … + 2^h = 2^(h+1) − 1`.
+- **It counts nodes in a [perfect binary tree](algorithms-glossary-reviewer.md#complete-binary-tree "Every level full except possibly the last, which fills left to right; lets a heap live in an array.").** Each level holds twice as many nodes as the one above
+  (`1, 2, 4, 8, …`), so a perfect tree of height `h` has `2^(h+1) − 1` nodes — which also means **about
+  half of all nodes are leaves**, a fact heaps and tree problems lean on.
 
 ```text
 nodes per level in a perfect binary tree double each level (ratio 2):
@@ -508,50 +387,22 @@ public static long SumGeometric(long first, long ratio, int n)
 
 ## Modular arithmetic
 
-The `%` operator gives the **remainder** after whole-number division.
+**[Modular arithmetic](algorithms-glossary-reviewer.md#modulo-and-modular-arithmetic "The remainder after division, and doing math while always taking that remainder.")** is integer math that *wraps around* at a fixed value called the **modulus**. The
+clock is the everyday example: 15:00 on a 24-hour clock is 3 o'clock on a 12-hour clock because
+`15 − 12 = 3`. In math jargon, 15 and 3 are *congruent modulo 12*; in code, `15 % 12 == 3`.
 
-```text
-17 / 5 = 3 remainder 2
+Key points:
 
-5 fits into 17 three whole times: 3 × 5 = 15
-2 is left over
-therefore 17 % 5 = 2
-```
-
-**[Modular arithmetic](algorithms-glossary-reviewer.md#modulo-and-modular-arithmetic "The remainder after division, and doing math while always taking that remainder.")** focuses on that remainder. The number after `%` is the **modulus**—the size of the cycle.
-
-**Think of a clock.** On a 12-hour clock, counting 5 hours forward from 10 lands on 3:
-
-```text
-(10 + 5) % 12 = 15 % 12 = 3
-```
-
-Values wrap back to 0 after reaching the modulus. Arrays use the same idea. For an array of length 5,
-`(index + 1) % 5` moves `0 → 1 → 2 → 3 → 4 → 0`, making a circular index.
-
-**Divisibility is the zero-remainder case.** If `n % x == 0`, nothing is left over, so `x` divides `n`
-evenly. For example, `18 % 3 == 0`, but `18 % 4 == 2`.
-
-**Reducing large values early:** remainder arithmetic lets you reduce pieces before combining them:
-
-```text
-(a + b) % m = ((a % m) + (b % m)) % m
-(a × b) % m = ((a % m) × (b % m)) % m
-```
-
-For example, `(27 + 38) % 10` can be simplified to `(7 + 8) % 10 = 5`. This is why algorithms that
-request an answer “modulo `1,000,000,007`” can keep intermediate values smaller.
-
-**Negative values need care.** Languages disagree about the sign of a negative remainder. In C#,
-`-1 % 5 == -1`. When you need a wrapped result in the range `0` through `m - 1`, normalize it with
-`((x % m) + m) % m`.
-
-**Common mix-up:** `%` is not percentage. It is the remainder operator in the code shown here.
-
-**Interview connection:** think modulo for circular buffers, alternating patterns, even/odd checks,
-divisibility, hashing into buckets, and answers that must remain within a fixed numeric range.
-
-**Quick check:** `29 % 6 = 5`, because `6 × 4 = 24` and `29 - 24 = 5`.
+- **`%` is the remainder operator.** `x % y` is what is left of `x` after taking out as many whole `y`s
+  as possible. Conceptually: if `x < y` the answer is `x`; otherwise subtract `y` until `x < y`.
+- **Distributivity is the property interviews exploit:**
+  `(a + b) % c = ((a % c) + (b % c)) % c`. You may reduce each piece *before* combining, which is what
+  keeps running totals from overflowing on "answer modulo 1e9+7" problems.
+- **Use it for divisibility.** `x` divides `n` exactly when `n % x == 0`. The classic primality check
+  tests `n % x` for `x` in `[2, √n]` — a [composite](algorithms-glossary-reviewer.md#prime-number "An integer above 1 whose only positive divisors are 1 and itself.") number always has a divisor at or below its
+  square root.
+- **Beware negative remainders.** In C# `%` follows the sign of the dividend, so `-1 % 5 == -1`. To force
+  a result into `[0, m)`, use `((x % m) + m) % m`.
 
 ```text
 x % y by repeated subtraction (the definition):  32 % 12
@@ -665,7 +516,7 @@ A: `x` divides `n` exactly when `n % x == 0`. A number `n` is prime if no `x` in
 - Binary `1011` in decimal → **11 (`8 + 2 + 1`).**
 - Why base 2 for computers → **circuits are on/off — two states.**
 - Arithmetic sum formula → **`(first + last) × count / 2`.**
-- `1 + 2 + … + n` → **`n(n+1)/2`, which is O(n²) as a loop bound.**
+- `1 + 2 + … + n` → **`n(n+1)/2`, i.e. **O(n²)** as a loop bound.**
 - Geometric sum formula → **`first × (ratioⁿ − 1) / (ratio − 1)`.**
 - `1 + 2 + 4 + … + 2^h` → **`2^(h+1) − 1`.**
 - Nodes in a perfect binary tree of height `h` → **`2^(h+1) − 1`.**

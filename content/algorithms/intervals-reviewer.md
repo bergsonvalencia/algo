@@ -1,4 +1,4 @@
-# Intervals (Reviewer)
+# Intervals
 
 The **interval pattern** covers problems where the input is a set of ranges `[start, end]` on a one-dimensional axis (time, positions, numbers) and the question is about how they relate: do they overlap, can they be fused into fewer ranges, how many must you drop to make them disjoint, or how many "resources" (rooms, CPUs, lanes) you need to service them all at once. The unifying trick is almost always the same — **sort once, then sweep left to right** maintaining a tiny amount of state (the current merged interval, a running concurrency count, or a [heap](algorithms-glossary-reviewer.md#heap "A tree structure keeping the smallest or largest element instantly accessible.") of active end times).
 

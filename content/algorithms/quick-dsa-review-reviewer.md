@@ -1,4 +1,4 @@
-# Quick DSA Review (Reviewer)
+# Quick DSA Review
 
 This is the **beginner on-ramp** for the algorithms suite. The other reviewers teach *patterns* for
 solving interview problems; this one steps back and reviews the **raw building blocks** those patterns
@@ -93,7 +93,7 @@ One table to compare them all. "Fast" is `O(1)` or `O(log n)`; "slow" is `O(n)`.
 each row is explained in its own section below.
 
 | Structure | Organizes data as... | Fast at | Slow at | .NET type |
-| --- | --- | --- | --- | --- |
+| --- | --- | --- | --- |
 | [Array](#arrays) | one fixed contiguous block | index access `O(1)` | insert/delete, resizing `O(n)` | `T[]` |
 | [Dynamic array](#dynamic-arrays-array-lists) | a growable block | index `O(1)`, append `O(1)`* | insert/delete in the middle `O(n)` | `List<T>` |
 | [Linked list](#linked-lists) | nodes joined by pointers | insert/delete **at a node** `O(1)` | random access `O(n)` | `LinkedList<T>` |

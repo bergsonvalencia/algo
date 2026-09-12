@@ -1,4 +1,4 @@
-# Sets and Set Algorithms (Reviewer)
+# Sets and Set Algorithms
 
 A **set** is the [data structure](algorithms-glossary-reviewer.md#data-structure "A way of organizing data so specific operations can be done efficiently.") that stores only **distinct** values and iterates them in an **implementation-defined order**: it answers one question supremely well — *"is this value present?"* — and supports the four operations of **[set algebra](algorithms-glossary-reviewer.md#set-algebra "Union, intersection, difference, and symmetric difference combining two sets into a third.")** (union, intersection, difference, symmetric difference) that combine two sets into a third. The defining contract is *uniqueness with no positional meaning*: a set has no index, no "first" element, no duplicates. Adding a value that is already present is a no-op; the only questions you can ask are membership, count, and how this set relates to another.
 

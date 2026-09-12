@@ -1,4 +1,4 @@
-# Algorithms & LeetCode Glossary (Reviewer)
+# Algorithms & LeetCode Glossary
 
 This is the shared vocabulary for the whole algorithms study suite — a plain-language dictionary of
 every term the other reviewers use, written for someone who may be brand new to data structures and

@@ -1,4 +1,4 @@
-# Collection Concurrency (Reviewer)
+# Collection Concurrency
 
 **Concurrency** is two or more operations executing at the same time. The classic flavor is *multiple threads inside one process* sharing a mutable [collection](algorithms-glossary-reviewer.md#collection "An object that groups multiple elements, like a list, set, queue, or dictionary.") — a shared `List<T>`, a `Dictionary<K,V>`, a `PriorityQueue<T>` — but the same hazard appears one tier up (multiple processes sharing a file) and one tier up again (multiple machines sharing a database table). The unit of trouble is always the same: **shared mutable state touched without coordination**. The standard library collections (`List<T>`, `Dictionary<TKey,TValue>`, `Queue<T>`, `Stack<T>`) are explicitly *not* [thread-safe](algorithms-glossary-reviewer.md#thread-safe "A type whose operations behave correctly when called concurrently from multiple threads.") — they assume a single writer, and concurrent writers silently corrupt them.
 

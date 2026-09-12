@@ -1,4 +1,4 @@
-# Heaps & Priority Queues (Reviewer)
+# Heaps & Priority Queues
 
 A **[binary heap](algorithms-glossary-reviewer.md#binary-heap "A heap as a complete binary tree packed in an array; children at 2i+1, 2i+2.")** is a [complete binary tree](algorithms-glossary-reviewer.md#complete-binary-tree "Every level filled except the last, which fills left to right with no gaps.") stored in a flat array that keeps one [invariant](algorithms-glossary-reviewer.md#invariant "A condition that stays true at every step, used to prove correctness."): every
 parent is ordered before its children (smaller for a **[min-heap](algorithms-glossary-reviewer.md#min-heap-and-max-heap "A min-heap keeps the smallest at its root; a max-heap keeps the largest.")**, larger for a **max-heap**). That

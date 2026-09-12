@@ -1,4 +1,4 @@
-# Dynamic Programming (Reviewer)
+# Dynamic Programming
 
 [Dynamic programming](algorithms-glossary-reviewer.md#dynamic-programming "Solving problems with overlapping subproblems by computing each once and reusing it.") (DP) is the technique for solving a problem by combining the answers to its
 **[overlapping subproblems](algorithms-glossary-reviewer.md#overlapping-subproblems "The recursive breakdown keeps hitting the same smaller subproblems repeatedly.")**, each computed once and cached, rather than recomputed exponentially

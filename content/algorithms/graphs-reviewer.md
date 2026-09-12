@@ -1,4 +1,4 @@
-# Graphs (Reviewer)
+# Graphs
 
 A [graph](algorithms-glossary-reviewer.md#graph "Vertices connected by edges, modeling arbitrary relationships, possibly cyclic.") is a set of **[vertices](algorithms-glossary-reviewer.md#vertex "A single node in a graph; one of the connected entities.")** (nodes) connected by **[edges](algorithms-glossary-reviewer.md#edge "A connection between two vertices, representing a relationship.")**. It is the most general data
 structure in this folder: trees, [linked lists](algorithms-glossary-reviewer.md#linked-list "A chain of nodes each holding a value and a reference to the next node."), and grids are all special cases. Once you can model a

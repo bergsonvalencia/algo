@@ -1,4 +1,4 @@
-# Linked Lists (Reviewer)
+# Linked Lists
 
 A [linked list](algorithms-glossary-reviewer.md#linked-list "A chain of nodes each holding a value and a reference to the next node.") is a chain of [nodes](algorithms-glossary-reviewer.md#node "A container in a linked structure holding a value plus references to neighbors.") where each node holds a value and a [reference](algorithms-glossary-reviewer.md#pointer "A value that refers to the location of data rather than holding it directly.") (pointer) to the next
 node — there is no contiguous backing [array](algorithms-glossary-reviewer.md#array "A fixed-size contiguous block of same-type elements accessed by position in O(1).") and no [index](algorithms-glossary-reviewer.md#index "The integer position of an element; 0-indexed starts at 0, 1-indexed at 1."). The trade is deliberate: you give up O(1)

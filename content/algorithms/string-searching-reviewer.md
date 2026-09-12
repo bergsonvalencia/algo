@@ -1,4 +1,4 @@
-# String Searching Algorithms (Reviewer)
+# String Searching Algorithms
 
 String searching — also called **[substring](algorithms-glossary-reviewer.md#subarray-subsequence-and-substring "A contiguous slice of a string; a subsequence keeps order but may skip characters.") search** or **pattern matching** — asks the most literal
 question in text processing: where, if anywhere, does a short [pattern](algorithms-glossary-reviewer.md#pattern "The short string you are looking for inside a larger text.") string of length `m` occur inside a

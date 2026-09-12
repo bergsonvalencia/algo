@@ -1,4 +1,4 @@
-# Balanced Binary Search Trees & AVL Trees (Reviewer)
+# Balanced Binary Search Trees & AVL Trees
 
 A plain **[binary search tree](algorithms-glossary-reviewer.md#binary-search-tree "A binary tree where left subtree values are smaller and right are larger.") (BST)** promises `O(h)` search, insert, and delete — but that promise is only as good as the [height](algorithms-glossary-reviewer.md#height-depth-and-level "Depth measures down from the root; height measures up from leaves; level groups by depth.") `h`. Feed a naive BST already-sorted keys (1, 2, 3, 4, 5, …) and every insert lands on the right spine: the tree degenerates into a "vine" — effectively a [linked list](algorithms-glossary-reviewer.md#linked-list "A linear structure of nodes each pointing to the next; no random access.") — and `h` grows to `n`, dragging every operation back to **[O(n)](algorithms-glossary-reviewer.md#linear-time "Work grows in direct proportion to input size, about one unit per element.")**. The whole reason to reach for a tree evaporates.
 

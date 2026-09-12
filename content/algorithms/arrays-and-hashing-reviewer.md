@@ -1,4 +1,4 @@
-# Arrays & Hashing (Reviewer)
+# Arrays & Hashing
 
 Arrays & Hashing is the bread-and-butter pattern of coding interviews: you trade **space for time** by remembering what you have already seen in a [hash map](algorithms-glossary-reviewer.md#hash-map "Stores key-value pairs and retrieves a value by key in O(1) average time.") or [hash set](algorithms-glossary-reviewer.md#hash-set "Stores unique keys with O(1) average membership testing and no values."), turning an [O(n^2)](algorithms-glossary-reviewer.md#quadratic-time "Work grows like the square of n, typically a nested loop over the same data.") nested scan into a single [O(n)](algorithms-glossary-reviewer.md#linear-time "Work grows in direct proportion to input size, about one unit per element.") pass. Almost every "have I seen this before?", "how many times does this appear?", or "group these by some key" problem collapses to a `Dictionary<K,V>` or `HashSet<T>` lookup that runs in [O(1)](algorithms-glossary-reviewer.md#constant-time "Cost does not depend on input size; the same fixed work every time.") average time.
 

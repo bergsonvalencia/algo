@@ -1,4 +1,4 @@
-# Algorithm Patterns Index (Reviewer)
+# Algorithm Patterns Index
 
 This is the **hub** for the algorithms/data-structures study suite — a coding-interview and
 algorithm-exam playbook. Most interview problems are not novel; they are one of roughly twenty
