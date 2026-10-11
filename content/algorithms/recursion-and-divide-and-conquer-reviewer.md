@@ -23,6 +23,7 @@ Related: [Algorithm Patterns Index](algorithm-patterns-index-reviewer.md) · [Co
 - [Recursion vs iteration and tail recursion](#recursion-vs-iteration-and-tail-recursion)
 - [Linear vs tree recursion (Fibonacci)](#linear-vs-tree-recursion-fibonacci)
 - [The divide-and-conquer paradigm](#the-divide-and-conquer-paradigm)
+- [A first divide-and-conquer trace](#a-first-divide-and-conquer-trace)
 - [The master theorem (recurrences)](#the-master-theorem-recurrences)
 - [Worked D&C: merge sort](#worked-dc-merge-sort)
 - [Worked D&C: maximum subarray](#worked-dc-maximum-subarray)
@@ -31,7 +32,7 @@ Related: [Algorithm Patterns Index](algorithm-patterns-index-reviewer.md) · [Co
 - [Converting recursion to an explicit stack](#converting-recursion-to-an-explicit-stack)
 - [Common recursion bugs](#common-recursion-bugs)
 - [Problem catalog](#problem-catalog)
-- [Interview Q&A](#interview-qa)
+- [Interview questions](#interview-questions)
 - [Rapid-fire round](#rapid-fire-round)
 - [Exam-style questions](#exam-style-questions)
 - [30-second takeaway](#30-second-takeaway)
@@ -52,44 +53,77 @@ Key points:
 - **Recursive case** — express the answer for input `n` in terms of the answer for a strictly smaller
   input (`n-1`, `n/2`, a sublist, a subtree). Assume the recursive call already returns the correct
   smaller answer.
-- **Progress toward the base case** — each call must reduce the problem size. If `factorial(n)` called
-  `factorial(n)` (no decrement) or `factorial(n+1)`, it would never terminate.
+- **Progress toward the base case** — choose a measure of remaining work that strictly decreases
+  on every recursive path: remaining items, interval length, or unvisited nodes. Calling again with
+  the same remaining work never reaches the stopping condition.
 
-```csharp
-// factorial(n) = n * factorial(n-1), with factorial(0) = 1.
-public static long Factorial(int n)
-{
-    if (n < 0) throw new ArgumentOutOfRangeException(nameof(n)); // validate at the boundary
-    if (n <= 1) return 1;          // base case
-    return n * Factorial(n - 1);   // recursive case: strictly smaller argument
-}
-```
+### The reusable mental model: stop, delegate, resume
 
-`Factorial(4)` is [O(n)](algorithms-glossary-reviewer.md#linear-time "Work grows in direct proportion to input size, about one unit per element.") time (one multiply per level) and O(n) stack space (n frames live at the
-deepest point). The italic captions below trace exactly how those frames stack and unwind.
+Each call owns **one smaller problem**. It checks whether it can answer directly. If it cannot, it
+asks another call to solve a smaller problem and **pauses**. When that child returns, the caller
+resumes at the next statement and uses the returned answer. A recursive call starts a new invocation
+with its own parameters and locals; it does not restart or erase the caller.
 
 ```mermaid
 flowchart TD
-    A["Factorial(4)<br/>returns 4 * F(3) = 24"] --> B["Factorial(3)<br/>returns 3 * F(2) = 6"]
-    B --> C["Factorial(2)<br/>returns 2 * F(1) = 2"]
-    C --> D["Factorial(1)<br/>base case: returns 1"]
-    D -. "1" .-> C
-    C -. "2" .-> B
-    B -. "6" .-> A
+    Enter["Enter one call"] --> Base{"Can this call answer directly?"}
+    Base -->|Yes| Direct["BASE CASE: return a known answer"]
+    Base -->|No| Smaller["PROGRESS: choose a smaller problem"]
+    Smaller --> Call["RECURSIVE CASE: call the same function"]
+    Call --> Wait["Caller pauses; child runs this same checklist"]
+    Wait --> Resume["Child returns; caller resumes"]
+    Resume --> Finish["Use the child answer; return this call's answer"]
 ```
 
-*Solid arrows are calls pushing frames downward; dotted arrows are returns unwinding upward, each multiplying by its own `n`.*
+*Every call follows the same checklist: either answer directly, or delegate smaller work and resume when its answer arrives.*
+
+### Follow one problem through the call stack
+
+Use addition so the arithmetic stays simple: sum the first `count` items of `nums = [3, 1, 4, 2]`.
+The contract is `0 <= count <= nums.Length`, with a non-null array and sums that fit in `int`.
+Read the function as a promise: **`SumPrefix(nums, count)` returns the sum of exactly those first
+`count` items**. Each child has the same promise, for one fewer item.
+
+```csharp
+public static int SumPrefix(int[] nums, int count)
+{
+    if (count == 0) return 0;                      // BASE: no items remain
+    int smaller = SumPrefix(nums, count - 1);      // PROGRESS + recursive call
+    return smaller + nums[count - 1];             // RESUME: finish this call's work
+}
+```
+
+| Part | Where it appears | What it guarantees |
+| --- | --- | --- |
+| Base case | `count == 0` returns `0` | The empty prefix has a direct answer. |
+| Recursive case | Ask for the sum of the first `count - 1` items | The child solves the same kind of problem. |
+| Progress | `count` decreases by one | Starting from a valid count, every path reaches zero. |
+| Work after the call | Add `nums[count - 1]` to `smaller` | Each caller completes its own answer when it resumes. |
 
 ```text
-CALL PHASE (push frames)            RETURN PHASE (pop frames, multiply)
-  push F(4)  n=4                      F(1) returns 1
-  push F(3)  n=3                      F(2) returns 2 * 1   = 2
-  push F(2)  n=2                      F(3) returns 3 * 2   = 6
-  push F(1)  n=1  <- base case hit    F(4) returns 4 * 6   = 24
-  stack depth peaks at 4 frames       stack empty, answer = 24
+CALL: keep each caller's unfinished work
+  count=4: sum [3,1,4,2] -> wait for sum [3,1,4], then add 2
+    count=3: sum [3,1,4] -> wait for sum [3,1], then add 4
+      count=2: sum [3,1] -> wait for sum [3], then add 1
+        count=1: sum [3] -> wait for sum [], then add 3
+          count=0: sum [] -> BASE CASE returns 0
+
+RETURN: resume the most recent paused caller first
+  count=1 receives 0 -> adds 3 -> returns 3
+  count=2 receives 3 -> adds 1 -> returns 4
+  count=3 receives 4 -> adds 4 -> returns 8
+  count=4 receives 8 -> adds 2 -> returns 10
 ```
 
-*The stack grows to its full depth of n frames before any work returns; the multiplications only happen on the way back up.*
+*Calls shrink the remaining prefix; returns carry answers back to callers that still have one addition to finish.*
+
+The base case ends **one call**, not the whole computation. The paused callers still need to resume.
+For `count = n`, this makes `n + 1` calls, performs `n` additions, and reaches `n + 1` live frames:
+**O(n) time and O(n) call-stack space**. A loop is preferable for a large sum; this deliberately small
+example isolates how recursion works.
+
+[Play Recursion Basics — Call, Pause, Return](https://bergsonvalencia.github.io/algo/viz/index.html#recursion-basics).
+Watch the active call, paused additions, base case, and returned value before moving to the branching example.
 
 ## The call stack and stack depth
 
@@ -111,14 +145,13 @@ Key points:
 
 ```mermaid
 flowchart LR
-    subgraph Stack["Call stack (grows down)"]
+    subgraph Stack["Three live calls during SumPrefix"]
         direction TB
-        F1["frame: F(4) — n=4, return addr"]
-        F2["frame: F(3) — n=3, return addr"]
-        F3["frame: F(2) — n=2, return addr"]
-        F4["frame: F(1) — n=1 (top, base case)"]
+        F1["count=4: paused, will add 2"]
+        F2["count=3: paused, will add 4"]
+        F3["count=2: active, next checks the base case"]
     end
-    F1 --> F2 --> F3 --> F4
+    F1 --> F2 --> F3
 ```
 
 *The top frame is the deepest active call; depth = space cost. Exceeding the thread stack throws an uncatchable `StackOverflowException`.*
@@ -174,14 +207,17 @@ flowchart TD
 
 ## Linear vs tree recursion (Fibonacci)
 
-The number of recursive calls a function spawns per level decides its complexity class.
+The number of children per call **and how quickly their inputs shrink** determine the total work.
 
 Key points:
 
-- **Linear recursion** makes **one** recursive call per invocation (factorial, list traversal). Total
-  calls = O(n), and with O(1) work per call that's O(n) time, O(n) stack.
-- **Tree recursion** makes **two or more** recursive calls per invocation, so the call count grows
-  exponentially in the depth. Naive Fibonacci is the canonical example.
+- **Linear recursion** makes **one** recursive call per non-base invocation. Removing one item per
+  call (factorial, list traversal) gives O(n) calls and O(n) depth; halving the input (binary search)
+  gives O(log n) calls and depth. Count the shrinkage as well as the branches.
+- **Tree recursion** makes **two or more** recursive calls per non-base invocation. It is not
+  automatically exponential in input size: halving into two disjoint parts gives O(n) calls in the
+  sum example below. Naive Fibonacci instead reduces arguments by only one or two and repeatedly
+  solves overlapping subproblems.
 - `Fib(n) = Fib(n-1) + Fib(n-2)` makes **two** calls per node. The recursion tree has roughly
   `Fib(n+1)` leaves, giving **O(φ^n) ≈ O(1.618^n)** calls — usually quoted loosely as **O(2^n)** —
   with **O(n) stack depth** (the leftmost path is length n).
@@ -283,6 +319,60 @@ flowchart TD
 ```
 
 *The divide / conquer / combine template. Where the heavy lifting sits — in the split or in the combine — sets the recurrence and the overall [Big-O](algorithms-glossary-reviewer.md#big-o-notation "Upper bound on how an algorithm's cost grows as input size increases.").*
+
+## A first divide-and-conquer trace
+
+Keep the same input `[3, 1, 4, 2]` and the same answer `10`, but split the work into **two independent
+halves** instead of removing one item. The contract is `0 <= lo <= hi <= nums.Length`, with a non-null
+array and sums that fit in `int`. `[lo, hi)` includes `lo` and excludes `hi`; its size is `hi - lo`.
+
+```csharp
+public static int SumRange(int[] nums, int lo, int hi)
+{
+    if (lo == hi) return 0;                   // BASE: empty interval
+    if (hi - lo == 1) return nums[lo];         // BASE: one item
+    int mid = lo + (hi - lo) / 2;             // DIVIDE into smaller intervals
+    int left = SumRange(nums, lo, mid);       // CONQUER left; caller waits
+    int right = SumRange(nums, mid, hi);      // CONQUER right after left returns
+    return left + right;                     // COMBINE the two returned answers
+}
+```
+
+```mermaid
+flowchart TD
+    All["Sum all four items"] --> Left["Sum first half"]
+    All --> Right["Sum second half"]
+    Left --> A["3: base case"]
+    Left --> B["1: base case"]
+    Right --> C["4: base case"]
+    Right --> D["2: base case"]
+```
+
+*This tree maps the smaller problems: leaves answer directly, and each parent combines the answers of its two children.*
+
+The tree shows **which problems exist**, not simultaneous execution. In this code the left call
+finishes before the right call starts. Both are needed, and the parent keeps the left answer while
+the right call runs. Follow the actual order:
+
+| Step | What happens | What the caller still needs |
+| --- | --- | --- |
+| Divide | `[3,1,4,2]` becomes `[3,1]` and `[4,2]` | Both half sums |
+| Conquer left | `3` and `1` return directly; combine `3 + 1 = 4` | Root saves `left = 4`; right is still unknown |
+| Conquer right | `4` and `2` return directly; combine `4 + 2 = 6` | Root now has `left = 4`, `right = 6` |
+| Combine | Root adds `4 + 6` | Return `10`; root is finished |
+
+**Keep these two pictures separate:** the recursion tree contains all seven calls made for four
+items; the live call stack contains only the active path. At its deepest point the stack has **three
+frames**, not seven. Each completed call returns and leaves the stack before its sibling runs.
+
+This sum has **O(n) time** (`2n - 1` calls for nonempty input, O(1) work per call) and **O(log n)
+stack space** because the intervals halve. Splitting into two calls does not by itself imply
+exponential time. Merge sort uses the same branching shape but does a linear merge at each level,
+so its time is O(n log n).
+
+[Play Divide and Conquer Basics — Split and Combine](https://bergsonvalencia.github.io/algo/viz/index.html#divide-and-conquer-basics).
+Step backward as well as forward: distinguish an interval that has not run, an active call, a paused
+caller with one answer, and a completed call with its final sum.
 
 ## The master theorem (recurrences)
 
@@ -647,51 +737,67 @@ public sealed class ListNode
 }
 ```
 
-## Interview Q&A
+## Interview questions
+
+Answer each prompt before moving to the next one.
 
 ### Fundamentals
 
+<a id="interview-question-1"></a>
+
 Q: What are the three required parts of a correct recursive function?
-A: A base case (a smallest input solved without recursing), a recursive case (the answer expressed in terms of a smaller subproblem), and guaranteed progress toward the base case (every call shrinks the input). Missing the base case or failing to shrink the input causes infinite recursion and a stack overflow.
+
+<a id="interview-question-2"></a>
 
 Q: How does recursion use memory, and what determines the space cost?
-A: Each call pushes a stack frame (parameters, locals, return address) that stays live until the call returns. The space cost is O(maximum recursion depth), not O(total calls). Factorial is O(n) depth; a [balanced tree](algorithms-glossary-reviewer.md#balanced-tree "A tree kept near minimum height (about log n) so operations stay O(log n).") traversal is O(log n) depth (the height).
+
+<a id="interview-question-3"></a>
 
 Q: Why is recursion depth, not call count, the thing that overflows the stack?
-A: Sibling recursive calls complete and pop their frames before the next sibling runs, so only one root-to-leaf chain of frames is live at a time. Naive Fibonacci makes O(2^n) calls but its stack depth is only O(n).
+
+<a id="interview-question-4"></a>
 
 Q: Can you catch a `StackOverflowException` in C#?
-A: No. Since .NET 2.0 it cannot be caught and terminates the process. That makes unbounded recursion depth a correctness/availability risk, so deep recursion must be bounded or converted to iteration.
 
 ### Recursion vs iteration
 
+<a id="interview-question-5"></a>
+
 Q: What is tail recursion, and does C# guarantee tail-call optimization?
-A: A call is tail-recursive when the recursive call is the last action, with no pending work on its result. C# does not guarantee TCO — the CLR has a `.tail` IL prefix and the JIT may apply it, but the C# compiler does not reliably emit it, so deep tail recursion can still overflow. Convert to a loop if depth could be large.
+
+<a id="interview-question-6"></a>
 
 Q: When would you convert recursion to an explicit stack?
-A: When the recursion is correct but the depth could overflow the call stack, or when you need to pause/resume traversal. An explicit `Stack<T>` moves the frames to the heap (much larger, won't throw `StackOverflowException`) and you control the order — e.g. iterative DFS pushing right-then-left.
 
 ### Divide and conquer
 
+<a id="interview-question-7"></a>
+
 Q: Describe the divide-and-conquer template and name where the work usually lives.
-A: Divide the input into independent subproblems, conquer by recursing, combine the results. The heavy work sits in either the divide step (quicksort's partition) or the combine step (merge sort's merge) — that balance sets the recurrence and the Big-O.
+
+<a id="interview-question-8"></a>
 
 Q: Both merge sort and quickselect partition/split an array of size n — why is one O(n log n) and the other expected O(n)?
-A: Merge sort recurses into both halves (`2·T(n/2) + O(n)` → O(n log n)). Quickselect recurses into only the one side containing the target (`T(n/2) + O(n)` → O(n)), because the per-level work forms a geometric series `n + n/2 + n/4 + … = 2n`.
+
+<a id="interview-question-9"></a>
 
 Q: Why is merge sort O(n log n) in the worst case while quicksort is O(n²) in the worst case?
-A: Merge sort always splits exactly in half, so it always has log n balanced levels of O(n) work. Quicksort's split depends on pivot quality; a consistently bad pivot (e.g. already-sorted input, first-element pivot) yields `T(n-1) + O(n)` = O(n²). Random or median pivots make that case improbable.
+
+<a id="interview-question-10"></a>
 
 Q: How does exponentiation by squaring achieve O(log n)?
-A: It uses `x^n = (x^(n/2))²` (even) or `x·(x^((n-1)/2))²` (odd), halving the exponent every step. That's log n squarings/multiplications instead of n. Equivalently, read the exponent's bits and fold in the current squared base wherever a bit is 1.
 
 ### Pitfalls
 
+<a id="interview-question-11"></a>
+
 Q: Naive Fibonacci is O(2^n). What makes it exponential and how do you fix it?
-A: It's tree recursion (two calls per node) over [overlapping subproblems](algorithms-glossary-reviewer.md#overlapping-subproblems "The recursive breakdown keeps hitting the same smaller subproblems repeatedly."), so the same `Fib(k)` is recomputed many times. Memoization caches each result for O(n) time/space; bottom-up iteration gives O(n) time and O(1) space.
+
+<a id="interview-question-12"></a>
 
 Q: In recursive backtracking, why do sibling branches sometimes corrupt each other?
-A: Because they share mutable state (a partial-solution list/array). If a branch mutates that state before recursing and doesn't undo it afterward, the next sibling starts from the polluted state. Fix by undoing the change after the recursive call returns, or by passing copies.
+
+[Review the interview answers](recursion-and-divide-and-conquer-interview-answers.md)
 
 ## Rapid-fire round
 
@@ -793,8 +899,8 @@ multiplications, and dramatically fewer for large exponents.
   shrinks the input.
 - Space cost = **O(recursion depth)**; `StackOverflowException` is **uncatchable** and kills the process.
 - **C# does not guarantee TCO** — convert deep tail recursion to a loop or explicit `Stack<T>`.
-- **Linear recursion** = one call/level = O(n); **tree recursion** = ≥2 calls/level = exponential
-  unless memoized.
+- Count branches **and** input shrinkage: one-call chains may be O(n) or O(log n); two disjoint
+  half-size calls can still total O(n) calls. Repeated overlapping work is the Fibonacci warning.
 - Naive Fibonacci **O(2^n)** → memoize for **O(n)** → tabulate for **O(n) time, O(1) space**.
 - D&C = **divide / conquer / combine**; recurrence `a·T(n/b) + f(n)` → [master theorem](algorithms-glossary-reviewer.md#master-theorem "Formula that solves divide-and-conquer recurrences T(n)=aT(n/b)+f(n).").
 - Merge sort **O(n log n) all cases**, **O(n)** aux, **stable**, **not in-place**.
@@ -802,6 +908,10 @@ multiplications, and dramatically fewer for large exponents.
 - Quicksort worst case **O(n²)** on bad pivots; merge sort never degrades.
 - Fast power & binary search **O(log n)** by halving; use overflow-safe midpoint `lo + (hi - lo) / 2`.
 - Iterative DFS: explicit `Stack<T>`, push **right then left** for pre-order.
+
+---
+
+Suggested next reads: [Backtracking](backtracking-reviewer.md).
 
 ## References
 

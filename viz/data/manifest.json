@@ -595,6 +595,13 @@
     "complexity": "O(n)"
   },
   {
+    "file": "divide-and-conquer-basics.json",
+    "title": "Divide and Conquer Basics — Split and Combine",
+    "topic": "recursion-and-divide-and-conquer",
+    "steps": 28,
+    "complexity": "O(n)"
+  },
+  {
     "file": "fast-power.json",
     "title": "Fast Power (Exponentiation by Squaring)",
     "topic": "recursion-and-divide-and-conquer",
@@ -620,6 +627,13 @@
     "title": "Quickselect (Kth Largest)",
     "topic": "recursion-and-divide-and-conquer",
     "steps": 17,
+    "complexity": "O(n)"
+  },
+  {
+    "file": "recursion-basics.json",
+    "title": "Recursion Basics — Call, Pause, Return",
+    "topic": "recursion-and-divide-and-conquer",
+    "steps": 20,
     "complexity": "O(n)"
   },
   {

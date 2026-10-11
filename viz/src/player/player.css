@@ -40,7 +40,7 @@
 .algviz:fullscreen { border-radius: 0; padding: 28px 40px; justify-content: center; }
 
 /* head */
-.algviz-head { display: flex; align-items: center; gap: 10px; }
+.algviz-head { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; }
 .algviz-title { font-weight: 650; font-size: 15px; letter-spacing: .2px; }
 .algviz-cx { font-family: var(--mono); font-size: 11.5px; font-weight: 600; color: var(--hltext-filled);
   background: var(--hlbg-filled); border: 1px solid var(--hl-filled); padding: 2px 9px; border-radius: 999px; white-space: nowrap; }
@@ -190,6 +190,8 @@
 
 /* responsive: stack code under the board on narrow screens */
 @media (max-width: 720px) {
+  .algviz-controls { flex-wrap: wrap; }
+  .algviz-btn { flex-shrink: 0; }
   .algviz-stage { flex-direction: column; }
   .algviz-code { width: auto; max-height: 220px; }
 }

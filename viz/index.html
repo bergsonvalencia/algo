@@ -39,7 +39,7 @@
     .nav-item .meta { display: block; color: #6b7384; font-size: 11px; font-family: "JetBrains Mono", ui-monospace, monospace; margin-top: 2px; }
 
     /* main */
-    .main { padding: 28px clamp(16px, 4vw, 52px); }
+    .main { min-width: 0; padding: 28px clamp(16px, 4vw, 52px); }
     .home-link { display: inline-block; color: var(--muted); font-size: 12.5px; text-decoration: none; margin-bottom: 16px; }
     .home-link:hover { color: #c4cad6; }
 
@@ -252,6 +252,8 @@
 
     // --- views ---
     function showLanding() {
+      ++selToken;
+      history.replaceState(null, '', location.pathname + location.search);
       currentPlayer?.pause?.();
       if (document.fullscreenElement) document.exitFullscreen().catch(() => {});
       playerView.hidden = true; landing.hidden = false;
@@ -261,6 +263,7 @@
     let selToken = 0;
     async function select(m) {
       const my = ++selToken;
+      history.replaceState(null, '', '#' + m.file.replace(/\.json$/, ''));
       currentPlayer?.pause?.();           // stop the outgoing player's autoplay timer (no leak)
       const btn = btnFor.get(m);
       buttons.forEach((b) => b.classList.toggle('active', b === btn));
@@ -338,7 +341,14 @@
       else if (e.key === '?') { e.preventDefault(); kbd.hidden ? showHelp() : hideHelp(); }
     });
 
-    showLanding();
+    // Reviewer links can open a specific teaching trace directly.
+    function openFromHash() {
+      const linked = manifest.find((m) => '#' + m.file.replace(/\.json$/, '') === location.hash);
+      if (linked) select(linked);
+      else showLanding();
+    }
+    window.addEventListener('hashchange', openFromHash);
+    openFromHash();
   </script>
 </body>
 </html>
