@@ -17,6 +17,11 @@ Fibonacci's [exponential](algorithms-glossary-reviewer.md#exponential-time "Addi
 
 Related: [Algorithm Patterns Index](algorithm-patterns-index-reviewer.md) · [Complexity & Big-O](complexity-and-big-o-reviewer.md) · [Sorting Algorithms](sorting-algorithms-reviewer.md) · [Dynamic Programming](dynamic-programming-reviewer.md) · [Backtracking](backtracking-reviewer.md) · [Trees & BSTs](trees-and-binary-search-trees-reviewer.md) · [Glossary](algorithms-glossary-reviewer.md)
 
+> **Visualize this topic:** [Recursion Basics — call, pause, return](https://bergsonvalencia.github.io/algo/viz/index.html#recursion-basics) · [Divide and Conquer Basics — split and combine](https://bergsonvalencia.github.io/algo/viz/index.html#divide-and-conquer-basics).
+>
+> Use the step controls to follow the active call, paused work, and returned answers. Both examples
+> sum `[3, 1, 4, 2]`, so you can focus on how the recursion works.
+
 ## Contents
 - [Anatomy of a recursive function](#anatomy-of-a-recursive-function)
 - [The call stack and stack depth](#the-call-stack-and-stack-depth)
